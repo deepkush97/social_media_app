@@ -19,7 +19,7 @@ export const appBootstrap = async (module: Type<unknown>): Promise<void> => {
     process.exit(0);
   }
 
-  const app = await NestFactory.create(module, { logger: false });
+  const app = await NestFactory.create(module, { bufferLogs: true });
 
   const pinoLogger = app.get(Logger);
   app.useLogger(pinoLogger);
