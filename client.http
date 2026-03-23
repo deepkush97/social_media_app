@@ -1,0 +1,63 @@
+### 🌍 Base Environment Variables
+@baseUrl = http://localhost:3000
+@contentType = application/json
+@token = {{signup.response.body.data.jwtToken}} 
+@token = {{login.response.body.data.jwtToken}} 
+
+@code = {{createCode.response.body.data}}  
+
+# ───────────────────────────────────────────────
+# 🧾 AUTH MODULE ENDPOINTS
+# ───────────────────────────────────────────────
+
+### SIGNUP - Signup user
+# @name signup
+POST {{baseUrl}}/auth/signup
+Content-Type: {{contentType}}
+
+{
+  "name":"John",
+  "email": "john@example.com",
+  "password": "123456"
+}
+
+### LOGIN - Login user
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "john@example.com",
+  "password": "123456"
+}
+
+### LOGOUT - Logout user
+# @name logout
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+
+### 👤 PROFILE — Get logged-in user's info
+# @name profile
+GET {{baseUrl}}/auth/profile
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+### CREATE CODE - create a new shorter url 
+# @name createCode
+POST {{baseUrl}}/u
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "url": "http://www.example.com",
+  "description": "Example"
+}
+
+### GET CODE - Redirect to original url
+# @name getCode
+GET {{baseUrl}}/u/{{code}}
+Content-Type: {{contentType}}
+
+

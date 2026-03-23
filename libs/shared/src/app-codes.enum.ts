@@ -1,0 +1,18 @@
+import { registerEnumType } from '@nestjs/graphql';
+
+export enum AppCodes {
+  OPERATION_SUCCESS = 'OPERATION_SUCCESS',
+  INVALID_CREDENTIALS = 'INVALID_CREDENTIALS',
+  INVALID_EMAIL = 'INVALID_EMAIL',
+  INTERNAL_ERROR = 'INTERNAL_ERROR',
+  UNAUTHORIZED = 'UNAUTHORIZED',
+  FORBIDDEN = 'FORBIDDEN',
+  USER_CREATED = 'USER_CREATED',
+  BAD_REQUEST = 'BAD_REQUEST',
+  URL_CREATED = 'URL_CREATED',
+  URL_NOT_FOUND = 'URL_NOT_FOUND',
+}
+
+registerEnumType(AppCodes, {
+  name: 'AppCodes',
+});
