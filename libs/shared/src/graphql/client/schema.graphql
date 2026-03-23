@@ -1,0 +1,99 @@
+directive @join__enumValue(graph: join__Graph!) repeatable on ENUM_VALUE
+
+directive @join__field(graph: join__Graph, requires: join__FieldSet, provides: join__FieldSet, type: String, external: Boolean, override: String, usedOverridden: Boolean) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @join__graph(name: String!, url: String!) on ENUM_VALUE
+
+directive @join__implements(graph: join__Graph!, interface: String!) repeatable on OBJECT | INTERFACE
+
+directive @join__type(graph: join__Graph!, key: join__FieldSet, extension: Boolean! = false, resolvable: Boolean! = true, isInterfaceObject: Boolean! = false) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
+
+directive @join__unionMember(graph: join__Graph!, member: String!) repeatable on UNION
+
+directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
+
+enum AppCodes {
+  OPERATION_SUCCESS
+  INVALID_CREDENTIALS
+  INVALID_EMAIL
+  INTERNAL_ERROR
+  UNAUTHORIZED
+  FORBIDDEN
+  USER_CREATED
+  BAD_REQUEST
+  URL_CREATED
+  URL_NOT_FOUND
+  NOT_FOUND
+}
+
+enum AuthSessionEnum {
+  OPEN
+  CLOSED
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+scalar join__FieldSet
+
+enum join__Graph {
+  AUTH
+}
+
+scalar link__Import
+
+enum link__Purpose {
+  """
+  `SECURITY` features provide metadata necessary to securely resolve fields.
+  """
+  SECURITY
+
+  """
+  `EXECUTION` features provide metadata necessary for operation execution.
+  """
+  EXECUTION
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): UserOutputDto!
+  createSession(id: Int!): SessionOutputDto!
+}
+
+type Query {
+  findOpenSessionByGuid(id: String!): SessionOutputDto!
+}
+
+type SessionOutput {
+  id: Int!
+  guid: String!
+  userId: Int!
+  status: AuthSessionEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type SessionOutputDto {
+  data: SessionOutput
+  code: AppCodes!
+}
+
+type UserOutput {
+  id: Int!
+  name: String!
+  email: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserOutputDto {
+  data: UserOutput
+  code: AppCodes!
+}

@@ -13,7 +13,13 @@ const compat = new FlatCompat({
 
 export default defineConfig(
   {
-    ignores: ['dist/**', 'node_modules/**', 'eslint.config.mjs', '**/*.js'],
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      'eslint.config.mjs',
+      '**/*.js',
+      'libs/shared/src/graphql/client/*',
+    ],
   },
   ...compat.extends('plugin:@typescript-eslint/recommended'),
   {

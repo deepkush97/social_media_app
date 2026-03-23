@@ -31,6 +31,18 @@ services:
     networks:
       - backend
 
+  apollo-router:
+    image: ghcr.io/apollographql/router:v1.38.0
+    ports:
+      - '4000:4000'
+    command:
+      ['--dev', '-c', 'config/router.yaml', '-s', 'schema/supergraph.graphql', '--log', 'info']
+    volumes:
+      - ./libs/shared/src/graphql/schema/supergraph.graphql:/dist/schema/supergraph.graphql
+      - ./router/router.yaml:/dist/config/router.yaml
+    networks:
+      - backend
+
 volumes:
   mysql_data:
   redis_data:

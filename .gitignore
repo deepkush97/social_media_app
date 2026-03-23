@@ -35,3 +35,5 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 .env*
+libs/shared/src/graphql/schema/supergraph.graphql
+router/supergraph-config.yaml
