@@ -53,4 +53,8 @@ export class AppConfigService {
   get redisPassword(): string {
     return this.configService.get<string>('app.redisPassword');
   }
+
+  get graphqlRouterUrl(): string {
+    return this.configService.get<string>('app.graphqlRouterUrl');
+  }
 }

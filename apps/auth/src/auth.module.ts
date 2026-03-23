@@ -6,9 +6,11 @@ import { join } from 'node:path';
 import { ApolloServerPluginInlineTrace } from '@apollo/server/plugin/inlineTrace';
 
 import { AppConfigModule } from '@app/shared/app-config/app-config.module';
+import { AppConfigService } from '@app/shared/app-config/app-config.service';
 import { AppLoggerModule } from '@app/shared/app-logger/app-logger.module';
 import { BcryptModule } from '@app/shared/bcrypt/bcrypt.module';
 import { DatabaseModule } from '@app/shared/database/database.module';
+import { GraphqlRouterModule } from '@app/shared/graphql/graphql-router.module';
 
 import { SessionModule } from './session/session.module';
 import { UserModule } from './user/user.module';
@@ -32,6 +34,13 @@ import { AuthService } from './auth.service';
       },
     }),
     SessionModule,
+    GraphqlRouterModule.registerAsync({
+      useFactory: (configService: AppConfigService) => {
+        return {
+          url: configService.graphqlRouterUrl,
+        };
+      },
+    }),
   ],
   providers: [AuthService, AuthResolver],
 })

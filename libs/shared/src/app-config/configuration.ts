@@ -27,4 +27,6 @@ export const configLoader = registerAs('app', () => ({
   redisHost: env.get('REDIS_HOST').default('localhost').asString(),
   redisPort: env.get('REDIS_PORT').default('6379').asPortNumber(),
   redisPassword: env.get('REDIS_PASSWORD').asString(),
+
+  graphqlRouterUrl: env.get('GRAPHQL_ROUTER_URL').required().asString(),
 }));
