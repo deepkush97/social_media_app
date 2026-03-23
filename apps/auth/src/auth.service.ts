@@ -51,4 +51,18 @@ export class AuthService {
       data: session,
     });
   }
+
+  async getOpenSessionBySessionId(guid: string): Promise<IAppResponse<ISession>> {
+    const session = await this.sessionService.findOpenSessionByGuid(guid);
+    if (!session) {
+      return new AppResponse({
+        code: AppCodes.NOT_FOUND,
+      });
+    }
+
+    return new AppResponse({
+      code: AppCodes.OPERATION_SUCCESS,
+      data: session,
+    });
+  }
 }

@@ -28,7 +28,7 @@ import { AuthService } from './auth.service';
       plugins: [ApolloServerPluginInlineTrace()],
       autoSchemaFile: {
         federation: 2,
-        path: join(process.cwd(), 'libs/shared/src/schema/auth.graphql'),
+        path: join(process.cwd(), 'libs/shared/src/graphql/schema/auth.graphql'),
       },
     }),
     SessionModule,

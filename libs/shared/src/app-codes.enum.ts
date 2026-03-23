@@ -11,6 +11,7 @@ export enum AppCodes {
   BAD_REQUEST = 'BAD_REQUEST',
   URL_CREATED = 'URL_CREATED',
   URL_NOT_FOUND = 'URL_NOT_FOUND',
+  NOT_FOUND = 'NOT_FOUND',
 }
 
 registerEnumType(AppCodes, {

@@ -1,10 +1,10 @@
-import { Args, Int, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { CreateUserInput } from './inputs/create-user.input';
+import { SessionOutputDto } from './outputs/session.output';
 import { UserOutputDto } from './outputs/user.output';
 
 import { AuthService } from './auth.service';
-import { SessionOutputDto } from './outputs/session.output';
 
 @Resolver()
 export class AuthResolver {
@@ -18,5 +18,12 @@ export class AuthResolver {
   @Mutation(() => SessionOutputDto)
   async createSession(@Args('id', { type: () => Int }) id: number): Promise<SessionOutputDto> {
     return this.authService.createSession(id);
+  }
+
+  @Query(() => SessionOutputDto)
+  async findOpenSessionByGuid(
+    @Args('id', { type: () => String }) guid: string,
+  ): Promise<SessionOutputDto> {
+    return this.authService.getOpenSessionBySessionId(guid);
   }
 }
