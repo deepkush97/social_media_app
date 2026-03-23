@@ -1,8 +1,10 @@
 import { Global, Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { LoggerModule } from 'nestjs-pino';
 import { v4 as uuidV4 } from 'uuid';
+
+import { AppConfigService } from '../app-config/app-config.service';
+import { AppEnvironment } from '../enums/app-environment.enum';
 
 import { AppLoggerService } from './app-logger.service';
 import { DatabaseLoggerService } from './database-logger.service';
@@ -11,12 +13,11 @@ import { DatabaseLoggerService } from './database-logger.service';
 @Module({
   imports: [
     LoggerModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        const isProduction = configService.get<string>('APP_ENV') === 'production';
+      inject: [AppConfigService],
+      useFactory: (configService: AppConfigService) => {
+        const isProduction = configService.env === AppEnvironment.production;
 
-        const logLevel = configService.get<string>('APP_LOG_LEVEL');
+        const logLevel = configService.logLevel;
 
         return {
           pinoHttp: {

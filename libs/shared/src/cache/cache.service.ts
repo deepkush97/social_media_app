@@ -1,5 +1,4 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 
 import Redis from 'ioredis';
 
@@ -10,7 +9,6 @@ import { RedisService } from '../redis/redis.service';
 export class CacheService implements OnModuleInit {
   private redisClient: Redis;
   constructor(
-    private readonly configService: ConfigService,
     private readonly logger: AppLoggerService,
     private readonly redisService: RedisService,
   ) {}

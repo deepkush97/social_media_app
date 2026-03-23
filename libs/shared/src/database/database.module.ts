@@ -1,24 +1,23 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { DatabaseLoggerService } from '@app/shared/app-logger/database-logger.service';
 
+import { AppConfigService } from '../app-config/app-config.service';
+
 @Module({
   imports: [
-    ConfigModule,
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService, DatabaseLoggerService],
-      useFactory: (configService: ConfigService, logger: DatabaseLoggerService) => {
-        const logging = configService.get<string>('DB_LOGGING') === 'true';
+      inject: [AppConfigService, DatabaseLoggerService],
+      useFactory: (configService: AppConfigService, logger: DatabaseLoggerService) => {
+        const logging = configService.dbLogging;
         return {
           type: 'mysql',
-          host: configService.get<string>('DB_HOST'),
-          port: configService.get<number>('DB_PORT'),
-          username: configService.get<string>('DB_USER'),
-          password: configService.get<string>('DB_PASS'),
-          database: configService.get<string>('DB_NAME'),
+          host: configService.dbHost,
+          port: configService.dbPort,
+          username: configService.dbUser,
+          password: configService.dbPass,
+          database: configService.dbName,
           logging,
           autoLoadEntities: true,
           logger: logging ? logger : null,

@@ -1,11 +1,11 @@
 import { ApolloFederationDriver, ApolloFederationDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'node:path';
 
 import { ApolloServerPluginInlineTrace } from '@apollo/server/plugin/inlineTrace';
 
+import { AppConfigModule } from '@app/shared/app-config/app-config.module';
 import { AppLoggerModule } from '@app/shared/app-logger/app-logger.module';
 import { BcryptModule } from '@app/shared/bcrypt/bcrypt.module';
 import { DatabaseModule } from '@app/shared/database/database.module';
@@ -18,8 +18,8 @@ import { AuthService } from './auth.service';
 
 @Module({
   imports: [
+    AppConfigModule,
     AppLoggerModule,
-    ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule,
     UserModule,
     BcryptModule,
