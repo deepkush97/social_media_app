@@ -32,14 +32,6 @@ export class SessionService {
     return session;
   }
 
-  // private async prepareSessionPayload(session: ISession, user: IUser): Promise<ICurrentUser> {
-  //   const sessionId = session.guid;
-
-  //   const { password: _, updatedAt: __, ...rest } = user;
-  //   const sessionPayload = { ...rest, sessionId };
-  //   return sessionPayload;
-  // }
-
   async closeAllSession(userId: number): Promise<boolean> {
     await this.sessionRepository.update(
       { userId, status: AuthSessionEnum.OPEN },
