@@ -1,6 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 
-import { AppCodes } from './app-codes.enum';
+import { AppCodes } from '@app/shared/enums/app-codes.enum';
 
 export const appCodeToStatusMap: Record<AppCodes, number> = {
   OPERATION_SUCCESS: HttpStatus.OK,
@@ -13,4 +13,5 @@ export const appCodeToStatusMap: Record<AppCodes, number> = {
   BAD_REQUEST: HttpStatus.BAD_REQUEST,
   URL_CREATED: HttpStatus.CREATED,
   URL_NOT_FOUND: HttpStatus.NOT_FOUND,
+  NOT_FOUND: HttpStatus.NOT_FOUND,
 };

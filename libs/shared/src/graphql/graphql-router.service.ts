@@ -6,7 +6,7 @@ import { GraphqlRouterModuleOptions } from './graphql-router.interface';
 
 @Injectable()
 export class GraphqlRouterService {
-  private readonly client: Client;
+  public readonly client: Client;
 
   constructor(
     @Inject(GRAPHQL_ROUTER_OPTIONS) private readonly options: GraphqlRouterModuleOptions,

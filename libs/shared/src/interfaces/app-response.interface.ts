@@ -1,4 +1,4 @@
-import { AppCodes } from '../app-codes.enum';
+import { AppCodes } from '../enums/app-codes.enum';
 
 export interface IAppResponse<T> {
   data?: T;

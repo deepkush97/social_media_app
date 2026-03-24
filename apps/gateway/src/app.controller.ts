@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 
-import { AppCodes } from '@app/shared/app-codes.enum';
 import { AppResponse } from '@app/shared/app-response.dto';
+import { AppCodes } from '@app/shared/enums/app-codes.enum';
 
 @Controller()
 export class AppController {

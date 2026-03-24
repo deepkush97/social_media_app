@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable, ValidationError, ValidationPipe } from '@nestjs/common';
 
-import { AppLoggerService } from './app-logger/app-logger.service';
+import { AppLoggerService } from '@app/shared/app-logger/app-logger.service';
+import { AppResponse } from '@app/shared/app-response.dto';
+import { AppCodes } from '@app/shared/enums/app-codes.enum';
 
-import { AppCodes } from './app-codes.enum';
-import { AppResponse } from './app-response.dto';
-import { ValidationErrorCode } from './validation-error-codes.enum';
-import { validationErrorToValidationCodeMap } from './validation-error-to-code.map';
+import { ValidationErrorCode } from '../enums/validation-error-codes.enum';
+import { validationErrorToValidationCodeMap } from '../validation-error-to-code.map';
 
 @Injectable()
 export class RequestValidationPipe extends ValidationPipe {

@@ -1,4 +1,4 @@
-import { ValidationErrorCode } from './validation-error-codes.enum';
+import { ValidationErrorCode } from './enums/validation-error-codes.enum';
 
 export const validationErrorToValidationCodeMap: Record<string, ValidationErrorCode> = {
   isNotEmpty: ValidationErrorCode.REQUIRED,

@@ -1,9 +1,10 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 
-import { AppCodes } from '@app/shared/app-codes.enum';
+import { Authenticated, CurrentUser } from 'apps/gateway/src/guards/jwt.guard';
+
 import { AppResponse } from '@app/shared/app-response.dto';
+import { AppCodes } from '@app/shared/enums/app-codes.enum';
 import { ICurrentUser } from '@app/shared/interfaces/user/users.interface';
-import { Authenticated, CurrentUser } from '@app/shared/jwt.guard';
 
 import { LoginRequest } from './requests/login.request';
 import { SignupRequest } from './requests/signup.request';

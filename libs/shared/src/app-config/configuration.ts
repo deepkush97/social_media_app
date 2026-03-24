@@ -29,4 +29,5 @@ export const configLoader = registerAs('app', () => ({
   redisPassword: env.get('REDIS_PASSWORD').asString(),
 
   graphqlRouterUrl: env.get('GRAPHQL_ROUTER_URL').required().asString(),
+  isSwaggerEnabled: env.get('IS_SWAGGER_ENABLED').default('false').asBool(),
 }));

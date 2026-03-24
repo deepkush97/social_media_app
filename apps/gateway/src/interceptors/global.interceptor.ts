@@ -6,15 +6,14 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 
+import { appCodeToStatusMap } from 'apps/gateway/src/app-code-to-status.map';
 import { Request, Response } from 'express';
 import { map, Observable, tap } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
-import { AppLoggerService } from './app-logger/app-logger.service';
-
-import { appCodeToStatusMap } from './app-code-to-status.map';
-import { AppCodes } from './app-codes.enum';
-import { AppResponse } from './app-response.dto';
+import { AppLoggerService } from '@app/shared/app-logger/app-logger.service';
+import { AppResponse } from '@app/shared/app-response.dto';
+import { AppCodes } from '@app/shared/enums/app-codes.enum';
 
 @Injectable()
 export class GlobalInterceptor implements NestInterceptor {

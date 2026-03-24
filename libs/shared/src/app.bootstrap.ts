@@ -1,10 +1,13 @@
 import { Type } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 
 import { Logger } from 'nestjs-pino';
 
 import { AppConfigService } from '@app/shared/app-config/app-config.service';
 import { AppLoggerService } from '@app/shared/app-logger/app-logger.service';
+
+import { version } from '../../../package.json';
 
 export const appBootstrap = async (module: Type<unknown>): Promise<void> => {
   const isGeneratingSchema = process.env.GENERATE_SCHEMA === 'true';
@@ -27,6 +30,17 @@ export const appBootstrap = async (module: Type<unknown>): Promise<void> => {
   const appLoggerService = await app.resolve(AppLoggerService);
 
   const port = appConfigService.port;
+
+  const isSwaggerEnabled = appConfigService.isSwaggerEnabled;
+  if (isSwaggerEnabled) {
+    const config = new DocumentBuilder()
+      .setTitle('Short url app')
+      .setDescription('API documentation for short url')
+      .setVersion(version)
+      .build();
+    const documentFactory = (): OpenAPIObject => SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api', app, documentFactory);
+  }
 
   await app.listen(port);
   appLoggerService.info(`${serviceName} service is running on port ${port}`, {

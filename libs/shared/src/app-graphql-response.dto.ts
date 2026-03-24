@@ -1,7 +1,7 @@
 import { Type } from '@nestjs/common';
 import { Field, ObjectType } from '@nestjs/graphql';
 
-import { AppCodes } from './app-codes.enum';
+import { AppCodes } from './enums/app-codes.enum';
 
 export function AppGraphqlResponse<T>(WrappingType: Type<T>): Type<{ data?: T; code: AppCodes }> {
   @ObjectType({ isAbstract: true })

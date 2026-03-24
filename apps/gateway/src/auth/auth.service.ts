@@ -4,9 +4,9 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectMetric } from '@willsoto/nestjs-prometheus';
 import { Counter } from 'prom-client';
 
-import { AppCodes } from '@app/shared/app-codes.enum';
 import { AppResponse } from '@app/shared/app-response.dto';
-import { BcryptService } from '@app/shared/bcrypt/bcrypt.service';
+import { AppCodes } from '@app/shared/enums/app-codes.enum';
+import { GraphqlRouterComposite } from '@app/shared/graphql/graphql-router.composite';
 import { IAuthJWTPayload } from '@app/shared/interfaces/auth/auth-jwt-payload.interface';
 import { IAuthProfileToken } from '@app/shared/interfaces/auth/auth-user.interface';
 import {
@@ -22,43 +22,34 @@ import {
   MetricStatus,
 } from '@app/shared/metrics/metrics.constant';
 
-import { SessionService } from '../session/session.service';
 import { UsersService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UsersService,
-    private sessionService: SessionService,
-    private bcryptService: BcryptService,
-    private jwtService: JwtService,
+    private readonly userService: UsersService,
+    private readonly jwtService: JwtService,
+    private readonly routerComposite: GraphqlRouterComposite,
     @InjectMetric(MetricName.LOGIN_TOTAL)
     private readonly loginCounter: Counter<MetricLabel>,
     @InjectMetric(MetricName.REGISTRATION_TOTAL)
     private readonly signupCounter: Counter<MetricLabel>,
   ) {}
 
-  async signup({ name, email, password }: INewUser): Promise<AppResponse<IAuthProfileToken>> {
-    const isExists = await this.userService.findByEmail(email);
-    if (isExists) {
-      this.signupCounter.inc({
-        [MetricLabel.STATUS]: MetricStatus.FAIL,
-        [MetricLabel.CAUSE]: MetricCause.INVALID_EMAIL,
-      });
-      return new AppResponse({ code: AppCodes.INVALID_EMAIL });
+  async signup(input: INewUser): Promise<AppResponse<IAuthProfileToken>> {
+    const createUserResult = await this.routerComposite.createUser(input, {
+      code: 1,
+      data: {
+        id: 1,
+      },
+    });
+    if (createUserResult.code !== AppCodes.OPERATION_SUCCESS) {
+      return new AppResponse({ code: AppCodes[createUserResult.code] });
     }
 
-    const hashedPassword = await this.bcryptService.hash(password);
+    // const session = await this.sessionService.createNewSession(user);
 
-    const user = await this.userService.create({
-      name,
-      password: hashedPassword,
-      email,
-    });
-
-    const session = await this.sessionService.createNewSession(user);
-
-    const data = await this.generateProfilePayload(user, session.sessionId);
+    // const data = await this.generateProfilePayload(user, session.sessionId);
 
     this.signupCounter.inc({
       [MetricLabel.STATUS]: MetricStatus.SUCCESS,
@@ -66,12 +57,12 @@ export class AuthService {
 
     return new AppResponse({
       code: AppCodes.USER_CREATED,
-      data,
+      // data,
     });
   }
 
-  async login({ email, password }: ILoginUser): Promise<AppResponse<IAuthProfileToken>> {
-    const existingUser = await this.userService.findByEmail(email, {
+  async login(input: ILoginUser): Promise<AppResponse<IAuthProfileToken>> {
+    const existingUser = await this.userService.findByEmail(input.email, {
       name: true,
       password: true,
       email: true,
@@ -87,34 +78,35 @@ export class AuthService {
       return new AppResponse({ code: AppCodes.BAD_REQUEST });
     }
 
-    const isValidPassword = await this.bcryptService.validate(password, existingUser.password);
+    // const isValidPassword = await this.bcryptService.validate(password, existingUser.password);
 
-    if (!isValidPassword) {
-      this.loginCounter.inc({
-        [MetricLabel.STATUS]: MetricStatus.FAIL,
-        [MetricLabel.CAUSE]: MetricCause.INVALID_CREDENTIALS,
-      });
-      return new AppResponse({ code: AppCodes.INVALID_CREDENTIALS });
-    }
+    // if (!isValidPassword) {
+    //   this.loginCounter.inc({
+    //     [MetricLabel.STATUS]: MetricStatus.FAIL,
+    //     [MetricLabel.CAUSE]: MetricCause.INVALID_CREDENTIALS,
+    //   });
+    return new AppResponse({ code: AppCodes.INVALID_CREDENTIALS });
+    // }
 
-    await this.sessionService.closeAllSession(existingUser.id);
+    // await this.sessionService.closeAllSession(existingUser.id);
 
-    const session = await this.sessionService.createNewSession(existingUser);
+    // const session = await this.sessionService.createNewSession(existingUser);
 
-    const data = await this.generateProfilePayload(existingUser, session.sessionId);
+    // const data = await this.generateProfilePayload(existingUser, session.sessionId);
 
-    this.loginCounter.inc({
-      [MetricLabel.STATUS]: MetricStatus.SUCCESS,
-    });
+    // this.loginCounter.inc({
+    //   [MetricLabel.STATUS]: MetricStatus.SUCCESS,
+    // });
 
-    return new AppResponse({
-      code: AppCodes.OPERATION_SUCCESS,
-      data,
-    });
+    // return new AppResponse({
+    //   code: AppCodes.OPERATION_SUCCESS,
+    //   data,
+    // });
   }
 
-  async logout(user: ICurrentUser): Promise<boolean> {
-    return this.sessionService.closeSession(user.sessionId);
+  async logout(_user: ICurrentUser): Promise<boolean> {
+    // return this.sessionService.closeSession(user.sessionId);
+    return false;
   }
 
   private async generateProfilePayload(user: IUser, sessionId: string): Promise<IAuthProfileToken> {

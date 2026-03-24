@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
-import { AppCodes } from '@app/shared/app-codes.enum';
 import { AppResponse } from '@app/shared/app-response.dto';
 import { BcryptService } from '@app/shared/bcrypt/bcrypt.service';
+import { AppCodes } from '@app/shared/enums/app-codes.enum';
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
 import { ISession } from '@app/shared/interfaces/session/session.interface';
 import { INewUser, IUser } from '@app/shared/interfaces/user/users.interface';

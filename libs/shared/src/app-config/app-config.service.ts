@@ -57,4 +57,8 @@ export class AppConfigService {
   get graphqlRouterUrl(): string {
     return this.configService.get<string>('app.graphqlRouterUrl');
   }
+
+  get isSwaggerEnabled(): string {
+    return this.configService.get<string>('app.isSwaggerEnabled');
+  }
 }

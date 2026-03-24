@@ -35,6 +35,7 @@ import { AuthService } from './auth.service';
     }),
     SessionModule,
     GraphqlRouterModule.registerAsync({
+      inject: [AppConfigService],
       useFactory: (configService: AppConfigService) => {
         return {
           url: configService.graphqlRouterUrl,
