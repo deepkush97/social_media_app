@@ -6,50 +6,50 @@ import { BooleanOutputDto } from './outputs/boolean.output';
 import { SessionOutputDto } from './outputs/session.output';
 import { UserOutputDto } from './outputs/user.output';
 
-import { AuthService } from './auth.service';
+import { AppService } from './app.service';
 
 @Resolver()
-export class AuthResolver {
-  constructor(private readonly authService: AuthService) {}
+export class AppResolver {
+  constructor(private readonly appService: AppService) {}
 
   @Mutation(() => UserOutputDto)
   async createUser(@Args('input') input: CreateUserInput): Promise<UserOutputDto> {
-    return this.authService.createUser(input);
+    return this.appService.createUser(input);
   }
 
   @Mutation(() => SessionOutputDto)
   async createSession(@Args('id', { type: () => Int }) id: number): Promise<SessionOutputDto> {
-    return this.authService.createSession(id);
+    return this.appService.createSession(id);
   }
 
   @Mutation(() => UserOutputDto)
   async loginUser(@Args('input') input: LoginUserInput): Promise<UserOutputDto> {
-    return this.authService.loginUser(input);
+    return this.appService.loginUser(input);
   }
 
   @Query(() => UserOutputDto)
   async findUserById(@Args('id', { type: () => Int }) id: number): Promise<UserOutputDto> {
-    return this.authService.findUserById(id);
+    return this.appService.findUserById(id);
   }
 
   @Mutation(() => BooleanOutputDto)
   async closeAllOpenSessionByUserId(
     @Args('id', { type: () => Int }) id: number,
   ): Promise<BooleanOutputDto> {
-    return this.authService.closeAllOpenSessionByUserId(id);
+    return this.appService.closeAllOpenSessionByUserId(id);
   }
 
   @Mutation(() => BooleanOutputDto)
   async closeSessionBySessionId(
     @Args('guid', { type: () => String }) guid: string,
   ): Promise<BooleanOutputDto> {
-    return this.authService.closeSessionBySessionId(guid);
+    return this.appService.closeSessionBySessionId(guid);
   }
 
   @Query(() => SessionOutputDto)
   async findOpenSessionByGuid(
     @Args('id', { type: () => String }) guid: string,
   ): Promise<SessionOutputDto> {
-    return this.authService.getOpenSessionBySessionId(guid);
+    return this.appService.getOpenSessionBySessionId(guid);
   }
 }

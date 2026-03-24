@@ -11,7 +11,7 @@ import { SessionService } from './session/session.service';
 import { UsersService } from './user/user.service';
 
 @Injectable()
-export class AuthService {
+export class AppService {
   constructor(
     private readonly userService: UsersService,
     private readonly sessionService: SessionService,

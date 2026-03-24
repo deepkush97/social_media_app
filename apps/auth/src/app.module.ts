@@ -15,8 +15,8 @@ import { GraphqlRouterModule } from '@app/shared/graphql/graphql-router.module';
 import { SessionModule } from './session/session.module';
 import { UserModule } from './user/user.module';
 
-import { AuthResolver } from './auth.resolver';
-import { AuthService } from './auth.service';
+import { AppResolver } from './app.resolver';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -50,6 +50,6 @@ import { AuthService } from './auth.service';
       },
     }),
   ],
-  providers: [AuthService, AuthResolver],
+  providers: [AppService, AppResolver],
 })
-export class AuthModule {}
+export class AppModule {}

@@ -1,5 +1,5 @@
 import { appBootstrap } from '@app/shared/app.bootstrap';
 
-import { AuthModule } from './auth.module';
+import { AppModule } from './app.module';
 
-void appBootstrap(AuthModule);
+void appBootstrap(AppModule);
