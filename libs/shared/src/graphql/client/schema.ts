@@ -6,10 +6,10 @@
 export type Scalars = {
     Boolean: boolean,
     String: string,
+    Int: number,
     DateTime: any,
     join__FieldSet: any,
     link__Import: any,
-    Int: number,
 }
 
 export type AppCodes = 'OPERATION_SUCCESS' | 'INVALID_CREDENTIALS' | 'INVALID_EMAIL' | 'INTERNAL_ERROR' | 'UNAUTHORIZED' | 'FORBIDDEN' | 'USER_CREATED' | 'BAD_REQUEST' | 'URL_CREATED' | 'URL_NOT_FOUND' | 'NOT_FOUND'
@@ -22,7 +22,7 @@ export interface BooleanOutputDto {
     __typename: 'BooleanOutputDto'
 }
 
-export type join__Graph = 'AUTH'
+export type join__Graph = 'AUTH' | 'POSTS'
 
 export type link__Purpose = 'SECURITY' | 'EXECUTION'
 
@@ -32,8 +32,29 @@ export interface Mutation {
     loginUser: UserOutputDto
     closeAllOpenSessionByUserId: BooleanOutputDto
     closeSessionBySessionId: BooleanOutputDto
+    createPost: PostOutputDto
     __typename: 'Mutation'
 }
+
+export interface PostOutput {
+    id: Scalars['Int']
+    title: Scalars['String']
+    content: Scalars['String']
+    image: (Scalars['String'] | null)
+    userId: Scalars['Int']
+    status: PostStatusEnum
+    createdAt: Scalars['DateTime']
+    updatedAt: Scalars['DateTime']
+    __typename: 'PostOutput'
+}
+
+export interface PostOutputDto {
+    data: (PostOutput | null)
+    code: AppCodes
+    __typename: 'PostOutputDto'
+}
+
+export type PostStatusEnum = 'ACTIVE' | 'ARCHIVED'
 
 export interface Query {
     findUserById: UserOutputDto
@@ -79,6 +100,8 @@ export interface BooleanOutputDtoGenqlSelection{
     __scalar?: boolean | number
 }
 
+export interface CreatePostInput {title: Scalars['String'],content: Scalars['String'],image?: (Scalars['String'] | null),userId: Scalars['Int']}
+
 export interface CreateUserInput {name: Scalars['String'],email: Scalars['String'],password: Scalars['String']}
 
 export interface LoginUserInput {email: Scalars['String'],password: Scalars['String']}
@@ -89,6 +112,27 @@ export interface MutationGenqlSelection{
     loginUser?: (UserOutputDtoGenqlSelection & { __args: {input: LoginUserInput} })
     closeAllOpenSessionByUserId?: (BooleanOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     closeSessionBySessionId?: (BooleanOutputDtoGenqlSelection & { __args: {guid: Scalars['String']} })
+    createPost?: (PostOutputDtoGenqlSelection & { __args: {input: CreatePostInput} })
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface PostOutputGenqlSelection{
+    id?: boolean | number
+    title?: boolean | number
+    content?: boolean | number
+    image?: boolean | number
+    userId?: boolean | number
+    status?: boolean | number
+    createdAt?: boolean | number
+    updatedAt?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface PostOutputDtoGenqlSelection{
+    data?: PostOutputGenqlSelection
+    code?: boolean | number
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -152,6 +196,22 @@ export interface UserOutputDtoGenqlSelection{
     
 
 
+    const PostOutput_possibleTypes: string[] = ['PostOutput']
+    export const isPostOutput = (obj?: { __typename?: any } | null): obj is PostOutput => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isPostOutput"')
+      return PostOutput_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const PostOutputDto_possibleTypes: string[] = ['PostOutputDto']
+    export const isPostOutputDto = (obj?: { __typename?: any } | null): obj is PostOutputDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isPostOutputDto"')
+      return PostOutputDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
     const Query_possibleTypes: string[] = ['Query']
     export const isQuery = (obj?: { __typename?: any } | null): obj is Query => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isQuery"')
@@ -211,10 +271,16 @@ export const enumAuthSessionEnum = {
 }
 
 export const enumJoinGraph = {
-   AUTH: 'AUTH' as const
+   AUTH: 'AUTH' as const,
+   POSTS: 'POSTS' as const
 }
 
 export const enumLinkPurpose = {
    SECURITY: 'SECURITY' as const,
    EXECUTION: 'EXECUTION' as const
+}
+
+export const enumPostStatusEnum = {
+   ACTIVE: 'ACTIVE' as const,
+   ARCHIVED: 'ARCHIVED' as const
 }

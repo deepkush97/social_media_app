@@ -1,0 +1,54 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type PostOutput {
+  id: Int!
+  title: String!
+  content: String!
+  image: String
+  userId: Int!
+  status: PostStatusEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum PostStatusEnum {
+  ACTIVE
+  ARCHIVED
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type PostOutputDto {
+  data: PostOutput
+  code: AppCodes!
+}
+
+enum AppCodes {
+  OPERATION_SUCCESS
+  INVALID_CREDENTIALS
+  INVALID_EMAIL
+  INTERNAL_ERROR
+  UNAUTHORIZED
+  FORBIDDEN
+  USER_CREATED
+  BAD_REQUEST
+  URL_CREATED
+  URL_NOT_FOUND
+  NOT_FOUND
+}
+
+type Mutation {
+  createPost(input: CreatePostInput!): PostOutputDto!
+}
+
+input CreatePostInput {
+  title: String!
+  content: String!
+  image: String
+  userId: Int!
+}

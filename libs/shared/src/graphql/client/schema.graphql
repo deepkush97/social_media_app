@@ -36,6 +36,13 @@ type BooleanOutputDto {
   code: AppCodes!
 }
 
+input CreatePostInput {
+  title: String!
+  content: String!
+  image: String
+  userId: Int!
+}
+
 input CreateUserInput {
   name: String!
   email: String!
@@ -51,6 +58,7 @@ scalar join__FieldSet
 
 enum join__Graph {
   AUTH
+  POSTS
 }
 
 scalar link__Import
@@ -78,6 +86,28 @@ type Mutation {
   loginUser(input: LoginUserInput!): UserOutputDto!
   closeAllOpenSessionByUserId(id: Int!): BooleanOutputDto!
   closeSessionBySessionId(guid: String!): BooleanOutputDto!
+  createPost(input: CreatePostInput!): PostOutputDto!
+}
+
+type PostOutput {
+  id: Int!
+  title: String!
+  content: String!
+  image: String
+  userId: Int!
+  status: PostStatusEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type PostOutputDto {
+  data: PostOutput
+  code: AppCodes!
+}
+
+enum PostStatusEnum {
+  ACTIVE
+  ARCHIVED
 }
 
 type Query {

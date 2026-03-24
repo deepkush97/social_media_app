@@ -5,11 +5,12 @@ export default {
         3,
         5,
         6,
-        7,
         8,
         9,
         10,
-        13
+        11,
+        12,
+        17
     ],
     "types": {
         "AppCodes": {},
@@ -26,6 +27,25 @@ export default {
             ]
         },
         "Boolean": {},
+        "CreatePostInput": {
+            "title": [
+                5
+            ],
+            "content": [
+                5
+            ],
+            "image": [
+                5
+            ],
+            "userId": [
+                6
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "String": {},
+        "Int": {},
         "CreateUserInput": {
             "name": [
                 5
@@ -40,7 +60,6 @@ export default {
                 5
             ]
         },
-        "String": {},
         "DateTime": {},
         "join__FieldSet": {},
         "join__Graph": {},
@@ -59,28 +78,28 @@ export default {
         },
         "Mutation": {
             "createUser": [
-                18,
+                22,
                 {
                     "input": [
-                        4,
+                        7,
                         "CreateUserInput!"
                     ]
                 }
             ],
             "createSession": [
-                16,
+                20,
                 {
                     "id": [
-                        13,
+                        6,
                         "Int!"
                     ]
                 }
             ],
             "loginUser": [
-                18,
+                22,
                 {
                     "input": [
-                        11,
+                        13,
                         "LoginUserInput!"
                     ]
                 }
@@ -89,7 +108,7 @@ export default {
                 2,
                 {
                     "id": [
-                        13,
+                        6,
                         "Int!"
                     ]
                 }
@@ -103,23 +122,72 @@ export default {
                     ]
                 }
             ],
+            "createPost": [
+                16,
+                {
+                    "input": [
+                        4,
+                        "CreatePostInput!"
+                    ]
+                }
+            ],
             "__typename": [
                 5
             ]
         },
-        "Int": {},
+        "PostOutput": {
+            "id": [
+                6
+            ],
+            "title": [
+                5
+            ],
+            "content": [
+                5
+            ],
+            "image": [
+                5
+            ],
+            "userId": [
+                6
+            ],
+            "status": [
+                17
+            ],
+            "createdAt": [
+                8
+            ],
+            "updatedAt": [
+                8
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "PostOutputDto": {
+            "data": [
+                15
+            ],
+            "code": [
+                0
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "PostStatusEnum": {},
         "Query": {
             "findUserById": [
-                18,
+                22,
                 {
                     "id": [
-                        13,
+                        6,
                         "Int!"
                     ]
                 }
             ],
             "findOpenSessionByGuid": [
-                16,
+                20,
                 {
                     "id": [
                         5,
@@ -133,22 +201,22 @@ export default {
         },
         "SessionOutput": {
             "id": [
-                13
+                6
             ],
             "guid": [
                 5
             ],
             "userId": [
-                13
+                6
             ],
             "status": [
                 1
             ],
             "createdAt": [
-                6
+                8
             ],
             "updatedAt": [
-                6
+                8
             ],
             "__typename": [
                 5
@@ -156,7 +224,7 @@ export default {
         },
         "SessionOutputDto": {
             "data": [
-                15
+                19
             ],
             "code": [
                 0
@@ -167,7 +235,7 @@ export default {
         },
         "UserOutput": {
             "id": [
-                13
+                6
             ],
             "name": [
                 5
@@ -176,10 +244,10 @@ export default {
                 5
             ],
             "createdAt": [
-                6
+                8
             ],
             "updatedAt": [
-                6
+                8
             ],
             "__typename": [
                 5
@@ -187,7 +255,7 @@ export default {
         },
         "UserOutputDto": {
             "data": [
-                17
+                21
             ],
             "code": [
                 0
