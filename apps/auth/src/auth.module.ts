@@ -25,12 +25,19 @@ import { AuthService } from './auth.service';
     DatabaseModule,
     UserModule,
     BcryptModule,
-    GraphQLModule.forRoot<ApolloFederationDriverConfig>({
+    GraphQLModule.forRootAsync<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
-      plugins: [ApolloServerPluginInlineTrace()],
-      autoSchemaFile: {
-        federation: 2,
-        path: join(process.cwd(), 'libs/shared/src/graphql/schema/auth.graphql'),
+      inject: [AppConfigService],
+      useFactory: (configService: AppConfigService) => {
+        const name = configService.name;
+        return {
+          driver: ApolloFederationDriver,
+          plugins: [ApolloServerPluginInlineTrace()],
+          autoSchemaFile: {
+            federation: 2,
+            path: join(process.cwd(), `libs/shared/src/graphql/schema/${name}.graphql`),
+          },
+        };
       },
     }),
     SessionModule,
