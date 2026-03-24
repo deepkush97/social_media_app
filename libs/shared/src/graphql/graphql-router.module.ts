@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 
 import { GraphqlRouterComposite } from './graphql-router.composite';
 import { GraphqlRouterConfigurableModuleClass } from './graphql-router.definition';
 import { GraphqlRouterService } from './graphql-router.service';
 
+@Global()
 @Module({
   providers: [GraphqlRouterService, GraphqlRouterComposite],
   exports: [GraphqlRouterService, GraphqlRouterComposite],

@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { InjectMetric } from '@willsoto/nestjs-prometheus';
-import { Counter } from 'prom-client';
-
 import { AppResponse } from '@app/shared/app-response.dto';
 import { AppCodes } from '@app/shared/enums/app-codes.enum';
 import { GraphqlRouterComposite } from '@app/shared/graphql/graphql-router.composite';
@@ -15,25 +12,12 @@ import {
   INewUser,
   IUser,
 } from '@app/shared/interfaces/user/users.interface';
-import {
-  MetricCause,
-  MetricLabel,
-  MetricName,
-  MetricStatus,
-} from '@app/shared/metrics/metrics.constant';
-
-import { UsersService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UsersService,
     private readonly jwtService: JwtService,
     private readonly routerComposite: GraphqlRouterComposite,
-    @InjectMetric(MetricName.LOGIN_TOTAL)
-    private readonly loginCounter: Counter<MetricLabel>,
-    @InjectMetric(MetricName.REGISTRATION_TOTAL)
-    private readonly signupCounter: Counter<MetricLabel>,
   ) {}
 
   async signup(input: INewUser): Promise<AppResponse<IAuthProfileToken>> {
@@ -41,40 +25,39 @@ export class AuthService {
       code: 1,
       data: {
         id: 1,
+        createdAt: 1,
+        email: 1,
+        name: 1,
       },
     });
+
     if (createUserResult.code !== AppCodes.OPERATION_SUCCESS) {
       return new AppResponse({ code: AppCodes[createUserResult.code] });
     }
-
-    // const session = await this.sessionService.createNewSession(user);
-
-    // const data = await this.generateProfilePayload(user, session.sessionId);
-
-    this.signupCounter.inc({
-      [MetricLabel.STATUS]: MetricStatus.SUCCESS,
+    const { data: user } = createUserResult;
+    const newSessionResult = await this.routerComposite.createNewSession(user.id, {
+      code: 1,
+      data: {
+        guid: 1,
+      },
     });
+
+    if (newSessionResult.code !== AppCodes.OPERATION_SUCCESS) {
+      return new AppResponse({ code: AppCodes[newSessionResult.code] });
+    }
+
+    const { data: session } = newSessionResult;
+
+    const data = await this.generateProfilePayload(user, session.guid);
 
     return new AppResponse({
       code: AppCodes.USER_CREATED,
-      // data,
+      data,
     });
   }
 
-  async login(input: ILoginUser): Promise<AppResponse<IAuthProfileToken>> {
-    const existingUser = await this.userService.findByEmail(input.email, {
-      name: true,
-      password: true,
-      email: true,
-      createdAt: true,
-      id: true,
-    });
-
-    if (!existingUser) {
-      this.loginCounter.inc({
-        [MetricLabel.STATUS]: MetricStatus.FAIL,
-        [MetricLabel.CAUSE]: MetricCause.BAD_REQUEST,
-      });
+  async login(_input: ILoginUser): Promise<AppResponse<IAuthProfileToken>> {
+    if (!false) {
       return new AppResponse({ code: AppCodes.BAD_REQUEST });
     }
 
@@ -109,13 +92,15 @@ export class AuthService {
     return false;
   }
 
-  private async generateProfilePayload(user: IUser, sessionId: string): Promise<IAuthProfileToken> {
-    const { password: _, updatedAt: __, ...rest } = user;
+  private async generateProfilePayload(
+    user: Omit<IUser, 'password' | 'updatedAt'>,
+    sessionId: string,
+  ): Promise<IAuthProfileToken> {
     const jwtPayload: IAuthJWTPayload = { sessionId };
     const jwtToken = await this.jwtService.signAsync(jwtPayload);
 
     return {
-      profile: { ...rest, sessionId },
+      profile: { ...user, sessionId },
       jwtToken,
     };
   }
