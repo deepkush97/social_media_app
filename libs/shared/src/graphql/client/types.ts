@@ -1,72 +1,200 @@
 export default {
-  scalars: [0, 1, 3, 4, 5, 6, 7, 8, 10, 16],
-  types: {
-    AppCodes: {},
-    AuthSessionEnum: {},
-    CreateUserInput: {
-      name: [3],
-      email: [3],
-      password: [3],
-      __typename: [3],
-    },
-    String: {},
-    DateTime: {},
-    join__FieldSet: {},
-    join__Graph: {},
-    link__Import: {},
-    link__Purpose: {},
-    Mutation: {
-      createUser: [
-        15,
-        {
-          input: [2, 'CreateUserInput!'],
+    "scalars": [
+        0,
+        1,
+        3,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        13
+    ],
+    "types": {
+        "AppCodes": {},
+        "AuthSessionEnum": {},
+        "BooleanOutputDto": {
+            "data": [
+                3
+            ],
+            "code": [
+                0
+            ],
+            "__typename": [
+                5
+            ]
         },
-      ],
-      createSession: [
-        13,
-        {
-          id: [10, 'Int!'],
+        "Boolean": {},
+        "CreateUserInput": {
+            "name": [
+                5
+            ],
+            "email": [
+                5
+            ],
+            "password": [
+                5
+            ],
+            "__typename": [
+                5
+            ]
         },
-      ],
-      __typename: [3],
-    },
-    Int: {},
-    Query: {
-      findOpenSessionByGuid: [
-        13,
-        {
-          id: [3, 'String!'],
+        "String": {},
+        "DateTime": {},
+        "join__FieldSet": {},
+        "join__Graph": {},
+        "link__Import": {},
+        "link__Purpose": {},
+        "LoginUserInput": {
+            "email": [
+                5
+            ],
+            "password": [
+                5
+            ],
+            "__typename": [
+                5
+            ]
         },
-      ],
-      __typename: [3],
-    },
-    SessionOutput: {
-      id: [10],
-      guid: [3],
-      userId: [10],
-      status: [1],
-      createdAt: [4],
-      updatedAt: [4],
-      __typename: [3],
-    },
-    SessionOutputDto: {
-      data: [12],
-      code: [0],
-      __typename: [3],
-    },
-    UserOutput: {
-      id: [10],
-      name: [3],
-      email: [3],
-      createdAt: [4],
-      updatedAt: [4],
-      __typename: [3],
-    },
-    UserOutputDto: {
-      data: [14],
-      code: [0],
-      __typename: [3],
-    },
-    Boolean: {},
-  },
-};
+        "Mutation": {
+            "createUser": [
+                18,
+                {
+                    "input": [
+                        4,
+                        "CreateUserInput!"
+                    ]
+                }
+            ],
+            "createSession": [
+                16,
+                {
+                    "id": [
+                        13,
+                        "Int!"
+                    ]
+                }
+            ],
+            "loginUser": [
+                18,
+                {
+                    "input": [
+                        11,
+                        "LoginUserInput!"
+                    ]
+                }
+            ],
+            "closeAllOpenSessionByUserId": [
+                2,
+                {
+                    "id": [
+                        13,
+                        "Int!"
+                    ]
+                }
+            ],
+            "closeSessionBySessionId": [
+                2,
+                {
+                    "guid": [
+                        5,
+                        "String!"
+                    ]
+                }
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "Int": {},
+        "Query": {
+            "findUserById": [
+                18,
+                {
+                    "id": [
+                        13,
+                        "Int!"
+                    ]
+                }
+            ],
+            "findOpenSessionByGuid": [
+                16,
+                {
+                    "id": [
+                        5,
+                        "String!"
+                    ]
+                }
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "SessionOutput": {
+            "id": [
+                13
+            ],
+            "guid": [
+                5
+            ],
+            "userId": [
+                13
+            ],
+            "status": [
+                1
+            ],
+            "createdAt": [
+                6
+            ],
+            "updatedAt": [
+                6
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "SessionOutputDto": {
+            "data": [
+                15
+            ],
+            "code": [
+                0
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "UserOutput": {
+            "id": [
+                13
+            ],
+            "name": [
+                5
+            ],
+            "email": [
+                5
+            ],
+            "createdAt": [
+                6
+            ],
+            "updatedAt": [
+                6
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "UserOutputDto": {
+            "data": [
+                17
+            ],
+            "code": [
+                0
+            ],
+            "__typename": [
+                5
+            ]
+        }
+    }
+}

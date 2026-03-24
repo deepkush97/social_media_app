@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { AppResponse } from '@app/shared/app-response.dto';
 import { AppCodes } from '@app/shared/enums/app-codes.enum';
 import { GraphqlRouterComposite } from '@app/shared/graphql/graphql-router.composite';
+import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
 import { IAuthJWTPayload } from '@app/shared/interfaces/auth/auth-jwt-payload.interface';
 import { IAuthProfileToken } from '@app/shared/interfaces/auth/auth-user.interface';
 import {
@@ -48,60 +49,108 @@ export class AuthService {
 
     const { data: session } = newSessionResult;
 
-    const data = await this.generateProfilePayload(user, session.guid);
+    const jwtToken = await this.generateJwtToken(session.guid);
 
     return new AppResponse({
       code: AppCodes.USER_CREATED,
-      data,
+      data: {
+        jwtToken,
+        profile: this.prepareProfilePayload(session.guid, user),
+      },
     });
   }
 
-  async login(_input: ILoginUser): Promise<AppResponse<IAuthProfileToken>> {
-    if (!false) {
-      return new AppResponse({ code: AppCodes.BAD_REQUEST });
+  async login(input: ILoginUser): Promise<AppResponse<IAuthProfileToken>> {
+    const loginUserResult = await this.routerComposite.loginUser(input, {
+      code: 1,
+      data: {
+        id: 1,
+        createdAt: 1,
+        email: 1,
+        name: 1,
+      },
+    });
+    if (loginUserResult.code !== AppCodes.OPERATION_SUCCESS) {
+      return new AppResponse({ code: AppCodes[loginUserResult.code] });
+    }
+    const user = loginUserResult.data;
+
+    await this.routerComposite.closeAllOpenSessionByUserId(user.id, { code: 1 });
+
+    const newSessionResult = await this.routerComposite.createNewSession(user.id, {
+      code: 1,
+      data: {
+        guid: 1,
+      },
+    });
+
+    if (newSessionResult.code !== AppCodes.OPERATION_SUCCESS) {
+      return new AppResponse({ code: AppCodes[newSessionResult.code] });
     }
 
-    // const isValidPassword = await this.bcryptService.validate(password, existingUser.password);
+    const { data: session } = newSessionResult;
 
-    // if (!isValidPassword) {
-    //   this.loginCounter.inc({
-    //     [MetricLabel.STATUS]: MetricStatus.FAIL,
-    //     [MetricLabel.CAUSE]: MetricCause.INVALID_CREDENTIALS,
-    //   });
-    return new AppResponse({ code: AppCodes.INVALID_CREDENTIALS });
-    // }
+    const jwtToken = await this.generateJwtToken(session.guid);
 
-    // await this.sessionService.closeAllSession(existingUser.id);
-
-    // const session = await this.sessionService.createNewSession(existingUser);
-
-    // const data = await this.generateProfilePayload(existingUser, session.sessionId);
-
-    // this.loginCounter.inc({
-    //   [MetricLabel.STATUS]: MetricStatus.SUCCESS,
-    // });
-
-    // return new AppResponse({
-    //   code: AppCodes.OPERATION_SUCCESS,
-    //   data,
-    // });
+    return new AppResponse({
+      code: AppCodes.OPERATION_SUCCESS,
+      data: {
+        jwtToken,
+        profile: this.prepareProfilePayload(session.guid, user),
+      },
+    });
   }
 
-  async logout(_user: ICurrentUser): Promise<boolean> {
-    // return this.sessionService.closeSession(user.sessionId);
-    return false;
+  async logout(sessionId: string): Promise<boolean> {
+    await this.routerComposite.closeSessionBySessionId(sessionId, { code: 1 });
+
+    return true;
   }
 
-  private async generateProfilePayload(
-    user: Omit<IUser, 'password' | 'updatedAt'>,
-    sessionId: string,
-  ): Promise<IAuthProfileToken> {
+  private async generateJwtToken(sessionId: string): Promise<string> {
     const jwtPayload: IAuthJWTPayload = { sessionId };
-    const jwtToken = await this.jwtService.signAsync(jwtPayload);
+    return this.jwtService.signAsync(jwtPayload);
+  }
 
-    return {
-      profile: { ...user, sessionId },
-      jwtToken,
-    };
+  public async getAuthSession(sessionId: string): Promise<IAppResponse<ICurrentUser>> {
+    const findSessionResult = await this.routerComposite.findOpenSessionByGuid(sessionId, {
+      code: 1,
+      data: {
+        userId: 1,
+      },
+    });
+
+    if (findSessionResult.code !== AppCodes.OPERATION_SUCCESS) {
+      return new AppResponse({ code: AppCodes[findSessionResult.code] });
+    }
+
+    const { userId } = findSessionResult.data;
+
+    const userResult = await this.routerComposite.findUserById(userId, {
+      code: 1,
+      data: {
+        email: 1,
+        id: 1,
+        name: 1,
+        createdAt: 1,
+      },
+    });
+
+    if (userResult.code !== AppCodes.OPERATION_SUCCESS) {
+      return new AppResponse({ code: AppCodes[userResult.code] });
+    }
+
+    return new AppResponse({
+      code: AppCodes.OPERATION_SUCCESS,
+      data: this.prepareProfilePayload(sessionId, userResult.data),
+    });
+  }
+
+  private prepareProfilePayload(
+    sessionId: string,
+    user: Omit<IUser, 'password' | 'updatedAt'>,
+  ): ICurrentUser {
+    const sessionPayload = { ...user, sessionId };
+    return sessionPayload;
   }
 }

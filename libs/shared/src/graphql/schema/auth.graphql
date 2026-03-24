@@ -2,6 +2,25 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type BooleanOutputDto {
+  data: Boolean
+  code: AppCodes!
+}
+
+enum AppCodes {
+  OPERATION_SUCCESS
+  INVALID_CREDENTIALS
+  INVALID_EMAIL
+  INTERNAL_ERROR
+  UNAUTHORIZED
+  FORBIDDEN
+  USER_CREATED
+  BAD_REQUEST
+  URL_CREATED
+  URL_NOT_FOUND
+  NOT_FOUND
+}
+
 type SessionOutput {
   id: Int!
   guid: String!
@@ -26,20 +45,6 @@ type SessionOutputDto {
   code: AppCodes!
 }
 
-enum AppCodes {
-  OPERATION_SUCCESS
-  INVALID_CREDENTIALS
-  INVALID_EMAIL
-  INTERNAL_ERROR
-  UNAUTHORIZED
-  FORBIDDEN
-  USER_CREATED
-  BAD_REQUEST
-  URL_CREATED
-  URL_NOT_FOUND
-  NOT_FOUND
-}
-
 type UserOutput {
   id: Int!
   name: String!
@@ -54,16 +59,25 @@ type UserOutputDto {
 }
 
 type Query {
+  findUserById(id: Int!): UserOutputDto!
   findOpenSessionByGuid(id: String!): SessionOutputDto!
 }
 
 type Mutation {
   createUser(input: CreateUserInput!): UserOutputDto!
   createSession(id: Int!): SessionOutputDto!
+  loginUser(input: LoginUserInput!): UserOutputDto!
+  closeAllOpenSessionByUserId(id: Int!): BooleanOutputDto!
+  closeSessionBySessionId(guid: String!): BooleanOutputDto!
 }
 
 input CreateUserInput {
   name: String!
+  email: String!
+  password: String!
+}
+
+input LoginUserInput {
   email: String!
   password: String!
 }

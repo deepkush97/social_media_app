@@ -40,7 +40,7 @@ export class AuthController {
   @Authenticated()
   @Post('logout')
   async handleLogout(@CurrentUser() user: ICurrentUser): Promise<AppResponse> {
-    await this.authService.logout(user);
+    await this.authService.logout(user.sessionId);
     return new AppResponse({
       code: AppCodes.OPERATION_SUCCESS,
     });
