@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { AppResponse } from '@app/shared/app-response.dto';
+import { CacheService } from '@app/shared/cache/cache.service';
 import { AppCodes } from '@app/shared/enums/app-codes.enum';
 import { GraphqlRouterComposite } from '@app/shared/graphql/graphql-router.composite';
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
@@ -14,12 +15,19 @@ import {
   IUser,
 } from '@app/shared/interfaces/user/users.interface';
 
+import { CACHE_TTL_IN_SECONDS } from '../app.constant';
+
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly routerComposite: GraphqlRouterComposite,
+    private readonly cacheService: CacheService,
   ) {}
+
+  private createSessionCacheKey(sessionId: string): string {
+    return `session:${sessionId}`;
+  }
 
   async signup(input: INewUser): Promise<AppResponse<IAuthProfileToken>> {
     const createUserResult = await this.routerComposite.createUser(input, {
@@ -50,12 +58,19 @@ export class AuthService {
     const { data: session } = newSessionResult;
 
     const jwtToken = await this.generateJwtToken(session.guid);
+    const profile = this.prepareProfilePayload(session.guid, user);
+
+    await this.cacheService.set(
+      this.createSessionCacheKey(session.guid),
+      profile,
+      CACHE_TTL_IN_SECONDS,
+    );
 
     return new AppResponse({
       code: AppCodes.USER_CREATED,
       data: {
         jwtToken,
-        profile: this.prepareProfilePayload(session.guid, user),
+        profile,
       },
     });
   }
@@ -91,12 +106,19 @@ export class AuthService {
     const { data: session } = newSessionResult;
 
     const jwtToken = await this.generateJwtToken(session.guid);
+    const profile = this.prepareProfilePayload(session.guid, user);
+
+    await this.cacheService.set(
+      this.createSessionCacheKey(session.guid),
+      profile,
+      CACHE_TTL_IN_SECONDS,
+    );
 
     return new AppResponse({
       code: AppCodes.OPERATION_SUCCESS,
       data: {
         jwtToken,
-        profile: this.prepareProfilePayload(session.guid, user),
+        profile,
       },
     });
   }
@@ -113,6 +135,17 @@ export class AuthService {
   }
 
   public async getAuthSession(sessionId: string): Promise<IAppResponse<ICurrentUser>> {
+    const sessionCacheKey = this.createSessionCacheKey(sessionId);
+
+    const data = await this.cacheService.get<ICurrentUser>(sessionCacheKey);
+
+    if (data) {
+      return new AppResponse({
+        code: AppCodes.OPERATION_SUCCESS,
+        data,
+      });
+    }
+
     const findSessionResult = await this.routerComposite.findOpenSessionByGuid(sessionId, {
       code: 1,
       data: {
@@ -140,9 +173,12 @@ export class AuthService {
       return new AppResponse({ code: AppCodes[userResult.code] });
     }
 
+    const profile = this.prepareProfilePayload(sessionId, userResult.data);
+    await this.cacheService.set(sessionCacheKey, profile, CACHE_TTL_IN_SECONDS);
+
     return new AppResponse({
       code: AppCodes.OPERATION_SUCCESS,
-      data: this.prepareProfilePayload(sessionId, userResult.data),
+      data: profile,
     });
   }
 
