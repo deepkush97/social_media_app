@@ -15,7 +15,7 @@ export class AppLoggerService {
 
   private log(type: Level, msg: string, payload: AppLogPayload): void {
     if (!payload) {
-      this.logger[type](msg);
+      return this.logger[type](msg);
     }
     this.logger[type](payload, msg);
   }
