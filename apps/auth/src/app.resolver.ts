@@ -1,8 +1,9 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 
+import { BooleanOutputDto } from '@app/shared/boolean.output';
+
 import { CreateUserInput } from './inputs/create-user.input';
 import { LoginUserInput } from './inputs/login-user.input';
-import { BooleanOutputDto } from './outputs/boolean.output';
 import { SessionOutputDto } from './outputs/session.output';
 import { UserOutputDto } from './outputs/user.output';
 
