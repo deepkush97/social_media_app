@@ -11,6 +11,7 @@ import { GraphqlRouterModule } from '@app/shared/graphql/graphql-router.module';
 import { AuthModule } from './auth/auth.module';
 import { GlobalInterceptor } from './interceptors/global.interceptor';
 import { RequestValidationPipe } from './pipes/request-validation.pipe';
+import { PostsModule } from './posts/posts.module';
 
 import { AppController } from './app.controller';
 
@@ -31,6 +32,7 @@ import { AppController } from './app.controller';
         };
       },
     }),
+    PostsModule,
   ],
   controllers: [AppController],
   providers: [

@@ -2,6 +2,32 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type BooleanOutputDto {
+  data: Boolean
+  code: AppCodes!
+}
+
+enum AppCodes {
+  OPERATION_SUCCESS
+  INVALID_CREDENTIALS
+  INVALID_EMAIL
+  INTERNAL_ERROR
+  UNAUTHORIZED
+  FORBIDDEN
+  USER_CREATED
+  BAD_REQUEST
+  URL_CREATED
+  URL_NOT_FOUND
+  NOT_FOUND
+}
+
+type PaginationMeta {
+  total: Int!
+  page: Int!
+  lastPage: Int!
+  take: Int!
+}
+
 type PostOutput {
   id: Int!
   title: String!
@@ -28,22 +54,30 @@ type PostOutputDto {
   code: AppCodes!
 }
 
-enum AppCodes {
-  OPERATION_SUCCESS
-  INVALID_CREDENTIALS
-  INVALID_EMAIL
-  INTERNAL_ERROR
-  UNAUTHORIZED
-  FORBIDDEN
-  USER_CREATED
-  BAD_REQUEST
-  URL_CREATED
-  URL_NOT_FOUND
-  NOT_FOUND
+type PostListOutputDto {
+  data: PostOutputData
+  code: AppCodes!
+}
+
+type PostOutputData {
+  items: [PostOutput!]!
+  meta: PaginationMeta!
+}
+
+type Query {
+  findPostById(id: Int!): PostOutputDto!
+  findPostsByUserId(input: PostsPaginationInput!): PostListOutputDto!
+}
+
+input PostsPaginationInput {
+  userId: Int!
+  take: Int! = 10
+  page: Int! = 0
 }
 
 type Mutation {
   createPost(input: CreatePostInput!): PostOutputDto!
+  archivePost(id: Int!): BooleanOutputDto!
 }
 
 input CreatePostInput {

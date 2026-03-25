@@ -4,7 +4,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { PostStatusEnum } from '@app/shared/enums/post-status.enum';
+import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface';
 import { INewUserWithUserId, IPost } from '@app/shared/interfaces/post/post.interface';
+import { createPaginatedResponse } from '@app/shared/utils/create-paginated-response';
 
 import { Post } from './entities/post.entity';
 
@@ -27,10 +29,21 @@ export class PostsService {
     });
   }
 
-  async findPostsByUserId(userId: number): Promise<IPost[] | null> {
-    return this.postRepository.find({
+  async findPostsByUserId(
+    userId: number,
+    page = 1,
+    take = 10,
+  ): Promise<IPaginatedData<IPost> | null> {
+    const skip = page > 1 ? (page - 1) * take : 0;
+
+    const [posts, count] = await this.postRepository.findAndCount({
       where: { userId },
+      skip,
+      take,
+      order: { createdAt: 'DESC' },
     });
+
+    return createPaginatedResponse(posts, count, page, take);
   }
 
   async archivePost(id: number): Promise<boolean> {

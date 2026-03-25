@@ -4,11 +4,6 @@
 @token = {{signup.response.body.data.jwtToken}} 
 @token = {{login.response.body.data.jwtToken}} 
 
-@code = {{createCode.response.body.data}}  
-
-# ───────────────────────────────────────────────
-# 🧾 AUTH MODULE ENDPOINTS
-# ───────────────────────────────────────────────
 
 ### SIGNUP - Signup user
 # @name signup
@@ -38,26 +33,42 @@ Authorization: Bearer {{token}}
 Content-Type: {{contentType}}
 
 
-### 👤 PROFILE — Get logged-in user's info
+### PROFILE — Get logged-in user's info
 # @name profile
 GET {{baseUrl}}/auth/profile
 Authorization: Bearer {{token}}
 Content-Type: {{contentType}}
 
-### CREATE CODE - create a new shorter url 
-# @name createCode
-POST {{baseUrl}}/u
+### CREATE POST - create a new post
+# @name createPost
+POST {{baseUrl}}/posts
 Authorization: Bearer {{token}}
 Content-Type: {{contentType}}
 
 {
-  "url": "http://www.example.com",
-  "description": "Example"
+  "title": "third post",
+  "content": "lorem ipsum"
 }
 
-### GET CODE - Redirect to original url
-# @name getCode
-GET {{baseUrl}}/u/{{code}}
+### GET POSTS - get posts by pagination
+# @name getPosts
+GET {{baseUrl}}/posts?take=20&page=1
+Authorization: Bearer {{token}}
 Content-Type: {{contentType}}
+
+### GET POST - get post by id
+# @name getPost
+GET {{baseUrl}}/posts/4
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+### ARCHIVE POST - archive post by id
+# @name getPost
+POST  {{baseUrl}}/posts/archive/4
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+
+
 
 

@@ -87,6 +87,19 @@ type Mutation {
   closeAllOpenSessionByUserId(id: Int!): BooleanOutputDto!
   closeSessionBySessionId(guid: String!): BooleanOutputDto!
   createPost(input: CreatePostInput!): PostOutputDto!
+  archivePost(id: Int!): BooleanOutputDto!
+}
+
+type PaginationMeta {
+  total: Int!
+  page: Int!
+  lastPage: Int!
+  take: Int!
+}
+
+type PostListOutputDto {
+  data: PostOutputData
+  code: AppCodes!
 }
 
 type PostOutput {
@@ -100,9 +113,20 @@ type PostOutput {
   updatedAt: DateTime!
 }
 
+type PostOutputData {
+  items: [PostOutput!]!
+  meta: PaginationMeta!
+}
+
 type PostOutputDto {
   data: PostOutput
   code: AppCodes!
+}
+
+input PostsPaginationInput {
+  userId: Int!
+  take: Int! = 10
+  page: Int! = 0
 }
 
 enum PostStatusEnum {
@@ -113,6 +137,8 @@ enum PostStatusEnum {
 type Query {
   findUserById(id: Int!): UserOutputDto!
   findOpenSessionByGuid(id: String!): SessionOutputDto!
+  findPostById(id: Int!): PostOutputDto!
+  findPostsByUserId(input: PostsPaginationInput!): PostListOutputDto!
 }
 
 type SessionOutput {

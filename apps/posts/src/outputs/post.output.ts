@@ -1,6 +1,7 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 import { AppGraphqlResponse } from '@app/shared/app-graphql-response.dto';
+import { AppPaginatedDataGraphqlResponse } from '@app/shared/app-paginated-data-graphql-response.dto';
 import { PostStatusEnum } from '@app/shared/enums/post-status.enum';
 import { IPost } from '@app/shared/interfaces/post/post.interface';
 
@@ -33,3 +34,6 @@ export class PostOutput implements IPost {
 
 @ObjectType()
 export class PostOutputDto extends AppGraphqlResponse(PostOutput) {}
+
+@ObjectType()
+export class PostListOutputDto extends AppPaginatedDataGraphqlResponse(PostOutput) {}

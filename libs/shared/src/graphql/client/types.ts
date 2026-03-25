@@ -10,7 +10,7 @@ export default {
         10,
         11,
         12,
-        17
+        21
     ],
     "types": {
         "AppCodes": {},
@@ -78,7 +78,7 @@ export default {
         },
         "Mutation": {
             "createUser": [
-                22,
+                26,
                 {
                     "input": [
                         7,
@@ -87,7 +87,7 @@ export default {
                 }
             ],
             "createSession": [
-                20,
+                24,
                 {
                     "id": [
                         6,
@@ -96,7 +96,7 @@ export default {
                 }
             ],
             "loginUser": [
-                22,
+                26,
                 {
                     "input": [
                         13,
@@ -123,13 +123,50 @@ export default {
                 }
             ],
             "createPost": [
-                16,
+                19,
                 {
                     "input": [
                         4,
                         "CreatePostInput!"
                     ]
                 }
+            ],
+            "archivePost": [
+                2,
+                {
+                    "id": [
+                        6,
+                        "Int!"
+                    ]
+                }
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "PaginationMeta": {
+            "total": [
+                6
+            ],
+            "page": [
+                6
+            ],
+            "lastPage": [
+                6
+            ],
+            "take": [
+                6
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "PostListOutputDto": {
+            "data": [
+                18
+            ],
+            "code": [
+                0
             ],
             "__typename": [
                 5
@@ -152,7 +189,7 @@ export default {
                 6
             ],
             "status": [
-                17
+                21
             ],
             "createdAt": [
                 8
@@ -164,9 +201,20 @@ export default {
                 5
             ]
         },
+        "PostOutputData": {
+            "items": [
+                17
+            ],
+            "meta": [
+                15
+            ],
+            "__typename": [
+                5
+            ]
+        },
         "PostOutputDto": {
             "data": [
-                15
+                17
             ],
             "code": [
                 0
@@ -175,10 +223,24 @@ export default {
                 5
             ]
         },
+        "PostsPaginationInput": {
+            "userId": [
+                6
+            ],
+            "take": [
+                6
+            ],
+            "page": [
+                6
+            ],
+            "__typename": [
+                5
+            ]
+        },
         "PostStatusEnum": {},
         "Query": {
             "findUserById": [
-                22,
+                26,
                 {
                     "id": [
                         6,
@@ -187,11 +249,29 @@ export default {
                 }
             ],
             "findOpenSessionByGuid": [
-                20,
+                24,
                 {
                     "id": [
                         5,
                         "String!"
+                    ]
+                }
+            ],
+            "findPostById": [
+                19,
+                {
+                    "id": [
+                        6,
+                        "Int!"
+                    ]
+                }
+            ],
+            "findPostsByUserId": [
+                16,
+                {
+                    "input": [
+                        20,
+                        "PostsPaginationInput!"
                     ]
                 }
             ],
@@ -224,7 +304,7 @@ export default {
         },
         "SessionOutputDto": {
             "data": [
-                19
+                23
             ],
             "code": [
                 0
@@ -255,7 +335,7 @@ export default {
         },
         "UserOutputDto": {
             "data": [
-                21
+                25
             ],
             "code": [
                 0

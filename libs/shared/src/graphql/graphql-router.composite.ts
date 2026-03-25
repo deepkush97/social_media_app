@@ -3,8 +3,14 @@ import { Injectable } from '@nestjs/common';
 import {
   BooleanOutputDto,
   BooleanOutputDtoGenqlSelection,
+  CreatePostInput,
   CreateUserInput,
   LoginUserInput,
+  PostListOutputDto,
+  PostListOutputDtoGenqlSelection,
+  PostOutputDto,
+  PostOutputDtoGenqlSelection,
+  PostsPaginationInput,
   SessionOutputDto,
   SessionOutputDtoGenqlSelection,
   UserOutputDto,
@@ -109,5 +115,60 @@ export class GraphqlRouterComposite {
     });
 
     return result.findUserById;
+  }
+
+  public async createPost(
+    input: CreatePostInput,
+    projection: PostOutputDtoGenqlSelection,
+  ): Promise<PostOutputDto> {
+    const result = await this.routerService.client.mutation({
+      createPost: {
+        __args: { input },
+        ...projection,
+      },
+    });
+    return result.createPost;
+  }
+
+  public async findPostById(
+    id: number,
+    projection: PostOutputDtoGenqlSelection,
+  ): Promise<PostOutputDto> {
+    const result = await this.routerService.client.query({
+      findPostById: {
+        __args: { id },
+        ...projection,
+      },
+    });
+
+    return result.findPostById;
+  }
+
+  public async findPostsByUserId(
+    input: PostsPaginationInput,
+    projection: PostListOutputDtoGenqlSelection,
+  ): Promise<PostListOutputDto> {
+    const result = await this.routerService.client.query({
+      findPostsByUserId: {
+        __args: { input },
+        ...projection,
+      },
+    });
+
+    return result.findPostsByUserId;
+  }
+
+  public async archivePost(
+    id: number,
+    projection: BooleanOutputDtoGenqlSelection,
+  ): Promise<BooleanOutputDto> {
+    const result = await this.routerService.client.mutation({
+      archivePost: {
+        __args: { id },
+        ...projection,
+      },
+    });
+
+    return result.archivePost;
   }
 }

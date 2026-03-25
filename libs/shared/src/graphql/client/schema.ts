@@ -33,7 +33,22 @@ export interface Mutation {
     closeAllOpenSessionByUserId: BooleanOutputDto
     closeSessionBySessionId: BooleanOutputDto
     createPost: PostOutputDto
+    archivePost: BooleanOutputDto
     __typename: 'Mutation'
+}
+
+export interface PaginationMeta {
+    total: Scalars['Int']
+    page: Scalars['Int']
+    lastPage: Scalars['Int']
+    take: Scalars['Int']
+    __typename: 'PaginationMeta'
+}
+
+export interface PostListOutputDto {
+    data: (PostOutputData | null)
+    code: AppCodes
+    __typename: 'PostListOutputDto'
 }
 
 export interface PostOutput {
@@ -48,6 +63,12 @@ export interface PostOutput {
     __typename: 'PostOutput'
 }
 
+export interface PostOutputData {
+    items: PostOutput[]
+    meta: PaginationMeta
+    __typename: 'PostOutputData'
+}
+
 export interface PostOutputDto {
     data: (PostOutput | null)
     code: AppCodes
@@ -59,6 +80,8 @@ export type PostStatusEnum = 'ACTIVE' | 'ARCHIVED'
 export interface Query {
     findUserById: UserOutputDto
     findOpenSessionByGuid: SessionOutputDto
+    findPostById: PostOutputDto
+    findPostsByUserId: PostListOutputDto
     __typename: 'Query'
 }
 
@@ -113,6 +136,23 @@ export interface MutationGenqlSelection{
     closeAllOpenSessionByUserId?: (BooleanOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     closeSessionBySessionId?: (BooleanOutputDtoGenqlSelection & { __args: {guid: Scalars['String']} })
     createPost?: (PostOutputDtoGenqlSelection & { __args: {input: CreatePostInput} })
+    archivePost?: (BooleanOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface PaginationMetaGenqlSelection{
+    total?: boolean | number
+    page?: boolean | number
+    lastPage?: boolean | number
+    take?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface PostListOutputDtoGenqlSelection{
+    data?: PostOutputDataGenqlSelection
+    code?: boolean | number
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -130,6 +170,13 @@ export interface PostOutputGenqlSelection{
     __scalar?: boolean | number
 }
 
+export interface PostOutputDataGenqlSelection{
+    items?: PostOutputGenqlSelection
+    meta?: PaginationMetaGenqlSelection
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
 export interface PostOutputDtoGenqlSelection{
     data?: PostOutputGenqlSelection
     code?: boolean | number
@@ -137,9 +184,13 @@ export interface PostOutputDtoGenqlSelection{
     __scalar?: boolean | number
 }
 
+export interface PostsPaginationInput {userId: Scalars['Int'],take?: Scalars['Int'],page?: Scalars['Int']}
+
 export interface QueryGenqlSelection{
     findUserById?: (UserOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     findOpenSessionByGuid?: (SessionOutputDtoGenqlSelection & { __args: {id: Scalars['String']} })
+    findPostById?: (PostOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
+    findPostsByUserId?: (PostListOutputDtoGenqlSelection & { __args: {input: PostsPaginationInput} })
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -196,10 +247,34 @@ export interface UserOutputDtoGenqlSelection{
     
 
 
+    const PaginationMeta_possibleTypes: string[] = ['PaginationMeta']
+    export const isPaginationMeta = (obj?: { __typename?: any } | null): obj is PaginationMeta => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isPaginationMeta"')
+      return PaginationMeta_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const PostListOutputDto_possibleTypes: string[] = ['PostListOutputDto']
+    export const isPostListOutputDto = (obj?: { __typename?: any } | null): obj is PostListOutputDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isPostListOutputDto"')
+      return PostListOutputDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
     const PostOutput_possibleTypes: string[] = ['PostOutput']
     export const isPostOutput = (obj?: { __typename?: any } | null): obj is PostOutput => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isPostOutput"')
       return PostOutput_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const PostOutputData_possibleTypes: string[] = ['PostOutputData']
+    export const isPostOutputData = (obj?: { __typename?: any } | null): obj is PostOutputData => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isPostOutputData"')
+      return PostOutputData_possibleTypes.includes(obj.__typename)
     }
     
 
