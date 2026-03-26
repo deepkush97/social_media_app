@@ -120,8 +120,9 @@ export class PostsService {
     userId: number,
     take = 10,
     page = 1,
+    status = PostStatusEnum.ACTIVE,
   ): Promise<IAppResponse<IPaginatedData<IPost>>> {
-    const postsCacheKey = `posts:${userId}:${take}:${page}`;
+    const postsCacheKey = `posts:${userId}:${take}:${page}:${status}`;
 
     const fromCache = await this.cacheService.get<IPaginatedData<IPost>>(postsCacheKey);
 
@@ -133,7 +134,7 @@ export class PostsService {
     }
 
     const postResult = await this.routerComposite.findPostsByUserId(
-      { userId, page, take },
+      { userId, page, take, status },
       {
         code: 1,
         data: {

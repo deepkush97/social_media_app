@@ -184,7 +184,7 @@ export interface PostOutputDtoGenqlSelection{
     __scalar?: boolean | number
 }
 
-export interface PostsPaginationInput {userId: Scalars['Int'],take?: Scalars['Int'],page?: Scalars['Int']}
+export interface PostsPaginationInput {userId: Scalars['Int'],take?: Scalars['Int'],page?: Scalars['Int'],status?: PostStatusEnum}
 
 export interface QueryGenqlSelection{
     findUserById?: (UserOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })

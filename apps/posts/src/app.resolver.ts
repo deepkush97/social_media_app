@@ -24,9 +24,9 @@ export class AppResolver {
 
   @Query(() => PostListOutputDto)
   async findPostsByUserId(
-    @Args('input') { userId, page, take }: PostsPaginationInput,
+    @Args('input') { userId, page, take, status }: PostsPaginationInput,
   ): Promise<PostListOutputDto> {
-    return this.appService.findPostsByUserId(userId, {
+    return this.appService.findPostsByUserId(userId, status, {
       take,
       page,
     });

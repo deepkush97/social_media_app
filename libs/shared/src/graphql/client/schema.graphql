@@ -127,6 +127,7 @@ input PostsPaginationInput {
   userId: Int!
   take: Int! = 10
   page: Int! = 0
+  status: PostStatusEnum! = ACTIVE
 }
 
 enum PostStatusEnum {

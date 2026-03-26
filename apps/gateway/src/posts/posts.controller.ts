@@ -6,6 +6,7 @@ import { AppResponse } from '@app/shared/app-response.dto';
 import { ICurrentUser } from '@app/shared/interfaces/user/users.interface';
 
 import { CreatePostRequest } from './requests/create-post.request';
+import { FindPostsRequest } from './requests/find-posts.request';
 import { PostListResponse, PostResponse } from './responses/post.response';
 
 import { PostsService } from './posts.service';
@@ -27,12 +28,10 @@ export class PostsController {
   @Get()
   handlePostList(
     @CurrentUser() user: ICurrentUser,
-    @Query('page', new ParseIntPipe({ optional: true })) page: number = 1,
-    @Query('take', new ParseIntPipe({ optional: true })) take: number = 10,
-    //TODO: Create the param class to validate and also add status to filter
+    @Query() { page, status, take }: FindPostsRequest,
   ): Promise<AppResponse<PostListResponse>> {
     {
-      return this.postService.findPostsByUserId(user.id, take, page);
+      return this.postService.findPostsByUserId(user.id, take, page, status);
     }
   }
 

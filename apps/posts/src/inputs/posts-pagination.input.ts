@@ -1,7 +1,8 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
 
-import { IsNumber, IsOptional, IsPositive } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsPositive } from 'class-validator';
 
+import { PostStatusEnum } from '@app/shared/enums/post-status.enum';
 import { IPaginationInput } from '@app/shared/interfaces/pagination-input.interface';
 
 @InputType()
@@ -21,4 +22,9 @@ export class PostsPaginationInput implements IPaginationInput {
   @IsNumber()
   @IsOptional()
   page?: number;
+
+  @Field(() => PostStatusEnum, { defaultValue: PostStatusEnum.ACTIVE })
+  @IsEnum(PostStatusEnum)
+  @IsOptional()
+  status?: PostStatusEnum;
 }

@@ -31,13 +31,14 @@ export class PostsService {
 
   async findPostsByUserId(
     userId: number,
+    status: PostStatusEnum,
     page = 1,
     take = 10,
   ): Promise<IPaginatedData<IPost> | null> {
     const skip = page > 1 ? (page - 1) * take : 0;
 
     const [posts, count] = await this.postRepository.findAndCount({
-      where: { userId },
+      where: { userId, status },
       skip,
       take,
       order: { createdAt: 'DESC' },
