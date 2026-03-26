@@ -8,10 +8,10 @@ import { AppLoggerModule } from '@app/shared/app-logger/app-logger.module';
 import { DatabaseModule } from '@app/shared/database/database.module';
 import { GraphqlRouterModule } from '@app/shared/graphql/graphql-router.module';
 import { AsyncStorageMiddleware } from '@app/shared/middlewares/async-storage.middleware';
+import { RequestValidationPipe } from '@app/shared/pipes/request-validation.pipe';
 
 import { AuthModule } from './auth/auth.module';
 import { GlobalInterceptor } from './interceptors/global.interceptor';
-import { RequestValidationPipe } from './pipes/request-validation.pipe';
 import { PostsModule } from './posts/posts.module';
 
 import { AppController } from './app.controller';

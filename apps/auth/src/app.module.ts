@@ -1,5 +1,6 @@
 import { ApolloFederationDriver, ApolloFederationDriverConfig } from '@nestjs/apollo';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { APP_PIPE } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'node:path';
 
@@ -12,6 +13,7 @@ import { BcryptModule } from '@app/shared/bcrypt/bcrypt.module';
 import { DatabaseModule } from '@app/shared/database/database.module';
 import { GraphqlRouterModule } from '@app/shared/graphql/graphql-router.module';
 import { AsyncStorageMiddleware } from '@app/shared/middlewares/async-storage.middleware';
+import { RequestValidationPipe } from '@app/shared/pipes/request-validation.pipe';
 
 import { SessionModule } from './session/session.module';
 import { UserModule } from './user/user.module';
@@ -51,7 +53,15 @@ import { AppService } from './app.service';
       },
     }),
   ],
-  providers: [AppService, AppResolver],
+
+  providers: [
+    AppService,
+    AppResolver,
+    {
+      provide: APP_PIPE,
+      useClass: RequestValidationPipe,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
