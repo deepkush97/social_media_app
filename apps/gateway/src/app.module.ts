@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
@@ -7,6 +7,7 @@ import { AppConfigService } from '@app/shared/app-config/app-config.service';
 import { AppLoggerModule } from '@app/shared/app-logger/app-logger.module';
 import { DatabaseModule } from '@app/shared/database/database.module';
 import { GraphqlRouterModule } from '@app/shared/graphql/graphql-router.module';
+import { AsyncStorageMiddleware } from '@app/shared/middlewares/async-storage.middleware';
 
 import { AuthModule } from './auth/auth.module';
 import { GlobalInterceptor } from './interceptors/global.interceptor';
@@ -46,4 +47,8 @@ import { AppController } from './app.controller';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(AsyncStorageMiddleware).forRoutes('*');
+  }
+}

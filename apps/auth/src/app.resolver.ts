@@ -1,5 +1,6 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 
+import { AppLoggerService } from '@app/shared/app-logger/app-logger.service';
 import { BooleanOutputDto } from '@app/shared/boolean.output';
 
 import { CreateUserInput } from './inputs/create-user.input';
@@ -11,7 +12,10 @@ import { AppService } from './app.service';
 
 @Resolver()
 export class AppResolver {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly logger: AppLoggerService,
+  ) {}
 
   @Mutation(() => UserOutputDto)
   async createUser(@Args('input') input: CreateUserInput): Promise<UserOutputDto> {
@@ -20,11 +24,13 @@ export class AppResolver {
 
   @Mutation(() => SessionOutputDto)
   async createSession(@Args('id', { type: () => Int }) id: number): Promise<SessionOutputDto> {
+    this.logger.info('createSession', { context: this.constructor.name });
     return this.appService.createSession(id);
   }
 
   @Mutation(() => UserOutputDto)
   async loginUser(@Args('input') input: LoginUserInput): Promise<UserOutputDto> {
+    this.logger.info('loginUser', { context: this.constructor.name });
     return this.appService.loginUser(input);
   }
 

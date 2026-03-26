@@ -14,6 +14,7 @@ import { v4 as uuid } from 'uuid';
 import { AppLoggerService } from '@app/shared/app-logger/app-logger.service';
 import { AppResponse } from '@app/shared/app-response.dto';
 import { AppCodes } from '@app/shared/enums/app-codes.enum';
+import { AsyncStore } from '@app/shared/utils/async.store';
 
 @Injectable()
 export class GlobalInterceptor implements NestInterceptor {
@@ -26,7 +27,9 @@ export class GlobalInterceptor implements NestInterceptor {
 
     const id = request['requestId'] || request.headers['x-request-id'] || uuid();
 
-    response.setHeader('x-request-id', id.toString());
+    const requestId = id.toString();
+    response.setHeader('x-request-id', requestId);
+    AsyncStore.set({ requestId: requestId });
 
     const { method, originalUrl } = request;
     const start = Date.now();

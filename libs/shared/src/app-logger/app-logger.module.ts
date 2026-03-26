@@ -3,6 +3,8 @@ import { Global, Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
 import { v4 as uuidV4 } from 'uuid';
 
+import { AsyncStore } from '@app/shared/utils/async.store';
+
 import { AppConfigService } from '../app-config/app-config.service';
 import { AppEnvironment } from '../enums/app-environment.enum';
 
@@ -21,6 +23,15 @@ import { DatabaseLoggerService } from './database-logger.service';
 
         return {
           pinoHttp: {
+            reqCustomProps: (req): Record<string, unknown> => {
+              return {
+                requestId: req.id || req.headers['x-request-id'],
+              };
+            },
+            mixin(): Record<string, unknown> {
+              const store = AsyncStore.get();
+              return store ? { requestId: store.requestId } : {};
+            },
             level: logLevel,
             genReqId: (req, res): string => {
               const existingID = req.headers['x-request-id'];
