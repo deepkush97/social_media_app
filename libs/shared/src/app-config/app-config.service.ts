@@ -20,24 +20,6 @@ export class AppConfigService {
   get logLevel(): AppLogLevel {
     return this.configService.get<AppLogLevel>('app.logLevel');
   }
-  get dbHost(): string {
-    return this.configService.get<string>('app.dbHost');
-  }
-  get dbPort(): number {
-    return this.configService.get<number>('app.dbPort');
-  }
-  get dbUser(): string {
-    return this.configService.get<string>('app.dbUser');
-  }
-  get dbPass(): string {
-    return this.configService.get<string>('app.dbPass');
-  }
-  get dbName(): string {
-    return this.configService.get<string>('app.dbName');
-  }
-  get dbLogging(): boolean {
-    return this.configService.get<boolean>('app.dbLogging');
-  }
   get jwtSecret(): string {
     return this.configService.get<string>('app.jwtSecret');
   }
