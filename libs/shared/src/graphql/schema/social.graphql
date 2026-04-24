@@ -1,0 +1,41 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type BooleanOutputDto {
+  data: Boolean
+  code: AppCodes!
+}
+
+enum AppCodes {
+  OPERATION_SUCCESS
+  INVALID_CREDENTIALS
+  INVALID_EMAIL
+  INTERNAL_ERROR
+  UNAUTHORIZED
+  FORBIDDEN
+  USER_CREATED
+  BAD_REQUEST
+  URL_CREATED
+  URL_NOT_FOUND
+  NOT_FOUND
+}
+
+type FollowerCountDto {
+  data: Float
+  code: AppCodes!
+}
+
+type Query {
+  followCount(id: Int!): FollowerCountDto!
+}
+
+type Mutation {
+  follow(input: FollowUnfollowInput!): BooleanOutputDto!
+  unfollow(input: FollowUnfollowInput!): BooleanOutputDto!
+}
+
+input FollowUnfollowInput {
+  followerId: Int!
+  followingId: Int!
+}

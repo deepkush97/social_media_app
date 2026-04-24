@@ -8,4 +8,6 @@ export const validationErrorToValidationCodeMap: Record<string, ValidationErrorC
   isDate: ValidationErrorCode.INVALID_DATE,
   isDateString: ValidationErrorCode.INVALID_DATE_STRING,
   whitelistValidation: ValidationErrorCode.UNNECESSARY_PARAM,
+  isNotEqualTo: ValidationErrorCode.MUST_BE_UNIQUE,
+  isPositive: ValidationErrorCode.MUST_BE_POSITIVE_NUMBER,
 };
