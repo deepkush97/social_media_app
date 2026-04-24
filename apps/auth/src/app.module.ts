@@ -13,7 +13,7 @@ import { BcryptModule } from '@app/shared/bcrypt/bcrypt.module';
 import { DatabaseModule } from '@app/shared/database/database.module';
 import { GraphqlRouterModule } from '@app/shared/graphql/graphql-router.module';
 import { AsyncStorageMiddleware } from '@app/shared/middlewares/async-storage.middleware';
-import { RequestValidationPipe } from '@app/shared/pipes/request-validation.pipe';
+import { GraphqlRequestValidationPipe } from '@app/shared/pipes/graphql-request-validation.pipe';
 
 import { SessionModule } from './session/session.module';
 import { UserModule } from './user/user.module';
@@ -59,7 +59,7 @@ import { AppService } from './app.service';
     AppResolver,
     {
       provide: APP_PIPE,
-      useClass: RequestValidationPipe,
+      useClass: GraphqlRequestValidationPipe,
     },
   ],
 })

@@ -11,7 +11,7 @@ import { AppConfigService } from '@app/shared/app-config/app-config.service';
 import { AppLoggerModule } from '@app/shared/app-logger/app-logger.module';
 import { DatabaseModule } from '@app/shared/database/database.module';
 import { AsyncStorageMiddleware } from '@app/shared/middlewares/async-storage.middleware';
-import { RequestValidationPipe } from '@app/shared/pipes/request-validation.pipe';
+import { GraphqlRequestValidationPipe } from '@app/shared/pipes/graphql-request-validation.pipe';
 
 import { PostsModule } from './posts/posts.module';
 
@@ -45,7 +45,7 @@ import { AppService } from './app.service';
     AppResolver,
     {
       provide: APP_PIPE,
-      useClass: RequestValidationPipe,
+      useClass: GraphqlRequestValidationPipe,
     },
   ],
 })

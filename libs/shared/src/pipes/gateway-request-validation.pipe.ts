@@ -8,7 +8,7 @@ import { ValidationErrorCode } from '../enums/validation-error-codes.enum';
 import { validationErrorToValidationCodeMap } from '../validation-error-to-code.map';
 
 @Injectable()
-export class RequestValidationPipe extends ValidationPipe {
+export class GatewayRequestValidationPipe extends ValidationPipe {
   constructor(private readonly logger: AppLoggerService) {
     super({
       whitelist: true,
@@ -23,7 +23,7 @@ export class RequestValidationPipe extends ValidationPipe {
                   return constraintError;
                 }
                 this.logger.warn(`unknown validation error: ${constraint}`, {
-                  context: RequestValidationPipe.name,
+                  context: GatewayRequestValidationPipe.name,
                 });
                 return ValidationErrorCode.UNKNOWN;
               })
