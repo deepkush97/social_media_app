@@ -54,7 +54,7 @@ async function run(): Promise<void> {
     });
     console.log(`client generated successfully at ${CLIENT_FOLDER}`);
   } catch (error) {
-    console.error('error while generating the client', error.message);
+    console.error('error while generating the client', error);
   }
 }
 
