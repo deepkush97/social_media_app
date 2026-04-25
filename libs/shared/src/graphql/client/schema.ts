@@ -22,7 +22,13 @@ export interface BooleanOutputDto {
     __typename: 'BooleanOutputDto'
 }
 
-export type join__Graph = 'AUTH' | 'POSTS'
+export interface FollowerFollowingCountDto {
+    followers: Scalars['Int']
+    followings: Scalars['Int']
+    __typename: 'FollowerFollowingCountDto'
+}
+
+export type join__Graph = 'AUTH' | 'POSTS' | 'SOCIAL'
 
 export type link__Purpose = 'SECURITY' | 'EXECUTION'
 
@@ -34,6 +40,8 @@ export interface Mutation {
     closeSessionBySessionId: BooleanOutputDto
     createPost: PostOutputDto
     archivePost: BooleanOutputDto
+    follow: BooleanOutputDto
+    unfollow: BooleanOutputDto
     __typename: 'Mutation'
 }
 
@@ -82,6 +90,7 @@ export interface Query {
     findOpenSessionByGuid: SessionOutputDto
     findPostById: PostOutputDto
     findPostsByUserId: PostListOutputDto
+    userCounts: UserCountsDto
     __typename: 'Query'
 }
 
@@ -99,6 +108,12 @@ export interface SessionOutputDto {
     data: (SessionOutput | null)
     code: AppCodes
     __typename: 'SessionOutputDto'
+}
+
+export interface UserCountsDto {
+    data: (FollowerFollowingCountDto | null)
+    code: AppCodes
+    __typename: 'UserCountsDto'
 }
 
 export interface UserOutput {
@@ -127,6 +142,15 @@ export interface CreatePostInput {title: Scalars['String'],content: Scalars['Str
 
 export interface CreateUserInput {name: Scalars['String'],email: Scalars['String'],password: Scalars['String']}
 
+export interface FollowerFollowingCountDtoGenqlSelection{
+    followers?: boolean | number
+    followings?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface FollowUnfollowInput {followerId: Scalars['Int'],followingId: Scalars['Int']}
+
 export interface LoginUserInput {email: Scalars['String'],password: Scalars['String']}
 
 export interface MutationGenqlSelection{
@@ -137,6 +161,8 @@ export interface MutationGenqlSelection{
     closeSessionBySessionId?: (BooleanOutputDtoGenqlSelection & { __args: {guid: Scalars['String']} })
     createPost?: (PostOutputDtoGenqlSelection & { __args: {input: CreatePostInput} })
     archivePost?: (BooleanOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
+    follow?: (BooleanOutputDtoGenqlSelection & { __args: {input: FollowUnfollowInput} })
+    unfollow?: (BooleanOutputDtoGenqlSelection & { __args: {input: FollowUnfollowInput} })
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -191,6 +217,7 @@ export interface QueryGenqlSelection{
     findOpenSessionByGuid?: (SessionOutputDtoGenqlSelection & { __args: {id: Scalars['String']} })
     findPostById?: (PostOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     findPostsByUserId?: (PostListOutputDtoGenqlSelection & { __args: {input: PostsPaginationInput} })
+    userCounts?: (UserCountsDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -208,6 +235,13 @@ export interface SessionOutputGenqlSelection{
 
 export interface SessionOutputDtoGenqlSelection{
     data?: SessionOutputGenqlSelection
+    code?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface UserCountsDtoGenqlSelection{
+    data?: FollowerFollowingCountDtoGenqlSelection
     code?: boolean | number
     __typename?: boolean | number
     __scalar?: boolean | number
@@ -235,6 +269,14 @@ export interface UserOutputDtoGenqlSelection{
     export const isBooleanOutputDto = (obj?: { __typename?: any } | null): obj is BooleanOutputDto => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isBooleanOutputDto"')
       return BooleanOutputDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const FollowerFollowingCountDto_possibleTypes: string[] = ['FollowerFollowingCountDto']
+    export const isFollowerFollowingCountDto = (obj?: { __typename?: any } | null): obj is FollowerFollowingCountDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isFollowerFollowingCountDto"')
+      return FollowerFollowingCountDto_possibleTypes.includes(obj.__typename)
     }
     
 
@@ -311,6 +353,14 @@ export interface UserOutputDtoGenqlSelection{
     
 
 
+    const UserCountsDto_possibleTypes: string[] = ['UserCountsDto']
+    export const isUserCountsDto = (obj?: { __typename?: any } | null): obj is UserCountsDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isUserCountsDto"')
+      return UserCountsDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
     const UserOutput_possibleTypes: string[] = ['UserOutput']
     export const isUserOutput = (obj?: { __typename?: any } | null): obj is UserOutput => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isUserOutput"')
@@ -347,7 +397,8 @@ export const enumAuthSessionEnum = {
 
 export const enumJoinGraph = {
    AUTH: 'AUTH' as const,
-   POSTS: 'POSTS' as const
+   POSTS: 'POSTS' as const,
+   SOCIAL: 'SOCIAL' as const
 }
 
 export const enumLinkPurpose = {

@@ -54,11 +54,22 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type FollowerFollowingCountDto {
+  followers: Int!
+  followings: Int!
+}
+
+input FollowUnfollowInput {
+  followerId: Int!
+  followingId: Int!
+}
+
 scalar join__FieldSet
 
 enum join__Graph {
   AUTH
   POSTS
+  SOCIAL
 }
 
 scalar link__Import
@@ -88,6 +99,8 @@ type Mutation {
   closeSessionBySessionId(guid: String!): BooleanOutputDto!
   createPost(input: CreatePostInput!): PostOutputDto!
   archivePost(id: Int!): BooleanOutputDto!
+  follow(input: FollowUnfollowInput!): BooleanOutputDto!
+  unfollow(input: FollowUnfollowInput!): BooleanOutputDto!
 }
 
 type PaginationMeta {
@@ -140,6 +153,7 @@ type Query {
   findOpenSessionByGuid(id: String!): SessionOutputDto!
   findPostById(id: Int!): PostOutputDto!
   findPostsByUserId(input: PostsPaginationInput!): PostListOutputDto!
+  userCounts(id: Int!): UserCountsDto!
 }
 
 type SessionOutput {
@@ -153,6 +167,11 @@ type SessionOutput {
 
 type SessionOutputDto {
   data: SessionOutput
+  code: AppCodes!
+}
+
+type UserCountsDto {
+  data: FollowerFollowingCountDto
   code: AppCodes!
 }
 

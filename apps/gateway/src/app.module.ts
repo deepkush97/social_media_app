@@ -13,6 +13,7 @@ import { GatewayRequestValidationPipe } from '@app/shared/pipes/gateway-request-
 import { AuthModule } from './auth/auth.module';
 import { GlobalInterceptor } from './interceptors/global.interceptor';
 import { PostsModule } from './posts/posts.module';
+import { UsersModule } from './users/users.module';
 
 import { AppController } from './app.controller';
 
@@ -34,6 +35,7 @@ import { AppController } from './app.controller';
       },
     }),
     PostsModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [

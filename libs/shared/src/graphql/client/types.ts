@@ -6,11 +6,11 @@ export default {
         5,
         6,
         8,
-        9,
-        10,
         11,
         12,
-        21
+        13,
+        14,
+        23
     ],
     "types": {
         "AppCodes": {},
@@ -61,6 +61,28 @@ export default {
             ]
         },
         "DateTime": {},
+        "FollowerFollowingCountDto": {
+            "followers": [
+                6
+            ],
+            "followings": [
+                6
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "FollowUnfollowInput": {
+            "followerId": [
+                6
+            ],
+            "followingId": [
+                6
+            ],
+            "__typename": [
+                5
+            ]
+        },
         "join__FieldSet": {},
         "join__Graph": {},
         "link__Import": {},
@@ -78,7 +100,7 @@ export default {
         },
         "Mutation": {
             "createUser": [
-                26,
+                29,
                 {
                     "input": [
                         7,
@@ -87,7 +109,7 @@ export default {
                 }
             ],
             "createSession": [
-                24,
+                26,
                 {
                     "id": [
                         6,
@@ -96,10 +118,10 @@ export default {
                 }
             ],
             "loginUser": [
-                26,
+                29,
                 {
                     "input": [
-                        13,
+                        15,
                         "LoginUserInput!"
                     ]
                 }
@@ -123,7 +145,7 @@ export default {
                 }
             ],
             "createPost": [
-                19,
+                21,
                 {
                     "input": [
                         4,
@@ -137,6 +159,24 @@ export default {
                     "id": [
                         6,
                         "Int!"
+                    ]
+                }
+            ],
+            "follow": [
+                2,
+                {
+                    "input": [
+                        10,
+                        "FollowUnfollowInput!"
+                    ]
+                }
+            ],
+            "unfollow": [
+                2,
+                {
+                    "input": [
+                        10,
+                        "FollowUnfollowInput!"
                     ]
                 }
             ],
@@ -163,7 +203,7 @@ export default {
         },
         "PostListOutputDto": {
             "data": [
-                18
+                20
             ],
             "code": [
                 0
@@ -189,7 +229,7 @@ export default {
                 6
             ],
             "status": [
-                21
+                23
             ],
             "createdAt": [
                 8
@@ -203,10 +243,10 @@ export default {
         },
         "PostOutputData": {
             "items": [
-                17
+                19
             ],
             "meta": [
-                15
+                17
             ],
             "__typename": [
                 5
@@ -214,7 +254,7 @@ export default {
         },
         "PostOutputDto": {
             "data": [
-                17
+                19
             ],
             "code": [
                 0
@@ -234,7 +274,7 @@ export default {
                 6
             ],
             "status": [
-                21
+                23
             ],
             "__typename": [
                 5
@@ -243,7 +283,7 @@ export default {
         "PostStatusEnum": {},
         "Query": {
             "findUserById": [
-                26,
+                29,
                 {
                     "id": [
                         6,
@@ -252,7 +292,7 @@ export default {
                 }
             ],
             "findOpenSessionByGuid": [
-                24,
+                26,
                 {
                     "id": [
                         5,
@@ -261,7 +301,7 @@ export default {
                 }
             ],
             "findPostById": [
-                19,
+                21,
                 {
                     "id": [
                         6,
@@ -270,11 +310,20 @@ export default {
                 }
             ],
             "findPostsByUserId": [
-                16,
+                18,
                 {
                     "input": [
-                        20,
+                        22,
                         "PostsPaginationInput!"
+                    ]
+                }
+            ],
+            "userCounts": [
+                27,
+                {
+                    "id": [
+                        6,
+                        "Int!"
                     ]
                 }
             ],
@@ -307,7 +356,18 @@ export default {
         },
         "SessionOutputDto": {
             "data": [
-                23
+                25
+            ],
+            "code": [
+                0
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "UserCountsDto": {
+            "data": [
+                9
             ],
             "code": [
                 0
@@ -338,7 +398,7 @@ export default {
         },
         "UserOutputDto": {
             "data": [
-                25
+                28
             ],
             "code": [
                 0

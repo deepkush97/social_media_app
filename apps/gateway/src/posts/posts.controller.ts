@@ -48,7 +48,7 @@ export class PostsController {
   @Post('archive/:id')
   async handleArchivePost(
     @CurrentUser() user: ICurrentUser,
-    @Param('id', new ParseIntPipe({ optional: true })) id: number,
+    @Param('id', new ParseIntPipe()) id: number,
   ): Promise<AppResponse<boolean>> {
     return await this.postService.archivePost(user.id, id);
   }

@@ -5,6 +5,7 @@ import {
   BooleanOutputDtoGenqlSelection,
   CreatePostInput,
   CreateUserInput,
+  FollowUnfollowInput,
   LoginUserInput,
   PostListOutputDto,
   PostListOutputDtoGenqlSelection,
@@ -13,6 +14,8 @@ import {
   PostsPaginationInput,
   SessionOutputDto,
   SessionOutputDtoGenqlSelection,
+  UserCountsDto,
+  UserCountsDtoGenqlSelection,
   UserOutputDto,
   UserOutputDtoGenqlSelection,
 } from './client';
@@ -170,5 +173,47 @@ export class GraphqlRouterComposite {
     });
 
     return result.archivePost;
+  }
+
+  public async followUser(
+    input: FollowUnfollowInput,
+    projection: BooleanOutputDtoGenqlSelection,
+  ): Promise<BooleanOutputDto> {
+    const result = await this.routerService.client.mutation({
+      follow: {
+        __args: { input },
+        ...projection,
+      },
+    });
+
+    return result.follow;
+  }
+
+  public async unfollowUser(
+    input: FollowUnfollowInput,
+    projection: BooleanOutputDtoGenqlSelection,
+  ): Promise<BooleanOutputDto> {
+    const result = await this.routerService.client.mutation({
+      unfollow: {
+        __args: { input },
+        ...projection,
+      },
+    });
+
+    return result.unfollow;
+  }
+
+  public async userCounts(
+    id: number,
+    projection: UserCountsDtoGenqlSelection,
+  ): Promise<UserCountsDto> {
+    const result = await this.routerService.client.query({
+      userCounts: {
+        __args: { id },
+        ...projection,
+      },
+    });
+
+    return result.userCounts;
   }
 }
