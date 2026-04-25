@@ -5,6 +5,7 @@ import { AppResponse } from '@app/shared/app-response.dto';
 import { AppCodes } from '@app/shared/enums/app-codes.enum';
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
 import { IFollowUnfollow } from '@app/shared/interfaces/social/follow-unfollow.interface';
+import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-following-count.interface';
 
 import { SocialService } from './social/social.service';
 
@@ -52,9 +53,9 @@ export class AppService {
     }
   }
 
-  async followerCount(userId: number): Promise<IAppResponse<number>> {
+  async userCounts(userId: number): Promise<IAppResponse<IFollowerFollowingCount>> {
     try {
-      const data = await this.socialService.followerCount(userId);
+      const data = await this.socialService.userCounts(userId);
 
       return new AppResponse({
         code: AppCodes.OPERATION_SUCCESS,

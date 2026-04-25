@@ -3,6 +3,7 @@ import { Inject, Injectable, OnModuleDestroy } from '@nestjs/common';
 import { Driver } from 'neo4j-driver';
 
 import { IFollowUnfollow } from '@app/shared/interfaces/social/follow-unfollow.interface';
+import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-following-count.interface';
 import { NEO4J_DRIVER } from '@app/shared/providers.constant';
 
 @Injectable()
@@ -41,23 +42,31 @@ export class SocialService implements OnModuleDestroy {
     await session.close();
   }
 
-  async followerCount(userId: number): Promise<number> {
+  async userCounts(userId: number): Promise<IFollowerFollowingCount> {
     const session = this.neo4jDriver.session();
 
     const result = await session.executeRead((tx) =>
       tx.run(
-        `MATCH (u1:User {id: $userId})-[:FOLLOWS]-(f)
-          RETURN count(f) as count`,
+        `MATCH (u:User {id: $userId})
+        RETURN 
+          COUNT { (u)<-[:FOLLOWS]-() } AS followers,
+          COUNT { (u)-[:FOLLOWS]->() } AS followings
+        `,
         { userId },
       ),
     );
     await session.close();
 
-    if (result?.records?.length < 1) {
+    const record = result.records[0];
+
+    if (!record) {
       throw new Error('Not a valid user');
     }
 
-    return result.records[0].get('count').toNumber();
+    return {
+      followers: record.get('followers').toNumber(),
+      followings: record.get('followings').toNumber(),
+    };
   }
 
   async onModuleDestroy(): Promise<void> {
