@@ -20,6 +20,7 @@ enum AppCodes {
   UNAUTHORIZED
   FORBIDDEN
   USER_CREATED
+  OK_CREATED
   BAD_REQUEST
   URL_CREATED
   URL_NOT_FOUND
@@ -99,8 +100,8 @@ type Mutation {
   closeSessionBySessionId(guid: String!): BooleanOutputDto!
   createPost(input: CreatePostInput!): PostOutputDto!
   archivePost(id: Int!): BooleanOutputDto!
-  follow(input: FollowUnfollowInput!): BooleanOutputDto!
-  unfollow(input: FollowUnfollowInput!): BooleanOutputDto!
+  follow(input: FollowUnfollowInput!): UserCountsDto!
+  unfollow(input: FollowUnfollowInput!): UserCountsDto!
 }
 
 type PaginationMeta {

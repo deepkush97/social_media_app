@@ -2,8 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type BooleanOutputDto {
-  data: Boolean
+type FollowerFollowingCountDto {
+  followers: Int!
+  followings: Int!
+}
+
+type UserCountsDto {
+  data: FollowerFollowingCountDto
   code: AppCodes!
 }
 
@@ -22,23 +27,13 @@ enum AppCodes {
   NOT_FOUND
 }
 
-type FollowerFollowingCountDto {
-  followers: Int!
-  followings: Int!
-}
-
-type UserCountsDto {
-  data: FollowerFollowingCountDto
-  code: AppCodes!
-}
-
 type Query {
   userCounts(id: Int!): UserCountsDto!
 }
 
 type Mutation {
-  follow(input: FollowUnfollowInput!): BooleanOutputDto!
-  unfollow(input: FollowUnfollowInput!): BooleanOutputDto!
+  follow(input: FollowUnfollowInput!): UserCountsDto!
+  unfollow(input: FollowUnfollowInput!): UserCountsDto!
 }
 
 input FollowUnfollowInput {

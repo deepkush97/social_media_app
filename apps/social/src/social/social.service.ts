@@ -13,33 +13,73 @@ export class SocialService implements OnModuleDestroy {
     private readonly neo4jDriver: Driver,
   ) {}
 
-  async follow({ followerId, followingId }: IFollowUnfollow): Promise<void> {
+  async follow({ followerId, followingId }: IFollowUnfollow): Promise<IFollowerFollowingCount> {
     const session = this.neo4jDriver.session();
 
-    await session.executeWrite((tx) =>
-      tx.run(
-        `MERGE (u1:User {id: $followerId})
-          MERGE (u2:User {id: $followingId})
-          MERGE (u1)-[:FOLLOWS]->(u2)`,
+    const counts = await session.executeWrite(async (tx) => {
+      const result = await tx.run(
+        `
+        MERGE (u1:User {id: $followerId})
+        MERGE (u2:User {id: $followingId})
+        MERGE (u1)-[:FOLLOWS]->(u2)
+        
+        WITH u1
+        RETURN 
+        COUNT { (u1)<-[:FOLLOWS]-() } AS followers,
+        COUNT { (u1)-[:FOLLOWS]->() } AS followings
+        `,
         { followerId, followingId },
-      ),
-    );
+      );
+
+      const record = result.records[0];
+
+      if (!record) {
+        throw new Error('Not a valid user');
+      }
+
+      return {
+        followers: record.get('followers').toNumber(),
+        followings: record.get('followings').toNumber(),
+      };
+    });
 
     await session.close();
+
+    return counts;
   }
 
-  async unfollow({ followerId, followingId }: IFollowUnfollow): Promise<void> {
+  async unfollow({ followerId, followingId }: IFollowUnfollow): Promise<IFollowerFollowingCount> {
     const session = this.neo4jDriver.session();
 
-    await session.executeWrite((tx) =>
-      tx.run(
-        `MATCH (u1:User {id: $followerId})-[r:FOLLOWS]->(u2:User {id:$followingId})
-          DELETE r`,
+    const counts = await session.executeWrite(async (tx) => {
+      const result = await tx.run(
+        `
+        MATCH (u1:User {id: $followerId})-[r:FOLLOWS]->(u2:User {id:$followingId})
+        DELETE r
+        
+        WITH u1
+        RETURN 
+        COUNT { (u1)<-[:FOLLOWS]-() } AS followers,
+        COUNT { (u1)-[:FOLLOWS]->() } AS followings
+        `,
         { followerId, followingId },
-      ),
-    );
+      );
+
+      const record = result.records[0];
+
+      if (!record) {
+        throw new Error('Not a valid user');
+      }
+
+      return {
+        followers: record.get('followers').toNumber(),
+        followings: record.get('followings').toNumber(),
+      };
+    });
 
     await session.close();
+
+    return counts;
   }
 
   async userCounts(userId: number): Promise<IFollowerFollowingCount> {

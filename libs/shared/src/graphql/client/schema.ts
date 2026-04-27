@@ -12,7 +12,7 @@ export type Scalars = {
     link__Import: any,
 }
 
-export type AppCodes = 'OPERATION_SUCCESS' | 'INVALID_CREDENTIALS' | 'INVALID_EMAIL' | 'INTERNAL_ERROR' | 'UNAUTHORIZED' | 'FORBIDDEN' | 'USER_CREATED' | 'BAD_REQUEST' | 'URL_CREATED' | 'URL_NOT_FOUND' | 'NOT_FOUND'
+export type AppCodes = 'OPERATION_SUCCESS' | 'INVALID_CREDENTIALS' | 'INVALID_EMAIL' | 'INTERNAL_ERROR' | 'UNAUTHORIZED' | 'FORBIDDEN' | 'USER_CREATED' | 'OK_CREATED' | 'BAD_REQUEST' | 'URL_CREATED' | 'URL_NOT_FOUND' | 'NOT_FOUND'
 
 export type AuthSessionEnum = 'OPEN' | 'CLOSED'
 
@@ -40,8 +40,8 @@ export interface Mutation {
     closeSessionBySessionId: BooleanOutputDto
     createPost: PostOutputDto
     archivePost: BooleanOutputDto
-    follow: BooleanOutputDto
-    unfollow: BooleanOutputDto
+    follow: UserCountsDto
+    unfollow: UserCountsDto
     __typename: 'Mutation'
 }
 
@@ -161,8 +161,8 @@ export interface MutationGenqlSelection{
     closeSessionBySessionId?: (BooleanOutputDtoGenqlSelection & { __args: {guid: Scalars['String']} })
     createPost?: (PostOutputDtoGenqlSelection & { __args: {input: CreatePostInput} })
     archivePost?: (BooleanOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
-    follow?: (BooleanOutputDtoGenqlSelection & { __args: {input: FollowUnfollowInput} })
-    unfollow?: (BooleanOutputDtoGenqlSelection & { __args: {input: FollowUnfollowInput} })
+    follow?: (UserCountsDtoGenqlSelection & { __args: {input: FollowUnfollowInput} })
+    unfollow?: (UserCountsDtoGenqlSelection & { __args: {input: FollowUnfollowInput} })
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -384,6 +384,7 @@ export const enumAppCodes = {
    UNAUTHORIZED: 'UNAUTHORIZED' as const,
    FORBIDDEN: 'FORBIDDEN' as const,
    USER_CREATED: 'USER_CREATED' as const,
+   OK_CREATED: 'OK_CREATED' as const,
    BAD_REQUEST: 'BAD_REQUEST' as const,
    URL_CREATED: 'URL_CREATED' as const,
    URL_NOT_FOUND: 'URL_NOT_FOUND' as const,

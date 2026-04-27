@@ -177,8 +177,8 @@ export class GraphqlRouterComposite {
 
   public async followUser(
     input: FollowUnfollowInput,
-    projection: BooleanOutputDtoGenqlSelection,
-  ): Promise<BooleanOutputDto> {
+    projection: UserCountsDtoGenqlSelection,
+  ): Promise<UserCountsDto> {
     const result = await this.routerService.client.mutation({
       follow: {
         __args: { input },
@@ -191,8 +191,8 @@ export class GraphqlRouterComposite {
 
   public async unfollowUser(
     input: FollowUnfollowInput,
-    projection: BooleanOutputDtoGenqlSelection,
-  ): Promise<BooleanOutputDto> {
+    projection: UserCountsDtoGenqlSelection,
+  ): Promise<UserCountsDto> {
     const result = await this.routerService.client.mutation({
       unfollow: {
         __args: { input },

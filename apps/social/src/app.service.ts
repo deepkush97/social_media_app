@@ -16,30 +16,29 @@ export class AppService {
     private readonly socialService: SocialService,
   ) {}
 
-  async follow(input: IFollowUnfollow): Promise<IAppResponse<boolean>> {
+  async follow(input: IFollowUnfollow): Promise<IAppResponse<IFollowerFollowingCount>> {
     try {
-      await this.socialService.follow(input);
+      const data = await this.socialService.follow(input);
 
       return new AppResponse({
         code: AppCodes.OPERATION_SUCCESS,
-        data: true,
+        data,
       });
     } catch (error) {
       this.logger.error('Error while follow operation', { context: this.constructor.name, error });
       return new AppResponse({
         code: AppCodes.INTERNAL_ERROR,
-        data: false,
       });
     }
   }
 
-  async unfollow(input: IFollowUnfollow): Promise<IAppResponse<boolean>> {
+  async unfollow(input: IFollowUnfollow): Promise<IAppResponse<IFollowerFollowingCount>> {
     try {
-      await this.socialService.unfollow(input);
+      const data = await this.socialService.unfollow(input);
 
       return new AppResponse({
         code: AppCodes.OPERATION_SUCCESS,
-        data: true,
+        data,
       });
     } catch (error) {
       this.logger.error('Error while unfollow operation', {
@@ -48,7 +47,6 @@ export class AppService {
       });
       return new AppResponse({
         code: AppCodes.INTERNAL_ERROR,
-        data: false,
       });
     }
   }

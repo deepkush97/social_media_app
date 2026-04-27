@@ -64,7 +64,26 @@ Content-Type: {{contentType}}
 
 ### ARCHIVE POST - archive post by id
 # @name getPost
-POST  {{baseUrl}}/posts/archive/4
+POST  {{baseUrl}}/posts/archive/18
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+
+### FOLLOW USER - follow a specific user
+# @name followUser
+POST  {{baseUrl}}/users/follow/4
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+### UNFOLLOW USER - unfollow a specific user
+# @name followUser
+POST  {{baseUrl}}/users/unfollow/4
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+### UNFOLLOW USER - unfollow a specific user
+# @name followUser
+GET  {{baseUrl}}/users/counts
 Authorization: Bearer {{token}}
 Content-Type: {{contentType}}
 

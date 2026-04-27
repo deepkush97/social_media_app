@@ -61,7 +61,7 @@ export class CacheService implements OnModuleInit {
     const count = 0;
 
     stream.on('data', (resultKeys) => {
-      this.logger.info(`delAll: keys found ${resultKeys.length} count ${count}`, {
+      this.logger.debug(`delAll: keys found ${resultKeys.length} count ${count}`, {
         context: CacheService.name,
       });
       for (const resultKey of resultKeys) {
