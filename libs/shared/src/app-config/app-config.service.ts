@@ -26,15 +26,6 @@ export class AppConfigService {
   get jwtExpirationTimeInSeconds(): number {
     return this.configService.get<number>('app.jwtExpirationTimeInSeconds');
   }
-  get redisHost(): string {
-    return this.configService.get<string>('app.redisHost');
-  }
-  get redisPort(): number {
-    return this.configService.get<number>('app.redisPort');
-  }
-  get redisPassword(): string {
-    return this.configService.get<string>('app.redisPassword');
-  }
 
   get graphqlRouterUrl(): string {
     return this.configService.get<string>('app.graphqlRouterUrl');
