@@ -22,6 +22,19 @@ export class PostsService {
     return `post:${userId}:${postId}`;
   }
 
+  private postListCacheKey(
+    userId: number,
+    take: number,
+    page: number,
+    status: PostStatusEnum,
+  ): string {
+    return `posts:${userId}:${take}:${page}:${status}`;
+  }
+
+  private deletePostListForUserKey(userId: number): string {
+    return `posts:${userId}:*`;
+  }
+
   async createPost(userId: number, input: INewPost): Promise<IAppResponse<IPost>> {
     const createPostResult = await this.routerComposite.createPost(
       { ...input, userId },
@@ -52,9 +65,10 @@ export class PostsService {
       postData,
       CACHE_TTL_IN_SECONDS,
     );
+    await this.cacheService.delAll(this.deletePostListForUserKey(userId), 3);
 
     return new AppResponse({
-      code: AppCodes.OPERATION_SUCCESS,
+      code: AppCodes.OK_CREATED,
       data: postData,
     });
   }
@@ -70,6 +84,7 @@ export class PostsService {
     }
 
     await this.cacheService.del(this.createPostCacheKey(userId, id));
+    await this.cacheService.delAll(this.deletePostListForUserKey(userId), 3);
 
     return new AppResponse({
       code: AppCodes.OPERATION_SUCCESS,
@@ -122,7 +137,7 @@ export class PostsService {
     page = 1,
     status = PostStatusEnum.ACTIVE,
   ): Promise<IAppResponse<IPaginatedData<IPost>>> {
-    const postsCacheKey = `posts:${userId}:${take}:${page}:${status}`;
+    const postsCacheKey = this.postListCacheKey(userId, take, page, status);
 
     const fromCache = await this.cacheService.get<IPaginatedData<IPost>>(postsCacheKey);
 
