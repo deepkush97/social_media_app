@@ -3,9 +3,11 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 
+import { DatabaseIndexType } from '@app/shared/enums/database-index-type.enum';
 import { IUser } from '@app/shared/interfaces/user/users.interface';
 
 @Entity('users')
@@ -16,7 +18,8 @@ export class User implements IUser {
   @Column({ length: 100 })
   name: string;
 
-  @Column({ length: 150, unique: true })
+  @Column({ length: 150 })
+  @Unique(`${DatabaseIndexType.UNQ}_email`, ['email'])
   email: string;
 
   @Column({ select: false, length: 200 })
