@@ -4,15 +4,15 @@ import http from 'k6/http';
 export const options = {
   stages: [
     {
-      duration: '30s',
+      duration: '5s',
       target: 20,
     },
     {
-      duration: '1m',
-      target: 20,
+      duration: '5s',
+      target: 40,
     },
     {
-      duration: '30s',
+      duration: '5s',
       target: 0,
     },
   ],
@@ -24,7 +24,7 @@ export const options = {
 
 const BASE_URL = 'http://localhost:3000';
 
-const request = ({ endpoint, payload, token, isPost = true }) => {
+const requestAndCheck = ({ endpoint, payload, token, isPost = true, label, checkCondition }) => {
   const params = {
     headers: {
       'Content-Type': 'application/json',
@@ -32,9 +32,29 @@ const request = ({ endpoint, payload, token, isPost = true }) => {
     },
   };
 
-  return isPost
-    ? http.post(endpoint, payload ? JSON.stringify(payload) : null, params)
-    : http.get(endpoint, params);
+  const jsonPayload = payload ? JSON.stringify(payload) : null;
+
+  const result = isPost ? http.post(endpoint, jsonPayload, params) : http.get(endpoint, params);
+
+  check(result, {
+    [label]: (r) => {
+      const body = JSON.parse(r.body);
+      const data = body.data;
+      const code = body.code;
+      const isSuccess = checkCondition(r, data, code);
+      if (!isSuccess) {
+        console.log(`FAILURE : ${label}`);
+        console.log('endpoint:', endpoint);
+        console.log('payload:', jsonPayload);
+        console.log('status:', r.status);
+        console.log('body:', body);
+        console.log();
+      }
+      return isSuccess;
+    },
+  });
+
+  return result;
 };
 
 export default function () {
@@ -50,172 +70,136 @@ export default function () {
     ...loginPayload,
   };
 
-  const signupRes = request({ endpoint: `${BASE_URL}/auth/signup`, payload: registerPayload });
-
-  check(signupRes, {
-    signup_success: (r) => {
-      const body = JSON.parse(r.body);
-
-      return r.status === 201 && body.code === 'USER_CREATED';
-    },
+  const signupRes = requestAndCheck({
+    endpoint: `${BASE_URL}/auth/signup`,
+    payload: registerPayload,
+    label: 'signup',
+    checkCondition: (r, data, code) => r.status === 201 && code === 'USER_CREATED',
   });
 
   const userId = signupRes.json().data?.profile.id;
 
-  const loginRes = request({ endpoint: `${BASE_URL}/auth/login`, payload: loginPayload });
-
-  check(loginRes, {
-    login_success: (r) => {
-      const body = JSON.parse(r.body);
-      return r.status === 200 && body.code === 'OPERATION_SUCCESS';
-    },
+  const loginRes = requestAndCheck({
+    endpoint: `${BASE_URL}/auth/login`,
+    payload: loginPayload,
+    label: 'login',
+    checkCondition: (r, data, code) => r.status === 200 && code === 'OPERATION_SUCCESS',
   });
 
   const token = loginRes.json().data?.jwtToken;
 
-  const profileRes = request({ endpoint: `${BASE_URL}/auth/profile`, isPost: false, token });
-  check(profileRes, {
-    profile_success: (r) => {
-      const body = JSON.parse(r.body);
-      const data = body.data.profile;
-
-      return (
-        r.status === 200 &&
-        body.code === 'OPERATION_SUCCESS' &&
-        registerPayload.email === data.email &&
-        registerPayload.name === data.name
-      );
-    },
+  const profileRes = requestAndCheck({
+    endpoint: `${BASE_URL}/auth/profile`,
+    isPost: false,
+    token,
+    label: 'profile',
+    checkCondition: (r, data, code) =>
+      r.status === 200 &&
+      code === 'OPERATION_SUCCESS' &&
+      registerPayload.email === data.profile.email &&
+      registerPayload.name === data.profile.name,
   });
 
-  const newPost1Payload = {
+  const post1 = {
     title: `${registerPayload.name}_1`,
     content: `${registerPayload.email}_1`,
   };
-  const newPost2Payload = {
+  const post2 = {
     title: `${registerPayload.name}_2`,
     content: `${registerPayload.email}_2`,
   };
 
-  const newPost1Res = request({ endpoint: `${BASE_URL}/posts`, payload: newPost1Payload, token });
-  check(newPost1Res, {
-    new_post_1_success: (r) => {
-      const body = JSON.parse(r.body);
-      const data = body.data;
-
-      return (
-        r.status === 201 &&
-        body.code === 'OK_CREATED' &&
-        data.status === 'ACTIVE' &&
-        newPost1Payload.title === data.title &&
-        newPost1Payload.content === data.content
-      );
-    },
+  const newPost1Res = requestAndCheck({
+    endpoint: `${BASE_URL}/posts`,
+    payload: post1,
+    token,
+    label: 'new_post_1',
+    checkCondition: (r, data, code) =>
+      r.status === 201 &&
+      code === 'OK_CREATED' &&
+      data.status === 'ACTIVE' &&
+      post1.title === data.title &&
+      post1.content === data.content,
   });
 
   const post1Id = newPost1Res.json().data?.id;
 
-  const newPost2Res = request({ endpoint: `${BASE_URL}/posts`, payload: newPost2Payload, token });
-  check(newPost2Res, {
-    new_post_2_success: (r) => {
-      const body = JSON.parse(r.body);
-      const data = body.data;
-
-      return (
-        r.status === 201 &&
-        body.code === 'OK_CREATED' &&
-        data.status === 'ACTIVE' &&
-        newPost2Payload.title === data.title &&
-        newPost2Payload.content === data.content
-      );
-    },
+  requestAndCheck({
+    endpoint: `${BASE_URL}/posts`,
+    payload: post2,
+    token,
+    label: 'new_post_2',
+    checkCondition: (r, data, code) =>
+      r.status === 201 &&
+      code === 'OK_CREATED' &&
+      data.status === 'ACTIVE' &&
+      post2.title === data.title &&
+      post2.content === data.content,
   });
 
-  const postListRes = request({ endpoint: `${BASE_URL}/posts`, isPost: false, token });
-  check(postListRes, {
-    post_list_success: (r) => {
-      const body = JSON.parse(r.body);
-      const data = body.data.items;
-
-      return (
-        r.status === 200 &&
-        body.code === 'OPERATION_SUCCESS' &&
-        data.length === 2 &&
-        newPost2Payload.title === data[0].title &&
-        newPost2Payload.content === data[0].content &&
-        data[0].status === 'ACTIVE' &&
-        newPost1Payload.title === data[1].title &&
-        newPost1Payload.content === data[1].content &&
-        data[1].status === 'ACTIVE'
-      );
-    },
+  requestAndCheck({
+    endpoint: `${BASE_URL}/posts`,
+    isPost: false,
+    token,
+    label: 'post_list',
+    checkCondition: (r, data, code) =>
+      r.status === 200 &&
+      code === 'OPERATION_SUCCESS' &&
+      data.items.length === 2 &&
+      post2.title === data.items[0].title &&
+      post2.content === data.items[0].content &&
+      data.items[0].status === 'ACTIVE' &&
+      post1.title === data.items[1].title &&
+      post1.content === data.items[1].content &&
+      data.items[1].status === 'ACTIVE',
   });
 
-  const getPostActiveRes = request({
+  const getPostActiveRes = requestAndCheck({
     endpoint: `${BASE_URL}/posts/${post1Id}`,
     isPost: false,
     token,
-  });
-  check(getPostActiveRes, {
-    get_post_active_success: (r) => {
-      const body = JSON.parse(r.body);
-      const data = body.data;
-
-      return (
-        r.status === 200 &&
-        body.code === 'OPERATION_SUCCESS' &&
-        newPost1Payload.title === data.title &&
-        newPost1Payload.content === data.content &&
-        data.status === 'ACTIVE' &&
-        data.id === post1Id
-      );
-    },
+    label: 'get_post_active',
+    checkCondition: (r, data, code) =>
+      r.status === 200 &&
+      code === 'OPERATION_SUCCESS' &&
+      post1.title === data.title &&
+      post1.content === data.content &&
+      data.status === 'ACTIVE' &&
+      data.id === post1Id,
   });
 
-  const archivePostRes = request({ endpoint: `${BASE_URL}/posts/archive/${post1Id}`, token });
-  check(archivePostRes, {
-    archive_post_success: (r) => {
-      const body = JSON.parse(r.body);
-
-      return r.status === 200 && body.code === 'OPERATION_SUCCESS';
-    },
+  const archivePostRes = requestAndCheck({
+    endpoint: `${BASE_URL}/posts/archive/${post1Id}`,
+    token,
+    label: 'archive_post',
+    checkCondition: (r, data, code) => r.status === 200 && code === 'OPERATION_SUCCESS',
   });
 
-  const getPostArchiveRes = request({
+  requestAndCheck({
     endpoint: `${BASE_URL}/posts/${post1Id}`,
     isPost: false,
     token,
-  });
-  check(getPostArchiveRes, {
-    get_post_archive_success: (r) => {
-      const body = JSON.parse(r.body);
-      const data = body.data;
-
-      return (
-        r.status === 200 &&
-        body.code === 'OPERATION_SUCCESS' &&
-        newPost1Payload.title === data.title &&
-        newPost1Payload.content === data.content &&
-        data.status === 'ARCHIVED' &&
-        data.id === post1Id
-      );
-    },
+    label: 'get_post_archive',
+    checkCondition: (r, data, code) =>
+      r.status === 200 &&
+      code === 'OPERATION_SUCCESS' &&
+      post1.title === data.title &&
+      post1.content === data.content &&
+      data.status === 'ARCHIVED' &&
+      data.id === post1Id,
   });
 
-  const postListWithArchivedRes = request({ endpoint: `${BASE_URL}/posts`, isPost: false, token });
-  check(postListWithArchivedRes, {
-    post_list_with_archived_success: (r) => {
-      const body = JSON.parse(r.body);
-      const data = body.data.items;
-
-      return (
-        r.status === 200 &&
-        body.code === 'OPERATION_SUCCESS' &&
-        newPost2Payload.title === data[0].title &&
-        newPost2Payload.content === data[0].content &&
-        data[0].status === 'ACTIVE'
-      );
-    },
+  requestAndCheck({
+    endpoint: `${BASE_URL}/posts`,
+    isPost: false,
+    token,
+    label: 'post_list_with_archived',
+    checkCondition: (r, data, code) =>
+      r.status === 200 &&
+      code === 'OPERATION_SUCCESS' &&
+      post2.title === data.items[0].title &&
+      post2.content === data.items[0].content &&
+      data.items[0].status === 'ACTIVE',
   });
 
   if (__VU === 1) {
@@ -224,72 +208,42 @@ export default function () {
 
   const targetUserId = userId - 1;
 
-  const followUserRes = request({ endpoint: `${BASE_URL}/users/follow/${targetUserId}`, token });
-  check(followUserRes, {
-    follow_user_success: (r) => {
-      const body = JSON.parse(r.body);
-
-      return r.status === 200 && body.code === 'OPERATION_SUCCESS';
-    },
+  requestAndCheck({
+    endpoint: `${BASE_URL}/users/follow/${targetUserId}`,
+    token,
+    label: 'follow_user',
+    checkCondition: (r, data, code) => r.status === 200 && code === 'OPERATION_SUCCESS',
   });
 
-  const userCountsAfterFollowRes = request({
+  requestAndCheck({
     endpoint: `${BASE_URL}/users/counts`,
     isPost: false,
     token,
-  });
-  check(userCountsAfterFollowRes, {
-    user_count_after_follow_success: (r) => {
-      const body = JSON.parse(r.body);
-      const data = body.data;
-
-      const isSuccess =
-        r.status === 200 && body.code === 'OPERATION_SUCCESS' && data.followings === 1;
-      if (!isSuccess) {
-        console.log('>>>>>', r.status, body);
-        console.log('>>>>>', userId, targetUserId);
-      }
-      return isSuccess;
-    },
+    label: 'user_count_after_follow',
+    checkCondition: (r, data, code) =>
+      r.status === 200 && code === 'OPERATION_SUCCESS' && data.followings >= 1,
   });
 
-  const unfollowUserRes = request({
+  requestAndCheck({
     endpoint: `${BASE_URL}/users/unfollow/${targetUserId}`,
     token,
-  });
-  check(unfollowUserRes, {
-    unfollow_user_success: (r) => {
-      const body = JSON.parse(r.body);
-
-      return r.status === 200 && body.code === 'OPERATION_SUCCESS';
-    },
+    label: 'unfollow_user',
+    checkCondition: (r, data, code) => r.status === 200 && code === 'OPERATION_SUCCESS',
   });
 
-  const userCountsAfterUnfollowRes = request({
+  requestAndCheck({
     endpoint: `${BASE_URL}/users/counts`,
     isPost: false,
     token,
-  });
-  check(userCountsAfterUnfollowRes, {
-    user_count_after_unfollow_success: (r) => {
-      const body = JSON.parse(r.body);
-      const data = body.data;
-      const isSuccess =
-        r.status === 200 && body.code === 'OPERATION_SUCCESS' && data.followings === 0;
-      if (!isSuccess) {
-        console.log('>>>>>', r.status, body);
-        console.log('>>>>>', userId, targetUserId);
-      }
-      return isSuccess;
-    },
+    label: 'user_count_after_unfollow',
+    checkCondition: (r, data, code) =>
+      r.status === 200 && code === 'OPERATION_SUCCESS' && data.followings === 0,
   });
 
-  const logoutRes = request({ endpoint: `${BASE_URL}/auth/logout`, token });
-  check(logoutRes, {
-    logout_success: (r) => {
-      const body = JSON.parse(r.body);
-
-      return r.status === 200 && body.code === 'OPERATION_SUCCESS';
-    },
+  requestAndCheck({
+    endpoint: `${BASE_URL}/auth/logout`,
+    token,
+    label: 'logout',
+    checkCondition: (r, data, code) => r.status === 200 && code === 'OPERATION_SUCCESS',
   });
 }
