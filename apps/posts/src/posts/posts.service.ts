@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 
 import { PostStatusEnum } from '@app/shared/enums/post-status.enum';
 import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface';
-import { INewUserWithUserId, IPost } from '@app/shared/interfaces/post/post.interface';
+import { INewPostWithUserId, IPost } from '@app/shared/interfaces/post/post.interface';
 import { createPaginatedResponse } from '@app/shared/utils/create-paginated-response';
 
 import { Post } from './entities/post.entity';
@@ -17,7 +17,7 @@ export class PostsService {
     private readonly postRepository: Repository<Post>,
   ) {}
 
-  async createNewPost(input: INewUserWithUserId): Promise<IPost> {
+  async createNewPost(input: INewPostWithUserId): Promise<IPost> {
     const newPost = this.postRepository.create(input);
 
     return this.postRepository.save(newPost);

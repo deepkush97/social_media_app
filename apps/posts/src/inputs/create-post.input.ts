@@ -2,10 +2,10 @@ import { Field, InputType, Int } from '@nestjs/graphql';
 
 import { IsNotEmpty, IsNumber, IsOptional, IsPositive, MaxLength } from 'class-validator';
 
-import { INewUserWithUserId } from '@app/shared/interfaces/post/post.interface';
+import { INewPostWithUserId } from '@app/shared/interfaces/post/post.interface';
 
 @InputType()
-export class CreatePostInput implements INewUserWithUserId {
+export class CreatePostInput implements INewPostWithUserId {
   @Field()
   @IsNotEmpty()
   @MaxLength(100)

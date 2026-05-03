@@ -12,6 +12,6 @@ export interface IPost extends INewPost, IBaseEntity {
   status: PostStatusEnum;
 }
 
-export interface INewUserWithUserId extends INewPost {
+export interface INewPostWithUserId extends INewPost {
   userId: number;
 }

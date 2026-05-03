@@ -6,7 +6,7 @@ import { PostStatusEnum } from '@app/shared/enums/post-status.enum';
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
 import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface';
 import { IPaginationInput } from '@app/shared/interfaces/pagination-input.interface';
-import { INewUserWithUserId, IPost } from '@app/shared/interfaces/post/post.interface';
+import { INewPostWithUserId, IPost } from '@app/shared/interfaces/post/post.interface';
 
 import { PostsService } from './posts/posts.service';
 
@@ -14,7 +14,7 @@ import { PostsService } from './posts/posts.service';
 export class AppService {
   constructor(private readonly postsService: PostsService) {}
 
-  async createPost(input: INewUserWithUserId): Promise<IAppResponse<IPost>> {
+  async createPost(input: INewPostWithUserId): Promise<IAppResponse<IPost>> {
     const data = await this.postsService.createNewPost(input);
 
     return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data });

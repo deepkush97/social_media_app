@@ -159,6 +159,7 @@ export class PostsService {
             content: 1,
             image: 1,
             status: 1,
+            userId: 1,
             title: 1,
             updatedAt: 1,
           },

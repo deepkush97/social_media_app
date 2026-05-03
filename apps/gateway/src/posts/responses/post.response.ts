@@ -6,7 +6,7 @@ import { IPost } from '@app/shared/interfaces/post/post.interface';
 import { AppPaginatedDataResponse } from '../../responses/pagination.response';
 
 @Exclude()
-export class PostResponse implements Omit<IPost, 'userId'> {
+export class PostResponse implements IPost {
   @Expose()
   id: number;
 
@@ -18,6 +18,9 @@ export class PostResponse implements Omit<IPost, 'userId'> {
 
   @Expose()
   image?: string;
+
+  @Expose()
+  userId: number;
 
   @Expose()
   createdAt: Date;
