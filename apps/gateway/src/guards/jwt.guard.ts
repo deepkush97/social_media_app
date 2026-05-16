@@ -7,12 +7,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {}
 
 export function Authenticated(): ReturnType<typeof applyDecorators> {
-  return applyDecorators(UseGuards(JwtAuthGuard));
+  return applyDecorators(UseGuards(JwtAuthGuard), ApiBearerAuth());
 }
 
 export const CurrentUser = createParamDecorator((_: unknown, ctx: ExecutionContext) => {

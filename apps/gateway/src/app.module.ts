@@ -5,7 +5,6 @@ import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { AppConfigModule } from '@app/shared/app-config/app-config.module';
 import { AppConfigService } from '@app/shared/app-config/app-config.service';
 import { AppLoggerModule } from '@app/shared/app-logger/app-logger.module';
-import { DatabaseModule } from '@app/shared/database/database.module';
 import { GraphqlRouterModule } from '@app/shared/graphql/graphql-router.module';
 import { AsyncStorageMiddleware } from '@app/shared/middlewares/async-storage.middleware';
 import { GatewayRequestValidationPipe } from '@app/shared/pipes/gateway-request-validation.pipe';
@@ -24,7 +23,6 @@ import { AppController } from './app.controller';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    DatabaseModule,
     AuthModule,
     GraphqlRouterModule.registerAsync({
       inject: [AppConfigService],

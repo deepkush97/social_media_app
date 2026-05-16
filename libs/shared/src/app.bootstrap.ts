@@ -34,9 +34,10 @@ export const appBootstrap = async (module: Type<unknown>): Promise<void> => {
   const isSwaggerEnabled = appConfigService.isSwaggerEnabled;
   if (isSwaggerEnabled) {
     const config = new DocumentBuilder()
-      .setTitle('Short url app')
-      .setDescription('API documentation for short url')
+      .setTitle('Social media app')
+      .setDescription('API documentation for social media app')
       .setVersion(version)
+      .addBearerAuth()
       .build();
     const documentFactory = (): OpenAPIObject => SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, documentFactory);

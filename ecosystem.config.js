@@ -1,5 +1,4 @@
 const dotenv = require('dotenv');
-const { error } = require('node:console');
 const path = require('node:path');
 const fs = require('node:fs');
 
