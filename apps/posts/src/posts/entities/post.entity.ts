@@ -23,7 +23,7 @@ export class Post implements IPost {
   @Column({ nullable: true, type: 'varchar', length: 255 })
   image?: string;
 
-  @Column({ nullable: true, type: 'int' })
+  @Column({ type: 'int' })
   userId: number;
 
   @Column({ enum: PostStatusEnum, type: 'enum', default: PostStatusEnum.ACTIVE })
