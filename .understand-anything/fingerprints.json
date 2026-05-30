@@ -1,0 +1,6700 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "f5e76982f7247945e7e0dd533d1ff0c841476d69",
+  "generatedAt": "2026-05-29T06:05:24.287Z",
+  "files": {
+    ".env": {
+      "filePath": ".env",
+      "contentHash": "873b8a9562f8bda0ee9ae89cf38a69d3d52b2a02652224850aae02bc54d7d0da",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": true
+    },
+    ".env.auth": {
+      "filePath": ".env.auth",
+      "contentHash": "35bf5322d76a83d83284bae87452329bbcf1661eef44805a78fa0a066c2ebe8e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": false
+    },
+    ".env.gateway": {
+      "filePath": ".env.gateway",
+      "contentHash": "b585423f1123a89c9706ad17209e1db040e30ea3135ab1be689b280b54a1ca1c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 24,
+      "hasStructuralAnalysis": false
+    },
+    ".env.posts": {
+      "filePath": ".env.posts",
+      "contentHash": "bf265548aa3c46ddef26558d2b5ce732111744ea55599a1c25f58915ef485cb2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": false
+    },
+    ".env.router": {
+      "filePath": ".env.router",
+      "contentHash": "d46bfa348834bb49b15f5bc933343299f2a261f7c456dbd8941cca12f5cc10b5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": false
+    },
+    ".env.social": {
+      "filePath": ".env.social",
+      "contentHash": "423e9ab93253bdfae22211fb6b27f4ea802edfcf6f36e1e2abd30f5b10f0a9a2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 22,
+      "hasStructuralAnalysis": false
+    },
+    ".gitignore": {
+      "filePath": ".gitignore",
+      "contentHash": "9840c9e6d296f910985a501062e3973924d57c3c42edb93c6d9e72b0e8383ea9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 40,
+      "hasStructuralAnalysis": false
+    },
+    ".husky/pre-commit": {
+      "filePath": ".husky/pre-commit",
+      "contentHash": "e2b7c9733375d7182af2033bda9a7d2a05d0db5eef5be53d26eb7b5f3df8fbc3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    ".prettierignore": {
+      "filePath": ".prettierignore",
+      "contentHash": "f276c6bf83b8ab672a7824613e5026aa198a29cc4280ca7767b758e21d2a576b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": false
+    },
+    ".prettierrc": {
+      "filePath": ".prettierrc",
+      "contentHash": "1dc8d847fcb64f09f7b34f0f5f66941f5433493b42acadea2e32dadb64d7a2eb",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 11,
+      "hasStructuralAnalysis": false
+    },
+    "README.md": {
+      "filePath": "README.md",
+      "contentHash": "f7eac1c4659fc740186a986ee3d2bf45b223fc05f0caca654053dd909a2808b4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    },
+    "client.http": {
+      "filePath": "client.http",
+      "contentHash": "98f0a5b0b27941dab4705c1f9a66b01457caae1418dadfc691f86d3a69603114",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 89,
+      "hasStructuralAnalysis": false
+    },
+    "docker-compose.yml": {
+      "filePath": "docker-compose.yml",
+      "contentHash": "341d42b5816d2acb5e0ab083d2097c2d0486531653ddcdb69d0fb2359cc6aacd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 67,
+      "hasStructuralAnalysis": true
+    },
+    "ecosystem.config.js": {
+      "filePath": "ecosystem.config.js",
+      "contentHash": "4017ba2c275053c35c0802c3232cfbe27292ccff787e7e2830c06c1d2d43c53d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 28,
+      "hasStructuralAnalysis": true
+    },
+    "eslint.config.mjs": {
+      "filePath": "eslint.config.mjs",
+      "contentHash": "1efcc8118406f4ae18827fac8494af60b1296d174f120b7ff38a326244584001",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@eslint/eslintrc",
+          "specifiers": [
+            "FlatCompat"
+          ]
+        },
+        {
+          "source": "eslint-plugin-simple-import-sort",
+          "specifiers": [
+            "simpleImportSort"
+          ]
+        },
+        {
+          "source": "eslint/config",
+          "specifiers": [
+            "defineConfig"
+          ]
+        },
+        {
+          "source": "path",
+          "specifiers": [
+            "path"
+          ]
+        },
+        {
+          "source": "url",
+          "specifiers": [
+            "fileURLToPath"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 72,
+      "hasStructuralAnalysis": true
+    },
+    "k6-test.js": {
+      "filePath": "k6-test.js",
+      "contentHash": "6f1925940777d42220171b19dde01c9b7a2d49f58060a87ae0086f2f9e330d7a",
+      "functions": [
+        {
+          "name": "requestAndCheck",
+          "params": [],
+          "exported": false,
+          "lineCount": 32
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "k6",
+          "specifiers": [
+            "check"
+          ]
+        },
+        {
+          "source": "k6/http",
+          "specifiers": [
+            "http"
+          ]
+        }
+      ],
+      "exports": [
+        "options"
+      ],
+      "totalLines": 250,
+      "hasStructuralAnalysis": true
+    },
+    "nest-cli.json": {
+      "filePath": "nest-cli.json",
+      "contentHash": "fd3b2a206396b2d906cd97a95e843ed83fe6e6607e0afafc4f8cc00539df431d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 59,
+      "hasStructuralAnalysis": true
+    },
+    "package.json": {
+      "filePath": "package.json",
+      "contentHash": "d3354adb25c9dfc253fc31f0134dcc63ccf717f45bbe1e013d8a1e3728d1827a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 104,
+      "hasStructuralAnalysis": true
+    },
+    "tsconfig.build.json": {
+      "filePath": "tsconfig.build.json",
+      "contentHash": "3a016b4ee9713cd16295128bad42e6077e5ecd8c2ed225caa7d1e0e3f1c7f03f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 5,
+      "hasStructuralAnalysis": true
+    },
+    "tsconfig.json": {
+      "filePath": "tsconfig.json",
+      "contentHash": "38f8874c926be6fafed2d78a10b64e14617e3f15df56c5c8197c6dec78d66bf9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 43,
+      "hasStructuralAnalysis": true
+    },
+    "vitest.config.ts": {
+      "filePath": "vitest.config.ts",
+      "contentHash": "a5a43ea645b767dffbbc6a06d50507043bb5e8751ca5b09bab2d602c951a9dcc",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "path",
+          "specifiers": [
+            "resolve"
+          ]
+        },
+        {
+          "source": "unplugin-swc",
+          "specifiers": [
+            "swc"
+          ]
+        },
+        {
+          "source": "vitest/config",
+          "specifiers": [
+            "defineConfig"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "webpack.config.mjs": {
+      "filePath": "webpack.config.mjs",
+      "contentHash": "bd35e5b0aa1c346de419e72ccc7f9e70d6db28c38c20c6dccc7fdd674689174d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "module"
+      ],
+      "totalLines": 17,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/generate-schema.ts": {
+      "filePath": "scripts/generate-schema.ts",
+      "contentHash": "61ac8f7148dd36bff7ace2707e34fbd536ce90a206936a36adebed0afd848337",
+      "functions": [
+        {
+          "name": "run",
+          "params": [],
+          "returnType": "Promise<void>",
+          "exported": false,
+          "lineCount": 47
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "node:child_process",
+          "specifiers": [
+            "execSync"
+          ]
+        },
+        {
+          "source": "node:fs",
+          "specifiers": [
+            "writeFileSync"
+          ]
+        },
+        {
+          "source": "node:path",
+          "specifiers": [
+            "* as path"
+          ]
+        },
+        {
+          "source": "yaml",
+          "specifiers": [
+            "* as yaml"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 62,
+      "hasStructuralAnalysis": true
+    },
+    "router/router.yaml": {
+      "filePath": "router/router.yaml",
+      "contentHash": "d92906419a57c221acf61a8b8634754d31a1511a750b6268abc53578a003df3d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 11,
+      "hasStructuralAnalysis": true
+    },
+    "router/supergraph-config.yaml": {
+      "filePath": "router/supergraph-config.yaml",
+      "contentHash": "063f31d3b49eb0c8009b5cc0379a0cbf9191d3bb2c63f10f5dafded9ed45f95f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 15,
+      "hasStructuralAnalysis": true
+    },
+    "apps/auth/tsconfig.app.json": {
+      "filePath": "apps/auth/tsconfig.app.json",
+      "contentHash": "548c8077d697276ad73becf327bf03fc82ba2ac964e36769d55691e50ab2a455",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 10,
+      "hasStructuralAnalysis": true
+    },
+    "apps/auth/src/main.ts": {
+      "filePath": "apps/auth/src/main.ts",
+      "contentHash": "52dc1b8b2b2283ff8b02f1310c158801ffe863c012f0390a8d093e7a9f53f1be",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@app/shared/app.bootstrap",
+          "specifiers": [
+            "appBootstrap"
+          ]
+        },
+        {
+          "source": "./app.module",
+          "specifiers": [
+            "AppModule"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": true
+    },
+    "apps/auth/src/app.module.ts": {
+      "filePath": "apps/auth/src/app.module.ts",
+      "contentHash": "41500bf76f6da7fa71cf4439b18bd34b642349f7562a95dfaef68f7697d80b4a",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AppModule",
+          "methods": [
+            "configure"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/apollo",
+          "specifiers": [
+            "ApolloFederationDriver",
+            "ApolloFederationDriverConfig"
+          ]
+        },
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "MiddlewareConsumer",
+            "Module",
+            "NestModule"
+          ]
+        },
+        {
+          "source": "@nestjs/core",
+          "specifiers": [
+            "APP_PIPE"
+          ]
+        },
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "GraphQLModule"
+          ]
+        },
+        {
+          "source": "node:path",
+          "specifiers": [
+            "join"
+          ]
+        },
+        {
+          "source": "@apollo/server/plugin/inlineTrace",
+          "specifiers": [
+            "ApolloServerPluginInlineTrace"
+          ]
+        },
+        {
+          "source": "@app/shared/app-config/app-config.module",
+          "specifiers": [
+            "AppConfigModule"
+          ]
+        },
+        {
+          "source": "@app/shared/app-config/app-config.service",
+          "specifiers": [
+            "AppConfigService"
+          ]
+        },
+        {
+          "source": "@app/shared/app-logger/app-logger.module",
+          "specifiers": [
+            "AppLoggerModule"
+          ]
+        },
+        {
+          "source": "@app/shared/bcrypt/bcrypt.module",
+          "specifiers": [
+            "BcryptModule"
+          ]
+        },
+        {
+          "source": "@app/shared/database/database.module",
+          "specifiers": [
+            "DatabaseModule"
+          ]
+        },
+        {
+          "source": "@app/shared/graphql/graphql-router.module",
+          "specifiers": [
+            "GraphqlRouterModule"
+          ]
+        },
+        {
+          "source": "@app/shared/middlewares/async-storage.middleware",
+          "specifiers": [
+            "AsyncStorageMiddleware"
+          ]
+        },
+        {
+          "source": "@app/shared/pipes/graphql-request-validation.pipe",
+          "specifiers": [
+            "GraphqlRequestValidationPipe"
+          ]
+        },
+        {
+          "source": "./session/session.module",
+          "specifiers": [
+            "SessionModule"
+          ]
+        },
+        {
+          "source": "./user/user.module",
+          "specifiers": [
+            "UserModule"
+          ]
+        },
+        {
+          "source": "./app.resolver",
+          "specifiers": [
+            "AppResolver"
+          ]
+        },
+        {
+          "source": "./app.service",
+          "specifiers": [
+            "AppService"
+          ]
+        }
+      ],
+      "exports": [
+        "AppModule"
+      ],
+      "totalLines": 71,
+      "hasStructuralAnalysis": true
+    },
+    "apps/auth/src/app.resolver.ts": {
+      "filePath": "apps/auth/src/app.resolver.ts",
+      "contentHash": "28630c03dcebe0707a6c3f82067a9c575f74d41a13fe1be17ca786455f526fa4",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AppResolver",
+          "methods": [
+            "constructor",
+            "createUser",
+            "createSession",
+            "loginUser",
+            "findUserById",
+            "closeAllOpenSessionByUserId",
+            "closeSessionBySessionId",
+            "findOpenSessionByGuid"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 49
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "Args",
+            "Int",
+            "Mutation",
+            "Query",
+            "Resolver"
+          ]
+        },
+        {
+          "source": "@app/shared/app-logger/app-logger.service",
+          "specifiers": [
+            "AppLoggerService"
+          ]
+        },
+        {
+          "source": "@app/shared/boolean.output",
+          "specifiers": [
+            "BooleanOutputDto"
+          ]
+        },
+        {
+          "source": "./inputs/create-user.input",
+          "specifiers": [
+            "CreateUserInput"
+          ]
+        },
+        {
+          "source": "./inputs/login-user.input",
+          "specifiers": [
+            "LoginUserInput"
+          ]
+        },
+        {
+          "source": "./outputs/session.output",
+          "specifiers": [
+            "SessionOutputDto"
+          ]
+        },
+        {
+          "source": "./outputs/user.output",
+          "specifiers": [
+            "UserOutputDto"
+          ]
+        },
+        {
+          "source": "./app.service",
+          "specifiers": [
+            "AppService"
+          ]
+        }
+      ],
+      "exports": [
+        "AppResolver"
+      ],
+      "totalLines": 63,
+      "hasStructuralAnalysis": true
+    },
+    "apps/auth/src/app.service.ts": {
+      "filePath": "apps/auth/src/app.service.ts",
+      "contentHash": "7c08617b24f1e253e2c225f7adaad5aa84edfb4ce4ae8773283ef58a9f07d644",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AppService",
+          "methods": [
+            "constructor",
+            "createUser",
+            "loginUser",
+            "findUserById",
+            "createSession",
+            "closeAllOpenSessionByUserId",
+            "closeSessionBySessionId",
+            "getOpenSessionBySessionId"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 98
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable"
+          ]
+        },
+        {
+          "source": "@app/shared/app-response.dto",
+          "specifiers": [
+            "AppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/bcrypt/bcrypt.service",
+          "specifiers": [
+            "BcryptService"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/app-codes.enum",
+          "specifiers": [
+            "AppCodes"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/app-response.interface",
+          "specifiers": [
+            "IAppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/session/session.interface",
+          "specifiers": [
+            "ISession"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/user/users.interface",
+          "specifiers": [
+            "ILoginUser",
+            "INewUser",
+            "IUser"
+          ]
+        },
+        {
+          "source": "./session/session.service",
+          "specifiers": [
+            "SessionService"
+          ]
+        },
+        {
+          "source": "./user/user.service",
+          "specifiers": [
+            "UsersService"
+          ]
+        }
+      ],
+      "exports": [
+        "AppService"
+      ],
+      "totalLines": 112,
+      "hasStructuralAnalysis": true
+    },
+    "apps/auth/src/user/entities/user.entity.ts": {
+      "filePath": "apps/auth/src/user/entities/user.entity.ts",
+      "contentHash": "2bce0fc065b1f19d046199fdf265ba3fd320b62d75dadef2339aeeea3660a144",
+      "functions": [],
+      "classes": [
+        {
+          "name": "User",
+          "methods": [],
+          "properties": [
+            "id",
+            "name",
+            "email",
+            "password",
+            "createdAt",
+            "updatedAt"
+          ],
+          "exported": true,
+          "lineCount": 20
+        }
+      ],
+      "imports": [
+        {
+          "source": "typeorm",
+          "specifiers": [
+            "Column",
+            "CreateDateColumn",
+            "Entity",
+            "PrimaryGeneratedColumn",
+            "Unique",
+            "UpdateDateColumn"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/database-index-type.enum",
+          "specifiers": [
+            "DatabaseIndexType"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/user/users.interface",
+          "specifiers": [
+            "IUser"
+          ]
+        }
+      ],
+      "exports": [
+        "User"
+      ],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "apps/auth/src/user/user.module.ts": {
+      "filePath": "apps/auth/src/user/user.module.ts",
+      "contentHash": "ace03e0b80b35170cf9ebce76226823d69b719f3c682b8c1e5129f054ede123b",
+      "functions": [],
+      "classes": [
+        {
+          "name": "UserModule",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Module"
+          ]
+        },
+        {
+          "source": "@nestjs/typeorm",
+          "specifiers": [
+            "TypeOrmModule"
+          ]
+        },
+        {
+          "source": "./entities/user.entity",
+          "specifiers": [
+            "User"
+          ]
+        },
+        {
+          "source": "./user.service",
+          "specifiers": [
+            "UsersService"
+          ]
+        }
+      ],
+      "exports": [
+        "UserModule"
+      ],
+      "totalLines": 14,
+      "hasStructuralAnalysis": true
+    },
+    "apps/auth/src/user/user.service.ts": {
+      "filePath": "apps/auth/src/user/user.service.ts",
+      "contentHash": "617054ea5677eb088d3f51073f845d9894e2d39a26f00966ba7e99232008a6bc",
+      "functions": [],
+      "classes": [
+        {
+          "name": "UsersService",
+          "methods": [
+            "constructor",
+            "create",
+            "findAll",
+            "findOneById",
+            "findByEmail",
+            "update",
+            "remove"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 32
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable"
+          ]
+        },
+        {
+          "source": "@nestjs/typeorm",
+          "specifiers": [
+            "InjectRepository"
+          ]
+        },
+        {
+          "source": "typeorm",
+          "specifiers": [
+            "FindOptionsSelect",
+            "Repository"
+          ]
+        },
+        {
+          "source": "./entities/user.entity",
+          "specifiers": [
+            "User"
+          ]
+        }
+      ],
+      "exports": [
+        "UsersService"
+      ],
+      "totalLines": 41,
+      "hasStructuralAnalysis": true
+    },
+    "apps/auth/src/session/entities/session.entity.ts": {
+      "filePath": "apps/auth/src/session/entities/session.entity.ts",
+      "contentHash": "d95e7328c6120ce14605f593cd36a2386efd9cfa7f35a648e09597824736ff43",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Session",
+          "methods": [],
+          "properties": [
+            "id",
+            "guid",
+            "status",
+            "createdAt",
+            "updatedAt",
+            "userId"
+          ],
+          "exported": true,
+          "lineCount": 20
+        }
+      ],
+      "imports": [
+        {
+          "source": "typeorm",
+          "specifiers": [
+            "Column",
+            "CreateDateColumn",
+            "Entity",
+            "Index",
+            "PrimaryGeneratedColumn",
+            "UpdateDateColumn"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/auth-session.enum",
+          "specifiers": [
+            "AuthSessionEnum"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/database-index-type.enum",
+          "specifiers": [
+            "DatabaseIndexType"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/session/session.interface",
+          "specifiers": [
+            "ISession"
+          ]
+        }
+      ],
+      "exports": [
+        "Session"
+      ],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "apps/auth/src/session/session.module.ts": {
+      "filePath": "apps/auth/src/session/session.module.ts",
+      "contentHash": "c817621260adb647704eb783305f3809af0db09e49c39ff748a33f2e3dba5113",
+      "functions": [],
+      "classes": [
+        {
+          "name": "SessionModule",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Module"
+          ]
+        },
+        {
+          "source": "@nestjs/typeorm",
+          "specifiers": [
+            "TypeOrmModule"
+          ]
+        },
+        {
+          "source": "./entities/session.entity",
+          "specifiers": [
+            "Session"
+          ]
+        },
+        {
+          "source": "./session.service",
+          "specifiers": [
+            "SessionService"
+          ]
+        }
+      ],
+      "exports": [
+        "SessionModule"
+      ],
+      "totalLines": 14,
+      "hasStructuralAnalysis": true
+    },
+    "apps/auth/src/session/session.service.ts": {
+      "filePath": "apps/auth/src/session/session.service.ts",
+      "contentHash": "d70c3eabc685ab3a71915779899238a80c6f082c5b19157783f6a04e3bb81631",
+      "functions": [],
+      "classes": [
+        {
+          "name": "SessionService",
+          "methods": [
+            "constructor",
+            "createNewSession",
+            "findOpenSessionByGuid",
+            "closeAllSession",
+            "closeSession"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 38
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable"
+          ]
+        },
+        {
+          "source": "@nestjs/typeorm",
+          "specifiers": [
+            "InjectRepository"
+          ]
+        },
+        {
+          "source": "typeorm",
+          "specifiers": [
+            "Repository"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/auth-session.enum",
+          "specifiers": [
+            "AuthSessionEnum"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/session/session.interface",
+          "specifiers": [
+            "ISession"
+          ]
+        },
+        {
+          "source": "./entities/session.entity",
+          "specifiers": [
+            "Session"
+          ]
+        }
+      ],
+      "exports": [
+        "SessionService"
+      ],
+      "totalLines": 50,
+      "hasStructuralAnalysis": true
+    },
+    "apps/auth/src/inputs/login-user.input.ts": {
+      "filePath": "apps/auth/src/inputs/login-user.input.ts",
+      "contentHash": "0afe979b42f5bc4a78b07a202b44541e4e86b07f79e30a3bd16a5299f943150f",
+      "functions": [],
+      "classes": [
+        {
+          "name": "LoginUserInput",
+          "methods": [],
+          "properties": [
+            "email",
+            "password"
+          ],
+          "exported": true,
+          "lineCount": 12
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "Field",
+            "InputType"
+          ]
+        },
+        {
+          "source": "class-validator",
+          "specifiers": [
+            "IsEmail",
+            "IsNotEmpty",
+            "MaxLength",
+            "MinLength"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/user/users.interface",
+          "specifiers": [
+            "ILoginUser"
+          ]
+        }
+      ],
+      "exports": [
+        "LoginUserInput"
+      ],
+      "totalLines": 20,
+      "hasStructuralAnalysis": true
+    },
+    "apps/auth/src/inputs/create-user.input.ts": {
+      "filePath": "apps/auth/src/inputs/create-user.input.ts",
+      "contentHash": "b8cd243a1be9a50457a20c639995e1e4eb943dc2364676ab4465b58aac1fd8d1",
+      "functions": [],
+      "classes": [
+        {
+          "name": "CreateUserInput",
+          "methods": [],
+          "properties": [
+            "name",
+            "email",
+            "password"
+          ],
+          "exported": true,
+          "lineCount": 17
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "Field",
+            "InputType"
+          ]
+        },
+        {
+          "source": "class-validator",
+          "specifiers": [
+            "IsEmail",
+            "IsNotEmpty",
+            "MaxLength",
+            "MinLength"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/user/users.interface",
+          "specifiers": [
+            "INewUser"
+          ]
+        }
+      ],
+      "exports": [
+        "CreateUserInput"
+      ],
+      "totalLines": 25,
+      "hasStructuralAnalysis": true
+    },
+    "apps/auth/src/outputs/session.output.ts": {
+      "filePath": "apps/auth/src/outputs/session.output.ts",
+      "contentHash": "c50d6c8762d04e5067a3a0ede56e49945b15db208b8467b8a4560ed7e9663274",
+      "functions": [],
+      "classes": [
+        {
+          "name": "SessionOutput",
+          "methods": [],
+          "properties": [
+            "id",
+            "guid",
+            "userId",
+            "status",
+            "createdAt",
+            "updatedAt"
+          ],
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "SessionOutputDto",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "Field",
+            "Int",
+            "ObjectType"
+          ]
+        },
+        {
+          "source": "@app/shared/app-graphql-response.dto",
+          "specifiers": [
+            "AppGraphqlResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/auth-session.enum",
+          "specifiers": [
+            "AuthSessionEnum"
+          ]
+        }
+      ],
+      "exports": [
+        "SessionOutput",
+        "SessionOutputDto"
+      ],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    "apps/auth/src/outputs/user.output.ts": {
+      "filePath": "apps/auth/src/outputs/user.output.ts",
+      "contentHash": "47e4556025ec49492ae8a32ee7090e09fac8a3e2db26d5f13ff4bcfb6c642fa5",
+      "functions": [],
+      "classes": [
+        {
+          "name": "UserOutput",
+          "methods": [],
+          "properties": [
+            "id",
+            "name",
+            "email",
+            "createdAt",
+            "updatedAt"
+          ],
+          "exported": true,
+          "lineCount": 16
+        },
+        {
+          "name": "UserOutputDto",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "Field",
+            "Int",
+            "ObjectType"
+          ]
+        },
+        {
+          "source": "@app/shared/app-graphql-response.dto",
+          "specifiers": [
+            "AppGraphqlResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/user/users.interface",
+          "specifiers": [
+            "IUser"
+          ]
+        }
+      ],
+      "exports": [
+        "UserOutput",
+        "UserOutputDto"
+      ],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/tsconfig.app.json": {
+      "filePath": "apps/gateway/tsconfig.app.json",
+      "contentHash": "5b53780496601e2f12b43f2875a4ecc417f2b7ae0a8b2fa14884f28ecb391ece",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 10,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/main.ts": {
+      "filePath": "apps/gateway/src/main.ts",
+      "contentHash": "52dc1b8b2b2283ff8b02f1310c158801ffe863c012f0390a8d093e7a9f53f1be",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@app/shared/app.bootstrap",
+          "specifiers": [
+            "appBootstrap"
+          ]
+        },
+        {
+          "source": "./app.module",
+          "specifiers": [
+            "AppModule"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/app.module.ts": {
+      "filePath": "apps/gateway/src/app.module.ts",
+      "contentHash": "e8ad52c069a338447bb09545472f353752a9d0b3866531781fb9ab69be64bb8f",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AppModule",
+          "methods": [
+            "configure"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "MiddlewareConsumer",
+            "Module",
+            "NestModule"
+          ]
+        },
+        {
+          "source": "@nestjs/config",
+          "specifiers": [
+            "ConfigModule"
+          ]
+        },
+        {
+          "source": "@nestjs/core",
+          "specifiers": [
+            "APP_INTERCEPTOR",
+            "APP_PIPE"
+          ]
+        },
+        {
+          "source": "@app/shared/app-config/app-config.module",
+          "specifiers": [
+            "AppConfigModule"
+          ]
+        },
+        {
+          "source": "@app/shared/app-config/app-config.service",
+          "specifiers": [
+            "AppConfigService"
+          ]
+        },
+        {
+          "source": "@app/shared/app-logger/app-logger.module",
+          "specifiers": [
+            "AppLoggerModule"
+          ]
+        },
+        {
+          "source": "@app/shared/graphql/graphql-router.module",
+          "specifiers": [
+            "GraphqlRouterModule"
+          ]
+        },
+        {
+          "source": "@app/shared/middlewares/async-storage.middleware",
+          "specifiers": [
+            "AsyncStorageMiddleware"
+          ]
+        },
+        {
+          "source": "@app/shared/pipes/gateway-request-validation.pipe",
+          "specifiers": [
+            "GatewayRequestValidationPipe"
+          ]
+        },
+        {
+          "source": "./auth/auth.module",
+          "specifiers": [
+            "AuthModule"
+          ]
+        },
+        {
+          "source": "./interceptors/global.interceptor",
+          "specifiers": [
+            "GlobalInterceptor"
+          ]
+        },
+        {
+          "source": "./posts/posts.module",
+          "specifiers": [
+            "PostsModule"
+          ]
+        },
+        {
+          "source": "./users/users.module",
+          "specifiers": [
+            "UsersModule"
+          ]
+        },
+        {
+          "source": "./app.controller",
+          "specifiers": [
+            "AppController"
+          ]
+        }
+      ],
+      "exports": [
+        "AppModule"
+      ],
+      "totalLines": 55,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/app.controller.ts": {
+      "filePath": "apps/gateway/src/app.controller.ts",
+      "contentHash": "9d01a283a86b5fa2b29f897fcefbab6aa50926712123350f0184daa7154622da",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AppController",
+          "methods": [
+            "getHello"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Get"
+          ]
+        },
+        {
+          "source": "@nestjs/swagger",
+          "specifiers": [
+            "ApiOkResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/app-response.dto",
+          "specifiers": [
+            "AppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/decorators/api-controller.decorator",
+          "specifiers": [
+            "ApiController"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/app-codes.enum",
+          "specifiers": [
+            "AppCodes"
+          ]
+        }
+      ],
+      "exports": [
+        "AppController"
+      ],
+      "totalLines": 18,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/app.constant.ts": {
+      "filePath": "apps/gateway/src/app.constant.ts",
+      "contentHash": "5b4ad1407ec3f847362c594454e1cadec3c642251431cff64fd94adf8a853231",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "CACHE_TTL_IN_SECONDS"
+      ],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/app-code-to-status.map.ts": {
+      "filePath": "apps/gateway/src/app-code-to-status.map.ts",
+      "contentHash": "2b615caa685875a388174f07c6f6c861a1b20f35ff4677f7a05ab2ea1f385f3f",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "HttpStatus"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/app-codes.enum",
+          "specifiers": [
+            "AppCodes"
+          ]
+        }
+      ],
+      "exports": [
+        "appCodeToStatusMap"
+      ],
+      "totalLines": 19,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/guards/jwt.guard.ts": {
+      "filePath": "apps/gateway/src/guards/jwt.guard.ts",
+      "contentHash": "8320eae0751518f5cb5ec8d156bf562df08c51d5ab59027d675b7fcdfdf5cf50",
+      "functions": [
+        {
+          "name": "Authenticated",
+          "params": [],
+          "returnType": "ReturnType<typeof applyDecorators>",
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "classes": [
+        {
+          "name": "JwtAuthGuard",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "applyDecorators",
+            "createParamDecorator",
+            "ExecutionContext",
+            "Injectable",
+            "UnauthorizedException",
+            "UseGuards"
+          ]
+        },
+        {
+          "source": "@nestjs/passport",
+          "specifiers": [
+            "AuthGuard"
+          ]
+        },
+        {
+          "source": "@nestjs/swagger",
+          "specifiers": [
+            "ApiBearerAuth"
+          ]
+        }
+      ],
+      "exports": [
+        "JwtAuthGuard",
+        "Authenticated",
+        "CurrentUser"
+      ],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/interceptors/global.interceptor.ts": {
+      "filePath": "apps/gateway/src/interceptors/global.interceptor.ts",
+      "contentHash": "f28a0f39109b9860acf2dd9c9eb80cebc118bfa1fd453963b5b353fa7da9b3c7",
+      "functions": [],
+      "classes": [
+        {
+          "name": "GlobalInterceptor",
+          "methods": [
+            "constructor",
+            "intercept"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 49
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "CallHandler",
+            "ExecutionContext",
+            "HttpStatus",
+            "Injectable",
+            "NestInterceptor"
+          ]
+        },
+        {
+          "source": "apps/gateway/src/app-code-to-status.map",
+          "specifiers": [
+            "appCodeToStatusMap"
+          ]
+        },
+        {
+          "source": "express",
+          "specifiers": [
+            "Request",
+            "Response"
+          ]
+        },
+        {
+          "source": "rxjs",
+          "specifiers": [
+            "map",
+            "Observable",
+            "tap"
+          ]
+        },
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "@app/shared/app-logger/app-logger.service",
+          "specifiers": [
+            "AppLoggerService"
+          ]
+        },
+        {
+          "source": "@app/shared/app-response.dto",
+          "specifiers": [
+            "AppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/app-codes.enum",
+          "specifiers": [
+            "AppCodes"
+          ]
+        },
+        {
+          "source": "@app/shared/utils/async.store",
+          "specifiers": [
+            "AsyncStore"
+          ]
+        }
+      ],
+      "exports": [
+        "GlobalInterceptor"
+      ],
+      "totalLines": 69,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/responses/pagination.response.ts": {
+      "filePath": "apps/gateway/src/responses/pagination.response.ts",
+      "contentHash": "57ac20c30616d05503e0a6d20a42abdb1c5d9b41d2d9559d668efcdc9136d1c4",
+      "functions": [
+        {
+          "name": "AppPaginatedDataResponse",
+          "params": [
+            "ItemClass"
+          ],
+          "returnType": "Type<IPaginatedData<T>>",
+          "exported": true,
+          "lineCount": 13
+        }
+      ],
+      "classes": [
+        {
+          "name": "PaginationMeta",
+          "methods": [],
+          "properties": [
+            "total",
+            "page",
+            "lastPage",
+            "take"
+          ],
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Type"
+          ]
+        },
+        {
+          "source": "class-transformer",
+          "specifiers": [
+            "Exclude",
+            "Expose",
+            "TransformerType"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/paginated-data.interface",
+          "specifiers": [
+            "IPaginatedData",
+            "IPaginatedMetadata"
+          ]
+        }
+      ],
+      "exports": [
+        "PaginationMeta",
+        "AppPaginatedDataResponse"
+      ],
+      "totalLines": 31,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/responses/app-combined.response.ts": {
+      "filePath": "apps/gateway/src/responses/app-combined.response.ts",
+      "contentHash": "7730dcef623ba525c3c88641df5d344d5adb29dbebd284b100e21d3bf91ec347",
+      "functions": [
+        {
+          "name": "ApiResponse",
+          "params": [
+            "data"
+          ],
+          "returnType": "Type<IAppResponse<T>>",
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Type"
+          ]
+        },
+        {
+          "source": "@nestjs/swagger",
+          "specifiers": [
+            "ApiProperty"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/app-codes.enum",
+          "specifiers": [
+            "AppCodes"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/app-response.interface",
+          "specifiers": [
+            "IAppResponse"
+          ]
+        }
+      ],
+      "exports": [
+        "ApiResponse"
+      ],
+      "totalLines": 18,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/auth/auth.controller.ts": {
+      "filePath": "apps/gateway/src/auth/auth.controller.ts",
+      "contentHash": "54a0cf7917d74aa1c463494e3c506379dfa4c730dcd7ca4f95fb383ff9f51d35",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AuthController",
+          "methods": [
+            "constructor",
+            "handleSignup",
+            "handleLogin",
+            "getProfile",
+            "handleLogout"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 49
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Body",
+            "Get",
+            "Post"
+          ]
+        },
+        {
+          "source": "@nestjs/swagger",
+          "specifiers": [
+            "ApiBody",
+            "ApiCreatedResponse",
+            "ApiOkResponse",
+            "ApiOperation"
+          ]
+        },
+        {
+          "source": "apps/gateway/src/guards/jwt.guard",
+          "specifiers": [
+            "Authenticated",
+            "CurrentUser"
+          ]
+        },
+        {
+          "source": "@app/shared/app-response.dto",
+          "specifiers": [
+            "AppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/decorators/api-controller.decorator",
+          "specifiers": [
+            "ApiController"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/app-codes.enum",
+          "specifiers": [
+            "AppCodes"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/user/users.interface",
+          "specifiers": [
+            "ICurrentUser"
+          ]
+        },
+        {
+          "source": "./requests/login.request",
+          "specifiers": [
+            "LoginRequest"
+          ]
+        },
+        {
+          "source": "./requests/signup.request",
+          "specifiers": [
+            "SignupRequest"
+          ]
+        },
+        {
+          "source": "./responses/auth-user.response",
+          "specifiers": [
+            "AuthProfileApiResponse",
+            "AuthProfileTokenApiResponse"
+          ]
+        },
+        {
+          "source": "./auth.service",
+          "specifiers": [
+            "AuthService"
+          ]
+        }
+      ],
+      "exports": [
+        "AuthController"
+      ],
+      "totalLines": 70,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/auth/auth.service.ts": {
+      "filePath": "apps/gateway/src/auth/auth.service.ts",
+      "contentHash": "2a224a10535d6fac0f33b4ced3a1f32cd6656ebd49a53307842815a4db00539f",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AuthService",
+          "methods": [
+            "constructor",
+            "createSessionCacheKey",
+            "signup",
+            "login",
+            "logout",
+            "generateJwtToken",
+            "getAuthSession",
+            "prepareProfilePayload"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 172
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable"
+          ]
+        },
+        {
+          "source": "@nestjs/jwt",
+          "specifiers": [
+            "JwtService"
+          ]
+        },
+        {
+          "source": "@app/shared/app-response.dto",
+          "specifiers": [
+            "AppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/cache/cache.service",
+          "specifiers": [
+            "CacheService"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/app-codes.enum",
+          "specifiers": [
+            "AppCodes"
+          ]
+        },
+        {
+          "source": "@app/shared/graphql/graphql-router.composite",
+          "specifiers": [
+            "GraphqlRouterComposite"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/app-response.interface",
+          "specifiers": [
+            "IAppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/auth/auth-jwt-payload.interface",
+          "specifiers": [
+            "IAuthJWTPayload"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/auth/auth-user.interface",
+          "specifiers": [
+            "IAuthProfileToken"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/user/users.interface",
+          "specifiers": [
+            "ICurrentUser",
+            "ILoginUser",
+            "INewUser",
+            "IUser"
+          ]
+        },
+        {
+          "source": "../app.constant",
+          "specifiers": [
+            "CACHE_TTL_IN_SECONDS"
+          ]
+        }
+      ],
+      "exports": [
+        "AuthService"
+      ],
+      "totalLines": 193,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/auth/auth.module.ts": {
+      "filePath": "apps/gateway/src/auth/auth.module.ts",
+      "contentHash": "e018020f0f07a16d8b427263fd746dfb775bf5b2691a67179f75ae481df88e8d",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AuthModule",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Module"
+          ]
+        },
+        {
+          "source": "@nestjs/jwt",
+          "specifiers": [
+            "JwtModule"
+          ]
+        },
+        {
+          "source": "@nestjs/passport",
+          "specifiers": [
+            "PassportModule"
+          ]
+        },
+        {
+          "source": "@app/shared/app-config/app-config.service",
+          "specifiers": [
+            "AppConfigService"
+          ]
+        },
+        {
+          "source": "@app/shared/bcrypt/bcrypt.module",
+          "specifiers": [
+            "BcryptModule"
+          ]
+        },
+        {
+          "source": "@app/shared/cache/cache.module",
+          "specifiers": [
+            "CacheModule"
+          ]
+        },
+        {
+          "source": "./strategies/jwt.strategy",
+          "specifiers": [
+            "JwtStrategy"
+          ]
+        },
+        {
+          "source": "./auth.controller",
+          "specifiers": [
+            "AuthController"
+          ]
+        },
+        {
+          "source": "./auth.service",
+          "specifiers": [
+            "AuthService"
+          ]
+        }
+      ],
+      "exports": [
+        "AuthModule"
+      ],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/auth/requests/login.request.ts": {
+      "filePath": "apps/gateway/src/auth/requests/login.request.ts",
+      "contentHash": "e0267ecff3205364115875e856994617d34acf89d024e6d95a2ebb7355e2d45a",
+      "functions": [],
+      "classes": [
+        {
+          "name": "LoginRequest",
+          "methods": [],
+          "properties": [
+            "email",
+            "password"
+          ],
+          "exported": true,
+          "lineCount": 12
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/swagger",
+          "specifiers": [
+            "ApiProperty"
+          ]
+        },
+        {
+          "source": "class-validator",
+          "specifiers": [
+            "IsEmail",
+            "IsNotEmpty",
+            "MaxLength",
+            "MinLength"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/user/users.interface",
+          "specifiers": [
+            "ILoginUser"
+          ]
+        }
+      ],
+      "exports": [
+        "LoginRequest"
+      ],
+      "totalLines": 19,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/auth/requests/signup.request.ts": {
+      "filePath": "apps/gateway/src/auth/requests/signup.request.ts",
+      "contentHash": "7775775fa2ddb0842770e4ea85e99e24db9656dd88239da1b1206495ca29c30b",
+      "functions": [],
+      "classes": [
+        {
+          "name": "SignupRequest",
+          "methods": [],
+          "properties": [
+            "name",
+            "email",
+            "password"
+          ],
+          "exported": true,
+          "lineCount": 17
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/swagger",
+          "specifiers": [
+            "ApiProperty"
+          ]
+        },
+        {
+          "source": "class-validator",
+          "specifiers": [
+            "IsEmail",
+            "IsNotEmpty",
+            "MaxLength",
+            "MinLength"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/user/users.interface",
+          "specifiers": [
+            "INewUser"
+          ]
+        }
+      ],
+      "exports": [
+        "SignupRequest"
+      ],
+      "totalLines": 24,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/auth/responses/auth-user.response.ts": {
+      "filePath": "apps/gateway/src/auth/responses/auth-user.response.ts",
+      "contentHash": "8e03d6ce06ddf5ec239b9c4856b609a78e3d5da346a184490744dbe677ffcd12",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AuthUser",
+          "methods": [],
+          "properties": [
+            "id",
+            "name",
+            "email",
+            "sessionId",
+            "createdAt"
+          ],
+          "exported": true,
+          "lineCount": 21
+        },
+        {
+          "name": "AuthProfile",
+          "methods": [],
+          "properties": [
+            "profile"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "AuthProfileApiResponse",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "AuthProfileToken",
+          "methods": [],
+          "properties": [
+            "jwtToken"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "AuthProfileTokenApiResponse",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/swagger",
+          "specifiers": [
+            "ApiProperty"
+          ]
+        },
+        {
+          "source": "class-transformer",
+          "specifiers": [
+            "Exclude",
+            "Expose"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/auth/auth-user.interface",
+          "specifiers": [
+            "IAuthProfile",
+            "IAuthProfileToken"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/user/users.interface",
+          "specifiers": [
+            "ICurrentUser"
+          ]
+        },
+        {
+          "source": "../../responses/app-combined.response",
+          "specifiers": [
+            "ApiResponse"
+          ]
+        }
+      ],
+      "exports": [
+        "AuthUser",
+        "AuthProfile",
+        "AuthProfileApiResponse",
+        "AuthProfileToken",
+        "AuthProfileTokenApiResponse"
+      ],
+      "totalLines": 50,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/auth/strategies/jwt.strategy.ts": {
+      "filePath": "apps/gateway/src/auth/strategies/jwt.strategy.ts",
+      "contentHash": "a27505b5a972afe364856933285e0beaef8c51aa2bac8eeac42560ddeb497eea",
+      "functions": [],
+      "classes": [
+        {
+          "name": "JwtStrategy",
+          "methods": [
+            "constructor",
+            "validate"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 21
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable",
+            "UnauthorizedException"
+          ]
+        },
+        {
+          "source": "@nestjs/passport",
+          "specifiers": [
+            "PassportStrategy"
+          ]
+        },
+        {
+          "source": "passport-jwt",
+          "specifiers": [
+            "ExtractJwt",
+            "Strategy"
+          ]
+        },
+        {
+          "source": "@app/shared/app-config/app-config.service",
+          "specifiers": [
+            "AppConfigService"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/app-codes.enum",
+          "specifiers": [
+            "AppCodes"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/auth/auth-jwt-payload.interface",
+          "specifiers": [
+            "IAuthJWTPayload"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/user/users.interface",
+          "specifiers": [
+            "ICurrentUser"
+          ]
+        },
+        {
+          "source": "../auth.service",
+          "specifiers": [
+            "AuthService"
+          ]
+        }
+      ],
+      "exports": [
+        "JwtStrategy"
+      ],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/posts/posts.controller.ts": {
+      "filePath": "apps/gateway/src/posts/posts.controller.ts",
+      "contentHash": "5182f207309ebdb3dac7b0da8b84c8dd5e93901476c2027cfaa67c8a4f78ddaf",
+      "functions": [],
+      "classes": [
+        {
+          "name": "PostsController",
+          "methods": [
+            "constructor",
+            "handleCreatePost",
+            "handlePostList",
+            "getPost",
+            "handleArchivePost"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 69
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Body",
+            "Get",
+            "Param",
+            "ParseIntPipe",
+            "Post",
+            "Query"
+          ]
+        },
+        {
+          "source": "@nestjs/swagger",
+          "specifiers": [
+            "ApiBody",
+            "ApiCreatedResponse",
+            "ApiOkResponse",
+            "ApiOperation",
+            "ApiParam",
+            "ApiQuery"
+          ]
+        },
+        {
+          "source": "apps/gateway/src/guards/jwt.guard",
+          "specifiers": [
+            "Authenticated",
+            "CurrentUser"
+          ]
+        },
+        {
+          "source": "@app/shared/app-response.dto",
+          "specifiers": [
+            "AppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/decorators/api-controller.decorator",
+          "specifiers": [
+            "ApiController"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/user/users.interface",
+          "specifiers": [
+            "ICurrentUser"
+          ]
+        },
+        {
+          "source": "./requests/create-post.request",
+          "specifiers": [
+            "CreatePostRequest"
+          ]
+        },
+        {
+          "source": "./requests/find-posts.request",
+          "specifiers": [
+            "FindPostsRequest"
+          ]
+        },
+        {
+          "source": "./responses/post.response",
+          "specifiers": [
+            "PostItemApiResponse",
+            "PostListApiResponse"
+          ]
+        },
+        {
+          "source": "./posts.service",
+          "specifiers": [
+            "PostsService"
+          ]
+        }
+      ],
+      "exports": [
+        "PostsController"
+      ],
+      "totalLines": 93,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/posts/posts.service.ts": {
+      "filePath": "apps/gateway/src/posts/posts.service.ts",
+      "contentHash": "0132f59c642a3d5273d9e1ba35adb378d5b931533457f5f6c16859b65e22bf39",
+      "functions": [],
+      "classes": [
+        {
+          "name": "PostsService",
+          "methods": [
+            "constructor",
+            "createPostCacheKey",
+            "postListCacheKey",
+            "deletePostListForUserKey",
+            "createPost",
+            "archivePost",
+            "findPostById",
+            "findPostsByUserId"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 178
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable"
+          ]
+        },
+        {
+          "source": "@app/shared/app-response.dto",
+          "specifiers": [
+            "AppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/cache/cache.service",
+          "specifiers": [
+            "CacheService"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/app-codes.enum",
+          "specifiers": [
+            "AppCodes"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/post-status.enum",
+          "specifiers": [
+            "PostStatusEnum"
+          ]
+        },
+        {
+          "source": "@app/shared/graphql/graphql-router.composite",
+          "specifiers": [
+            "GraphqlRouterComposite"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/app-response.interface",
+          "specifiers": [
+            "IAppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/paginated-data.interface",
+          "specifiers": [
+            "IPaginatedData"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/post/post.interface",
+          "specifiers": [
+            "INewPost",
+            "IPost"
+          ]
+        },
+        {
+          "source": "../app.constant",
+          "specifiers": [
+            "CACHE_TTL_IN_SECONDS"
+          ]
+        }
+      ],
+      "exports": [
+        "PostsService"
+      ],
+      "totalLines": 193,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/posts/posts.module.ts": {
+      "filePath": "apps/gateway/src/posts/posts.module.ts",
+      "contentHash": "4aa944ddedb8090ceab17ae4cd5832f44d3e2782faecba194ecee216f0c872d2",
+      "functions": [],
+      "classes": [
+        {
+          "name": "PostsModule",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Module"
+          ]
+        },
+        {
+          "source": "@app/shared/bcrypt/bcrypt.module",
+          "specifiers": [
+            "BcryptModule"
+          ]
+        },
+        {
+          "source": "@app/shared/cache/cache.module",
+          "specifiers": [
+            "CacheModule"
+          ]
+        },
+        {
+          "source": "./posts.controller",
+          "specifiers": [
+            "PostsController"
+          ]
+        },
+        {
+          "source": "./posts.service",
+          "specifiers": [
+            "PostsService"
+          ]
+        }
+      ],
+      "exports": [
+        "PostsModule"
+      ],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/posts/requests/create-post.request.ts": {
+      "filePath": "apps/gateway/src/posts/requests/create-post.request.ts",
+      "contentHash": "51c0919c5ce37932b3157e08d1bb112f212f71e12fed50e77c9f6b61e018fd26",
+      "functions": [],
+      "classes": [
+        {
+          "name": "CreatePostRequest",
+          "methods": [],
+          "properties": [
+            "content",
+            "title",
+            "image"
+          ],
+          "exported": true,
+          "lineCount": 16
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/swagger",
+          "specifiers": [
+            "ApiProperty"
+          ]
+        },
+        {
+          "source": "class-validator",
+          "specifiers": [
+            "IsNotEmpty",
+            "IsOptional",
+            "MaxLength"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/post/post.interface",
+          "specifiers": [
+            "INewPost"
+          ]
+        }
+      ],
+      "exports": [
+        "CreatePostRequest"
+      ],
+      "totalLines": 23,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/posts/requests/find-posts.request.ts": {
+      "filePath": "apps/gateway/src/posts/requests/find-posts.request.ts",
+      "contentHash": "979fd01fcb717e64f7a50090f2e9e7d9741c60d5457ae183fd8963fe61f9a82e",
+      "functions": [],
+      "classes": [
+        {
+          "name": "FindPostsRequest",
+          "methods": [],
+          "properties": [
+            "page",
+            "take",
+            "status"
+          ],
+          "exported": true,
+          "lineCount": 20
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/swagger",
+          "specifiers": [
+            "ApiProperty"
+          ]
+        },
+        {
+          "source": "class-transformer",
+          "specifiers": [
+            "Type"
+          ]
+        },
+        {
+          "source": "class-validator",
+          "specifiers": [
+            "IsEnum",
+            "IsInt",
+            "IsOptional",
+            "Min"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/post-status.enum",
+          "specifiers": [
+            "PostStatusEnum"
+          ]
+        }
+      ],
+      "exports": [
+        "FindPostsRequest"
+      ],
+      "totalLines": 28,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/posts/responses/post.response.ts": {
+      "filePath": "apps/gateway/src/posts/responses/post.response.ts",
+      "contentHash": "315090ffa2f0e6673745834ba3d11f7b909f57eed5e547c0c01fb6ff7550be69",
+      "functions": [],
+      "classes": [
+        {
+          "name": "PostItem",
+          "methods": [],
+          "properties": [
+            "id",
+            "title",
+            "content",
+            "image",
+            "userId",
+            "createdAt",
+            "updatedAt",
+            "status"
+          ],
+          "exported": true,
+          "lineCount": 33
+        },
+        {
+          "name": "PostItemApiResponse",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "PostList",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "PostListApiResponse",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/swagger",
+          "specifiers": [
+            "ApiProperty"
+          ]
+        },
+        {
+          "source": "class-transformer",
+          "specifiers": [
+            "Exclude",
+            "Expose"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/post-status.enum",
+          "specifiers": [
+            "PostStatusEnum"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/post/post.interface",
+          "specifiers": [
+            "IPost"
+          ]
+        },
+        {
+          "source": "../../responses/app-combined.response",
+          "specifiers": [
+            "ApiResponse"
+          ]
+        },
+        {
+          "source": "../../responses/pagination.response",
+          "specifiers": [
+            "AppPaginatedDataResponse"
+          ]
+        }
+      ],
+      "exports": [
+        "PostItem",
+        "PostItemApiResponse",
+        "PostList",
+        "PostListApiResponse"
+      ],
+      "totalLines": 51,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/users/users.controller.ts": {
+      "filePath": "apps/gateway/src/users/users.controller.ts",
+      "contentHash": "a94fd1c0485a99688ac7de2b44b430e65f21500d6a8b507850bfcf868acf1524",
+      "functions": [],
+      "classes": [
+        {
+          "name": "UsersController",
+          "methods": [
+            "constructor",
+            "handleFollow",
+            "handleUnfollow",
+            "getUserCounts"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 47
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Get",
+            "Param",
+            "ParseIntPipe",
+            "Post"
+          ]
+        },
+        {
+          "source": "@nestjs/swagger",
+          "specifiers": [
+            "ApiOkResponse",
+            "ApiOperation",
+            "ApiParam"
+          ]
+        },
+        {
+          "source": "apps/gateway/src/guards/jwt.guard",
+          "specifiers": [
+            "Authenticated",
+            "CurrentUser"
+          ]
+        },
+        {
+          "source": "@app/shared/app-response.dto",
+          "specifiers": [
+            "AppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/decorators/api-controller.decorator",
+          "specifiers": [
+            "ApiController"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/user/users.interface",
+          "specifiers": [
+            "ICurrentUser"
+          ]
+        },
+        {
+          "source": "./responses/user-counts.response",
+          "specifiers": [
+            "UsersCountApiResponse",
+            "UsersCountResponse"
+          ]
+        },
+        {
+          "source": "./users.service",
+          "specifiers": [
+            "UsersService"
+          ]
+        }
+      ],
+      "exports": [
+        "UsersController"
+      ],
+      "totalLines": 62,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/users/users.service.ts": {
+      "filePath": "apps/gateway/src/users/users.service.ts",
+      "contentHash": "fe87c8e916ebf4288f9eec83864337a770136ac79ff092e972c5ff961a4d3587",
+      "functions": [],
+      "classes": [
+        {
+          "name": "UsersService",
+          "methods": [
+            "constructor",
+            "createUserCountsCacheKey",
+            "follow",
+            "unfollow",
+            "userCounts",
+            "isUserExists"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 130
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable"
+          ]
+        },
+        {
+          "source": "@app/shared/app-logger/app-logger.service",
+          "specifiers": [
+            "AppLoggerService"
+          ]
+        },
+        {
+          "source": "@app/shared/app-response.dto",
+          "specifiers": [
+            "AppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/cache/cache.service",
+          "specifiers": [
+            "CacheService"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/app-codes.enum",
+          "specifiers": [
+            "AppCodes"
+          ]
+        },
+        {
+          "source": "@app/shared/graphql/graphql-router.composite",
+          "specifiers": [
+            "GraphqlRouterComposite"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/app-response.interface",
+          "specifiers": [
+            "IAppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/social/follower-following-count.interface",
+          "specifiers": [
+            "IFollowerFollowingCount"
+          ]
+        },
+        {
+          "source": "../app.constant",
+          "specifiers": [
+            "CACHE_TTL_IN_SECONDS"
+          ]
+        }
+      ],
+      "exports": [
+        "UsersService"
+      ],
+      "totalLines": 144,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/users/users.module.ts": {
+      "filePath": "apps/gateway/src/users/users.module.ts",
+      "contentHash": "b60f323b92b7c89bcaf01c278adecd62359ab9802bcb3b177fc7fa36e9a96f1f",
+      "functions": [],
+      "classes": [
+        {
+          "name": "UsersModule",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Module"
+          ]
+        },
+        {
+          "source": "@app/shared/bcrypt/bcrypt.module",
+          "specifiers": [
+            "BcryptModule"
+          ]
+        },
+        {
+          "source": "@app/shared/cache/cache.module",
+          "specifiers": [
+            "CacheModule"
+          ]
+        },
+        {
+          "source": "./users.controller",
+          "specifiers": [
+            "UsersController"
+          ]
+        },
+        {
+          "source": "./users.service",
+          "specifiers": [
+            "UsersService"
+          ]
+        }
+      ],
+      "exports": [
+        "UsersModule"
+      ],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    },
+    "apps/gateway/src/users/responses/user-counts.response.ts": {
+      "filePath": "apps/gateway/src/users/responses/user-counts.response.ts",
+      "contentHash": "83d35fb22c8fce53e92ff23af31438f9c236ab73f39e10cbf4a35446227ab15c",
+      "functions": [],
+      "classes": [
+        {
+          "name": "UsersCountResponse",
+          "methods": [],
+          "properties": [
+            "followers",
+            "followings"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "UsersCountApiResponse",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/swagger",
+          "specifiers": [
+            "ApiProperty"
+          ]
+        },
+        {
+          "source": "class-transformer",
+          "specifiers": [
+            "Exclude",
+            "Expose"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/social/follower-following-count.interface",
+          "specifiers": [
+            "IFollowerFollowingCount"
+          ]
+        },
+        {
+          "source": "../../responses/app-combined.response",
+          "specifiers": [
+            "ApiResponse"
+          ]
+        }
+      ],
+      "exports": [
+        "UsersCountResponse",
+        "UsersCountApiResponse"
+      ],
+      "totalLines": 21,
+      "hasStructuralAnalysis": true
+    },
+    "apps/posts/tsconfig.app.json": {
+      "filePath": "apps/posts/tsconfig.app.json",
+      "contentHash": "ca7c05c0baf2e1824a6cd4cc614e4170c40872ac475914598bd5e3398378e099",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 10,
+      "hasStructuralAnalysis": true
+    },
+    "apps/posts/src/main.ts": {
+      "filePath": "apps/posts/src/main.ts",
+      "contentHash": "52dc1b8b2b2283ff8b02f1310c158801ffe863c012f0390a8d093e7a9f53f1be",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@app/shared/app.bootstrap",
+          "specifiers": [
+            "appBootstrap"
+          ]
+        },
+        {
+          "source": "./app.module",
+          "specifiers": [
+            "AppModule"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": true
+    },
+    "apps/posts/src/app.module.ts": {
+      "filePath": "apps/posts/src/app.module.ts",
+      "contentHash": "2f322cb336cae81a975ee5829558183689f31bf3e90ef575eca37dd623b43ed5",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AppModule",
+          "methods": [
+            "configure"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/apollo",
+          "specifiers": [
+            "ApolloFederationDriver",
+            "ApolloFederationDriverConfig"
+          ]
+        },
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "MiddlewareConsumer",
+            "Module",
+            "NestModule"
+          ]
+        },
+        {
+          "source": "@nestjs/core",
+          "specifiers": [
+            "APP_PIPE"
+          ]
+        },
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "GraphQLModule"
+          ]
+        },
+        {
+          "source": "node:path",
+          "specifiers": [
+            "join"
+          ]
+        },
+        {
+          "source": "@apollo/server/plugin/inlineTrace",
+          "specifiers": [
+            "ApolloServerPluginInlineTrace"
+          ]
+        },
+        {
+          "source": "@app/shared/app-config/app-config.module",
+          "specifiers": [
+            "AppConfigModule"
+          ]
+        },
+        {
+          "source": "@app/shared/app-config/app-config.service",
+          "specifiers": [
+            "AppConfigService"
+          ]
+        },
+        {
+          "source": "@app/shared/app-logger/app-logger.module",
+          "specifiers": [
+            "AppLoggerModule"
+          ]
+        },
+        {
+          "source": "@app/shared/database/database.module",
+          "specifiers": [
+            "DatabaseModule"
+          ]
+        },
+        {
+          "source": "@app/shared/middlewares/async-storage.middleware",
+          "specifiers": [
+            "AsyncStorageMiddleware"
+          ]
+        },
+        {
+          "source": "@app/shared/pipes/graphql-request-validation.pipe",
+          "specifiers": [
+            "GraphqlRequestValidationPipe"
+          ]
+        },
+        {
+          "source": "./posts/posts.module",
+          "specifiers": [
+            "PostsModule"
+          ]
+        },
+        {
+          "source": "./app.resolver",
+          "specifiers": [
+            "AppResolver"
+          ]
+        },
+        {
+          "source": "./app.service",
+          "specifiers": [
+            "AppService"
+          ]
+        }
+      ],
+      "exports": [
+        "AppModule"
+      ],
+      "totalLines": 57,
+      "hasStructuralAnalysis": true
+    },
+    "apps/posts/src/app.resolver.ts": {
+      "filePath": "apps/posts/src/app.resolver.ts",
+      "contentHash": "21cf2542327aebc46f7c1230a86135259b8c425f3ad360595632657831560e87",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AppResolver",
+          "methods": [
+            "constructor",
+            "createPost",
+            "findPostById",
+            "findPostsByUserId",
+            "archivePost"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 28
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "Args",
+            "Int",
+            "Mutation",
+            "Query",
+            "Resolver"
+          ]
+        },
+        {
+          "source": "@app/shared/boolean.output",
+          "specifiers": [
+            "BooleanOutputDto"
+          ]
+        },
+        {
+          "source": "./inputs/create-post.input",
+          "specifiers": [
+            "CreatePostInput"
+          ]
+        },
+        {
+          "source": "./inputs/posts-pagination.input",
+          "specifiers": [
+            "PostsPaginationInput"
+          ]
+        },
+        {
+          "source": "./outputs/post.output",
+          "specifiers": [
+            "PostListOutputDto",
+            "PostOutputDto"
+          ]
+        },
+        {
+          "source": "./app.service",
+          "specifiers": [
+            "AppService"
+          ]
+        }
+      ],
+      "exports": [
+        "AppResolver"
+      ],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "apps/posts/src/app.service.ts": {
+      "filePath": "apps/posts/src/app.service.ts",
+      "contentHash": "bb08034e5f145f16c093da2cc829c36695a8bc680046a140695ba776e6a26359",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AppService",
+          "methods": [
+            "constructor",
+            "createPost",
+            "findPostById",
+            "findPostsByUserId",
+            "archivePost"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 39
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable"
+          ]
+        },
+        {
+          "source": "@app/shared/app-response.dto",
+          "specifiers": [
+            "AppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/app-codes.enum",
+          "specifiers": [
+            "AppCodes"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/post-status.enum",
+          "specifiers": [
+            "PostStatusEnum"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/app-response.interface",
+          "specifiers": [
+            "IAppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/paginated-data.interface",
+          "specifiers": [
+            "IPaginatedData"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/pagination-input.interface",
+          "specifiers": [
+            "IPaginationInput"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/post/post.interface",
+          "specifiers": [
+            "INewPostWithUserId",
+            "IPost"
+          ]
+        },
+        {
+          "source": "./posts/posts.service",
+          "specifiers": [
+            "PostsService"
+          ]
+        }
+      ],
+      "exports": [
+        "AppService"
+      ],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "apps/posts/src/posts/posts.service.ts": {
+      "filePath": "apps/posts/src/posts/posts.service.ts",
+      "contentHash": "1aa8dbd1b3ffe6a73b258ac4bcbdee7e91d5ff52709dc11c83e3a8a800af6627",
+      "functions": [],
+      "classes": [
+        {
+          "name": "PostsService",
+          "methods": [
+            "constructor",
+            "createNewPost",
+            "findPostById",
+            "findPostsByUserId",
+            "archivePost"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 42
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable"
+          ]
+        },
+        {
+          "source": "@nestjs/typeorm",
+          "specifiers": [
+            "InjectRepository"
+          ]
+        },
+        {
+          "source": "typeorm",
+          "specifiers": [
+            "Repository"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/post-status.enum",
+          "specifiers": [
+            "PostStatusEnum"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/paginated-data.interface",
+          "specifiers": [
+            "IPaginatedData"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/post/post.interface",
+          "specifiers": [
+            "INewPostWithUserId",
+            "IPost"
+          ]
+        },
+        {
+          "source": "@app/shared/utils/create-paginated-response",
+          "specifiers": [
+            "createPaginatedResponse"
+          ]
+        },
+        {
+          "source": "./entities/post.entity",
+          "specifiers": [
+            "Post"
+          ]
+        }
+      ],
+      "exports": [
+        "PostsService"
+      ],
+      "totalLines": 56,
+      "hasStructuralAnalysis": true
+    },
+    "apps/posts/src/posts/entities/post.entity.ts": {
+      "filePath": "apps/posts/src/posts/entities/post.entity.ts",
+      "contentHash": "5c8098543862255d4a616ce86e7da6dca601e301c5da16d43b50e38964c0c005",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Post",
+          "methods": [],
+          "properties": [
+            "id",
+            "title",
+            "content",
+            "image",
+            "userId",
+            "status",
+            "createdAt",
+            "updatedAt"
+          ],
+          "exported": true,
+          "lineCount": 25
+        }
+      ],
+      "imports": [
+        {
+          "source": "typeorm",
+          "specifiers": [
+            "Column",
+            "CreateDateColumn",
+            "Entity",
+            "PrimaryGeneratedColumn",
+            "UpdateDateColumn"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/post-status.enum",
+          "specifiers": [
+            "PostStatusEnum"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/post/post.interface",
+          "specifiers": [
+            "IPost"
+          ]
+        }
+      ],
+      "exports": [
+        "Post"
+      ],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "apps/posts/src/posts/posts.module.ts": {
+      "filePath": "apps/posts/src/posts/posts.module.ts",
+      "contentHash": "177f91eed7522271a17ed76f390090c6a2545b1d9f6757b2deebf2e3baf4a858",
+      "functions": [],
+      "classes": [
+        {
+          "name": "PostsModule",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Module"
+          ]
+        },
+        {
+          "source": "@nestjs/typeorm",
+          "specifiers": [
+            "TypeOrmModule"
+          ]
+        },
+        {
+          "source": "./entities/post.entity",
+          "specifiers": [
+            "Post"
+          ]
+        },
+        {
+          "source": "./posts.service",
+          "specifiers": [
+            "PostsService"
+          ]
+        }
+      ],
+      "exports": [
+        "PostsModule"
+      ],
+      "totalLines": 14,
+      "hasStructuralAnalysis": true
+    },
+    "apps/posts/src/inputs/create-post.input.ts": {
+      "filePath": "apps/posts/src/inputs/create-post.input.ts",
+      "contentHash": "5854b40aef9c572ea7865d0be8dfcc75d5154f095be1d6164dd060e8b2535df5",
+      "functions": [],
+      "classes": [
+        {
+          "name": "CreatePostInput",
+          "methods": [],
+          "properties": [
+            "title",
+            "content",
+            "image",
+            "userId"
+          ],
+          "exported": true,
+          "lineCount": 21
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "Field",
+            "InputType",
+            "Int"
+          ]
+        },
+        {
+          "source": "class-validator",
+          "specifiers": [
+            "IsNotEmpty",
+            "IsNumber",
+            "IsOptional",
+            "IsPositive",
+            "MaxLength"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/post/post.interface",
+          "specifiers": [
+            "INewPostWithUserId"
+          ]
+        }
+      ],
+      "exports": [
+        "CreatePostInput"
+      ],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    "apps/posts/src/inputs/posts-pagination.input.ts": {
+      "filePath": "apps/posts/src/inputs/posts-pagination.input.ts",
+      "contentHash": "e59e2f941f0698de7e2fc2267ca6c9d544001ae3d2d9b5c6683815cd221eac5c",
+      "functions": [],
+      "classes": [
+        {
+          "name": "PostsPaginationInput",
+          "methods": [],
+          "properties": [
+            "userId",
+            "take",
+            "page",
+            "status"
+          ],
+          "exported": true,
+          "lineCount": 22
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "Field",
+            "InputType",
+            "Int"
+          ]
+        },
+        {
+          "source": "class-validator",
+          "specifiers": [
+            "IsEnum",
+            "IsNumber",
+            "IsOptional",
+            "IsPositive"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/post-status.enum",
+          "specifiers": [
+            "PostStatusEnum"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/pagination-input.interface",
+          "specifiers": [
+            "IPaginationInput"
+          ]
+        }
+      ],
+      "exports": [
+        "PostsPaginationInput"
+      ],
+      "totalLines": 31,
+      "hasStructuralAnalysis": true
+    },
+    "apps/posts/src/outputs/post.output.ts": {
+      "filePath": "apps/posts/src/outputs/post.output.ts",
+      "contentHash": "2074b58e06d2b3aa7f107395ee188ccccc1c520991185f1b08c39738e859f651",
+      "functions": [],
+      "classes": [
+        {
+          "name": "PostOutput",
+          "methods": [],
+          "properties": [
+            "id",
+            "title",
+            "content",
+            "image",
+            "userId",
+            "status",
+            "createdAt",
+            "updatedAt"
+          ],
+          "exported": true,
+          "lineCount": 25
+        },
+        {
+          "name": "PostOutputDto",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "PostListOutputDto",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "Field",
+            "Int",
+            "ObjectType"
+          ]
+        },
+        {
+          "source": "@app/shared/app-graphql-response.dto",
+          "specifiers": [
+            "AppGraphqlResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/app-paginated-data-graphql-response.dto",
+          "specifiers": [
+            "AppPaginatedDataGraphqlResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/post-status.enum",
+          "specifiers": [
+            "PostStatusEnum"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/post/post.interface",
+          "specifiers": [
+            "IPost"
+          ]
+        }
+      ],
+      "exports": [
+        "PostOutput",
+        "PostOutputDto",
+        "PostListOutputDto"
+      ],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "apps/social/tsconfig.app.json": {
+      "filePath": "apps/social/tsconfig.app.json",
+      "contentHash": "ac2f3488afa09c7ed9108c356a20abff1f918aafb59d84a1a679dd840ebe5e8e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 10,
+      "hasStructuralAnalysis": true
+    },
+    "apps/social/src/main.ts": {
+      "filePath": "apps/social/src/main.ts",
+      "contentHash": "52dc1b8b2b2283ff8b02f1310c158801ffe863c012f0390a8d093e7a9f53f1be",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@app/shared/app.bootstrap",
+          "specifiers": [
+            "appBootstrap"
+          ]
+        },
+        {
+          "source": "./app.module",
+          "specifiers": [
+            "AppModule"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": true
+    },
+    "apps/social/src/app.module.ts": {
+      "filePath": "apps/social/src/app.module.ts",
+      "contentHash": "5319dbda9d623032d57381ca551646cb7ee310bd4e4c1d182205e56a7472fea0",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AppModule",
+          "methods": [
+            "configure"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/apollo",
+          "specifiers": [
+            "ApolloFederationDriver",
+            "ApolloFederationDriverConfig"
+          ]
+        },
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "MiddlewareConsumer",
+            "Module",
+            "NestModule"
+          ]
+        },
+        {
+          "source": "@nestjs/core",
+          "specifiers": [
+            "APP_PIPE"
+          ]
+        },
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "GraphQLModule"
+          ]
+        },
+        {
+          "source": "node:path",
+          "specifiers": [
+            "join"
+          ]
+        },
+        {
+          "source": "@apollo/server/plugin/inlineTrace",
+          "specifiers": [
+            "ApolloServerPluginInlineTrace"
+          ]
+        },
+        {
+          "source": "@app/shared/app-config/app-config.module",
+          "specifiers": [
+            "AppConfigModule"
+          ]
+        },
+        {
+          "source": "@app/shared/app-config/app-config.service",
+          "specifiers": [
+            "AppConfigService"
+          ]
+        },
+        {
+          "source": "@app/shared/app-logger/app-logger.module",
+          "specifiers": [
+            "AppLoggerModule"
+          ]
+        },
+        {
+          "source": "@app/shared/middlewares/async-storage.middleware",
+          "specifiers": [
+            "AsyncStorageMiddleware"
+          ]
+        },
+        {
+          "source": "@app/shared/pipes/graphql-request-validation.pipe",
+          "specifiers": [
+            "GraphqlRequestValidationPipe"
+          ]
+        },
+        {
+          "source": "./social/social.module",
+          "specifiers": [
+            "SocialModule"
+          ]
+        },
+        {
+          "source": "./app.resolver",
+          "specifiers": [
+            "AppResolver"
+          ]
+        },
+        {
+          "source": "./app.service",
+          "specifiers": [
+            "AppService"
+          ]
+        }
+      ],
+      "exports": [
+        "AppModule"
+      ],
+      "totalLines": 55,
+      "hasStructuralAnalysis": true
+    },
+    "apps/social/src/app.resolver.ts": {
+      "filePath": "apps/social/src/app.resolver.ts",
+      "contentHash": "b881a3ec97eff16e33a23faaa1f7515a96727a190937611cff571ba1d7b515fe",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AppResolver",
+          "methods": [
+            "constructor",
+            "follow",
+            "unfollow",
+            "userCounts"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 18
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "Args",
+            "Int",
+            "Mutation",
+            "Query",
+            "Resolver"
+          ]
+        },
+        {
+          "source": "./inputs/follow-unfollow.input",
+          "specifiers": [
+            "FollowUnfollowInput"
+          ]
+        },
+        {
+          "source": "./outputs/user-counts.output",
+          "specifiers": [
+            "UserCountsDto"
+          ]
+        },
+        {
+          "source": "./app.service",
+          "specifiers": [
+            "AppService"
+          ]
+        }
+      ],
+      "exports": [
+        "AppResolver"
+      ],
+      "totalLines": 27,
+      "hasStructuralAnalysis": true
+    },
+    "apps/social/src/app.service.ts": {
+      "filePath": "apps/social/src/app.service.ts",
+      "contentHash": "f9ed940b1e6bc68d89b4a3f080ca499609c28ce1a3c202223534833aef5ef820",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AppService",
+          "methods": [
+            "constructor",
+            "follow",
+            "unfollow",
+            "userCounts"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 61
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable"
+          ]
+        },
+        {
+          "source": "@app/shared/app-logger/app-logger.service",
+          "specifiers": [
+            "AppLoggerService"
+          ]
+        },
+        {
+          "source": "@app/shared/app-response.dto",
+          "specifiers": [
+            "AppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/app-codes.enum",
+          "specifiers": [
+            "AppCodes"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/app-response.interface",
+          "specifiers": [
+            "IAppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/social/follow-unfollow.interface",
+          "specifiers": [
+            "IFollowUnfollow"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/social/follower-following-count.interface",
+          "specifiers": [
+            "IFollowerFollowingCount"
+          ]
+        },
+        {
+          "source": "./social/social.service",
+          "specifiers": [
+            "SocialService"
+          ]
+        }
+      ],
+      "exports": [
+        "AppService"
+      ],
+      "totalLines": 74,
+      "hasStructuralAnalysis": true
+    },
+    "apps/social/src/social/social.service.ts": {
+      "filePath": "apps/social/src/social/social.service.ts",
+      "contentHash": "66ed063310f63b39388606b7cdfe74530fee1d6ed9b6f2c196e6bf97187a363a",
+      "functions": [],
+      "classes": [
+        {
+          "name": "SocialService",
+          "methods": [
+            "constructor",
+            "follow",
+            "unfollow",
+            "userCounts",
+            "onModuleDestroy"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 106
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Inject",
+            "Injectable",
+            "OnModuleDestroy"
+          ]
+        },
+        {
+          "source": "neo4j-driver",
+          "specifiers": [
+            "Driver"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/social/follow-unfollow.interface",
+          "specifiers": [
+            "IFollowUnfollow"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/social/follower-following-count.interface",
+          "specifiers": [
+            "IFollowerFollowingCount"
+          ]
+        },
+        {
+          "source": "@app/shared/providers.constant",
+          "specifiers": [
+            "NEO4J_DRIVER"
+          ]
+        }
+      ],
+      "exports": [
+        "SocialService"
+      ],
+      "totalLines": 116,
+      "hasStructuralAnalysis": true
+    },
+    "apps/social/src/social/social.module.ts": {
+      "filePath": "apps/social/src/social/social.module.ts",
+      "contentHash": "a4764ec02149acf532e16bfbff5b3e5faeb09e8b8b2eaeaa892800937516844c",
+      "functions": [],
+      "classes": [
+        {
+          "name": "SocialModule",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Module"
+          ]
+        },
+        {
+          "source": "@app/shared/neo4j/neo4j.module",
+          "specifiers": [
+            "Neo4jModule"
+          ]
+        },
+        {
+          "source": "./social.service",
+          "specifiers": [
+            "SocialService"
+          ]
+        }
+      ],
+      "exports": [
+        "SocialModule"
+      ],
+      "totalLines": 13,
+      "hasStructuralAnalysis": true
+    },
+    "apps/social/src/inputs/follow-unfollow.input.ts": {
+      "filePath": "apps/social/src/inputs/follow-unfollow.input.ts",
+      "contentHash": "7f57ebdb0fbe1cd1920a4923534cc9776b193427fbe78312b1ffe80a10cdfe5d",
+      "functions": [],
+      "classes": [
+        {
+          "name": "FollowUnfollowInput",
+          "methods": [],
+          "properties": [
+            "followerId",
+            "followingId"
+          ],
+          "exported": true,
+          "lineCount": 12
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "Field",
+            "InputType",
+            "Int"
+          ]
+        },
+        {
+          "source": "class-validator",
+          "specifiers": [
+            "IsNumber",
+            "IsPositive"
+          ]
+        },
+        {
+          "source": "@app/shared/decorators/class-validators/is-not-equal-to.decorator",
+          "specifiers": [
+            "IsNotEqualTo"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/social/follow-unfollow.interface",
+          "specifiers": [
+            "IFollowUnfollow"
+          ]
+        }
+      ],
+      "exports": [
+        "FollowUnfollowInput"
+      ],
+      "totalLines": 21,
+      "hasStructuralAnalysis": true
+    },
+    "apps/social/src/outputs/user-counts.output.ts": {
+      "filePath": "apps/social/src/outputs/user-counts.output.ts",
+      "contentHash": "3a5dd42d1697a60060d91eb3b92626df8181ec1d3e39bca964bcfa9f5319e33f",
+      "functions": [],
+      "classes": [
+        {
+          "name": "FollowerFollowingCountDto",
+          "methods": [],
+          "properties": [
+            "followers",
+            "followings"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "UserCountsDto",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "Field",
+            "Int",
+            "ObjectType"
+          ]
+        },
+        {
+          "source": "class-validator",
+          "specifiers": [
+            "IsNumber",
+            "IsPositive"
+          ]
+        },
+        {
+          "source": "@app/shared/app-graphql-response.dto",
+          "specifiers": [
+            "AppGraphqlResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/interfaces/social/follower-following-count.interface",
+          "specifiers": [
+            "IFollowerFollowingCount"
+          ]
+        }
+      ],
+      "exports": [
+        "FollowerFollowingCountDto",
+        "UserCountsDto"
+      ],
+      "totalLines": 23,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/tsconfig.lib.json": {
+      "filePath": "libs/shared/tsconfig.lib.json",
+      "contentHash": "72e37252a818becdeebd331fca7f15185856bcc83efdaa6c037bd20408c2dc28",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 10,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/app.bootstrap.ts": {
+      "filePath": "libs/shared/src/app.bootstrap.ts",
+      "contentHash": "a8f5443248d4a73fe8329fbfc7a2b7c43583b553d33cef10090ea2a232c11bbf",
+      "functions": [
+        {
+          "name": "appBootstrap",
+          "params": [
+            "module"
+          ],
+          "returnType": "Promise<void>",
+          "exported": true,
+          "lineCount": 40
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Type"
+          ]
+        },
+        {
+          "source": "@nestjs/core",
+          "specifiers": [
+            "NestFactory"
+          ]
+        },
+        {
+          "source": "@nestjs/swagger",
+          "specifiers": [
+            "DocumentBuilder",
+            "OpenAPIObject",
+            "SwaggerModule"
+          ]
+        },
+        {
+          "source": "nestjs-pino",
+          "specifiers": [
+            "Logger"
+          ]
+        },
+        {
+          "source": "@app/shared/app-config/app-config.service",
+          "specifiers": [
+            "AppConfigService"
+          ]
+        },
+        {
+          "source": "@app/shared/app-logger/app-logger.service",
+          "specifiers": [
+            "AppLoggerService"
+          ]
+        },
+        {
+          "source": "../../../package.json",
+          "specifiers": [
+            "version"
+          ]
+        }
+      ],
+      "exports": [
+        "appBootstrap"
+      ],
+      "totalLines": 52,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/app-response.dto.ts": {
+      "filePath": "libs/shared/src/app-response.dto.ts",
+      "contentHash": "eb10356a1f219b5ce17c32da71e418fa9bc3d195c24099f66f8b275c27c64b01",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AppResponse",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [
+            "data",
+            "code"
+          ],
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "imports": [
+        {
+          "source": "./enums/app-codes.enum",
+          "specifiers": [
+            "AppCodes"
+          ]
+        },
+        {
+          "source": "./interfaces/app-response.interface",
+          "specifiers": [
+            "IAppResponse"
+          ]
+        }
+      ],
+      "exports": [
+        "AppResponse"
+      ],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/app-graphql-response.dto.ts": {
+      "filePath": "libs/shared/src/app-graphql-response.dto.ts",
+      "contentHash": "683b622b68480a9e3993bd1a280c3c813feffe3b93853b1e36cb34f8172422ea",
+      "functions": [
+        {
+          "name": "AppGraphqlResponse",
+          "params": [
+            "WrappingType"
+          ],
+          "returnType": "Type<{ data?: T; code: AppCodes }>",
+          "exported": true,
+          "lineCount": 12
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Type"
+          ]
+        },
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "Field",
+            "ObjectType"
+          ]
+        },
+        {
+          "source": "./enums/app-codes.enum",
+          "specifiers": [
+            "AppCodes"
+          ]
+        }
+      ],
+      "exports": [
+        "AppGraphqlResponse"
+      ],
+      "totalLines": 18,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/app-paginated-data-graphql-response.dto.ts": {
+      "filePath": "libs/shared/src/app-paginated-data-graphql-response.dto.ts",
+      "contentHash": "8dea6892a0f8badf10825707788fb090bd66b8ce3abaf853a4c26a7b2bddc738",
+      "functions": [
+        {
+          "name": "AppPaginatedDataGraphqlResponse",
+          "params": [
+            "ItemClass"
+          ],
+          "returnType": "Type<{ data?: IPaginatedData<T>; code: AppCodes }>",
+          "exported": true,
+          "lineCount": 23
+        }
+      ],
+      "classes": [
+        {
+          "name": "PaginationMeta",
+          "methods": [],
+          "properties": [
+            "total",
+            "page",
+            "lastPage",
+            "take"
+          ],
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Type"
+          ]
+        },
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "Field",
+            "Int",
+            "ObjectType"
+          ]
+        },
+        {
+          "source": "./enums/app-codes.enum",
+          "specifiers": [
+            "AppCodes"
+          ]
+        },
+        {
+          "source": "./interfaces/paginated-data.interface",
+          "specifiers": [
+            "IPaginatedData",
+            "IPaginatedMetadata"
+          ]
+        }
+      ],
+      "exports": [
+        "PaginationMeta",
+        "AppPaginatedDataGraphqlResponse"
+      ],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/boolean.output.ts": {
+      "filePath": "libs/shared/src/boolean.output.ts",
+      "contentHash": "39494bc3238a201b518fd732e7c39d453ff9e382ece6578ca2417cdf0526dc86",
+      "functions": [],
+      "classes": [
+        {
+          "name": "BooleanOutputDto",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "ObjectType"
+          ]
+        },
+        {
+          "source": "@app/shared/app-graphql-response.dto",
+          "specifiers": [
+            "AppGraphqlResponse"
+          ]
+        }
+      ],
+      "exports": [
+        "BooleanOutputDto"
+      ],
+      "totalLines": 7,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/providers.constant.ts": {
+      "filePath": "libs/shared/src/providers.constant.ts",
+      "contentHash": "674c79f1231f65c134ce324abb1177512f8d5fb6ca2ce5730e443f2069c7efd7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "NEO4J_DRIVER"
+      ],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/validation-error-to-code.map.ts": {
+      "filePath": "libs/shared/src/validation-error-to-code.map.ts",
+      "contentHash": "417aa37e7c11a24cd34690445403ad615557fb6317fd5b3f8a3de31fa22aa218",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "./enums/validation-error-codes.enum",
+          "specifiers": [
+            "ValidationErrorCode"
+          ]
+        }
+      ],
+      "exports": [
+        "validationErrorToValidationCodeMap"
+      ],
+      "totalLines": 14,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/decorators/api-controller.decorator.ts": {
+      "filePath": "libs/shared/src/decorators/api-controller.decorator.ts",
+      "contentHash": "fe94fa077b4f6d3456aa2150e5ccd5793760c7e50725a9cfa54c45e2c8412e7c",
+      "functions": [
+        {
+          "name": "ApiController",
+          "params": [
+            "name"
+          ],
+          "returnType": "ReturnType<typeof applyDecorators>",
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "applyDecorators",
+            "Controller"
+          ]
+        },
+        {
+          "source": "@nestjs/swagger",
+          "specifiers": [
+            "ApiTags"
+          ]
+        }
+      ],
+      "exports": [
+        "ApiController"
+      ],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/decorators/class-validators/is-not-equal-to.decorator.ts": {
+      "filePath": "libs/shared/src/decorators/class-validators/is-not-equal-to.decorator.ts",
+      "contentHash": "12c8e40c5cea1be9b24ead7540644ec623f229266d1a0ba67d66caf832b61a9f",
+      "functions": [
+        {
+          "name": "IsNotEqualTo",
+          "params": [
+            "property",
+            "options"
+          ],
+          "exported": true,
+          "lineCount": 21
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "class-validator",
+          "specifiers": [
+            "registerDecorator",
+            "ValidationArguments",
+            "ValidatorOptions"
+          ]
+        }
+      ],
+      "exports": [
+        "IsNotEqualTo"
+      ],
+      "totalLines": 24,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/app-config/app-config.service.ts": {
+      "filePath": "libs/shared/src/app-config/app-config.service.ts",
+      "contentHash": "7dbcbc00346826044dc7fec969d177a8446057a35f18d0fc28fa851129cd8d4e",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AppConfigService",
+          "methods": [
+            "constructor",
+            "env",
+            "name",
+            "port",
+            "logLevel",
+            "jwtSecret",
+            "jwtExpirationTimeInSeconds",
+            "graphqlRouterUrl",
+            "isSwaggerEnabled"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 30
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable"
+          ]
+        },
+        {
+          "source": "@nestjs/config",
+          "specifiers": [
+            "ConfigService"
+          ]
+        },
+        {
+          "source": "../enums/app-environment.enum",
+          "specifiers": [
+            "AppEnvironment"
+          ]
+        },
+        {
+          "source": "../enums/app-log-level.enum",
+          "specifiers": [
+            "AppLogLevel"
+          ]
+        }
+      ],
+      "exports": [
+        "AppConfigService"
+      ],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/app-config/app-config.module.ts": {
+      "filePath": "libs/shared/src/app-config/app-config.module.ts",
+      "contentHash": "65cedaa44d52270ea0da9960be79d15185ba73de32961274cb3147dbc9ab0e32",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AppConfigModule",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Global",
+            "Module"
+          ]
+        },
+        {
+          "source": "@nestjs/config",
+          "specifiers": [
+            "ConfigModule"
+          ]
+        },
+        {
+          "source": "./app-config.service",
+          "specifiers": [
+            "AppConfigService"
+          ]
+        },
+        {
+          "source": "./configuration",
+          "specifiers": [
+            "configLoader"
+          ]
+        }
+      ],
+      "exports": [
+        "AppConfigModule"
+      ],
+      "totalLines": 21,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/app-config/configuration.ts": {
+      "filePath": "libs/shared/src/app-config/configuration.ts",
+      "contentHash": "ce152897e2f5b1c12386925d5a72959e6d4ef7f6b78a32b9001c6a62bec645b4",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@nestjs/config",
+          "specifiers": [
+            "registerAs"
+          ]
+        },
+        {
+          "source": "env-var",
+          "specifiers": [
+            "* as env"
+          ]
+        },
+        {
+          "source": "../enums/app-environment.enum",
+          "specifiers": [
+            "AppEnvironment"
+          ]
+        },
+        {
+          "source": "../enums/app-log-level.enum",
+          "specifiers": [
+            "AppLogLevel"
+          ]
+        }
+      ],
+      "exports": [
+        "configLoader"
+      ],
+      "totalLines": 23,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/app-logger/app-logger.service.ts": {
+      "filePath": "libs/shared/src/app-logger/app-logger.service.ts",
+      "contentHash": "c95813645d4b34f0896fab1f408b0827c77c8d473f5e471f6e8d8f182f70ad80",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AppLoggerService",
+          "methods": [
+            "constructor",
+            "log",
+            "fatal",
+            "error",
+            "warn",
+            "info",
+            "debug",
+            "trace"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 30
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable",
+            "Scope"
+          ]
+        },
+        {
+          "source": "nestjs-pino",
+          "specifiers": [
+            "PinoLogger"
+          ]
+        },
+        {
+          "source": "pino",
+          "specifiers": [
+            "Level"
+          ]
+        }
+      ],
+      "exports": [
+        "AppLoggerService"
+      ],
+      "totalLines": 43,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/app-logger/app-logger.module.ts": {
+      "filePath": "libs/shared/src/app-logger/app-logger.module.ts",
+      "contentHash": "ee9b626fb933bfeba671be6ddc5ee51b9067faa844b465f2e9cd63ca33295078",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AppLoggerModule",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Global",
+            "Module"
+          ]
+        },
+        {
+          "source": "nestjs-pino",
+          "specifiers": [
+            "LoggerModule"
+          ]
+        },
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuidV4"
+          ]
+        },
+        {
+          "source": "@app/shared/utils/async.store",
+          "specifiers": [
+            "AsyncStore"
+          ]
+        },
+        {
+          "source": "../app-config/app-config.service",
+          "specifiers": [
+            "AppConfigService"
+          ]
+        },
+        {
+          "source": "../enums/app-environment.enum",
+          "specifiers": [
+            "AppEnvironment"
+          ]
+        },
+        {
+          "source": "./app-logger.service",
+          "specifiers": [
+            "AppLoggerService"
+          ]
+        },
+        {
+          "source": "./database-logger.service",
+          "specifiers": [
+            "DatabaseLoggerService"
+          ]
+        }
+      ],
+      "exports": [
+        "AppLoggerModule"
+      ],
+      "totalLines": 78,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/app-logger/database-logger.service.ts": {
+      "filePath": "libs/shared/src/app-logger/database-logger.service.ts",
+      "contentHash": "8329796f861ef20b1f29cf8c4e68612aa170c8d4024858e1714d4e09adb76ce0",
+      "functions": [
+        {
+          "name": "stringifyParams",
+          "params": [
+            "parameters"
+          ],
+          "returnType": "string",
+          "exported": false,
+          "lineCount": 7
+        }
+      ],
+      "classes": [
+        {
+          "name": "DatabaseLoggerService",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [
+            "logQuery",
+            "logQueryError",
+            "logQuerySlow",
+            "logSchemaBuild",
+            "logMigration",
+            "log"
+          ],
+          "exported": true,
+          "lineCount": 31
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable"
+          ]
+        },
+        {
+          "source": "typeorm",
+          "specifiers": [
+            "TypeOrmLogger"
+          ]
+        },
+        {
+          "source": "./app-logger.service",
+          "specifiers": [
+            "AppLoggerService"
+          ]
+        }
+      ],
+      "exports": [
+        "DatabaseLoggerService"
+      ],
+      "totalLines": 47,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/bcrypt/bcrypt.service.ts": {
+      "filePath": "libs/shared/src/bcrypt/bcrypt.service.ts",
+      "contentHash": "4b694f7885bf37e2001f08476eecbf0fadfe4db4d3b4c836ec2667602cc9780b",
+      "functions": [],
+      "classes": [
+        {
+          "name": "BcryptService",
+          "methods": [
+            "hash",
+            "validate"
+          ],
+          "properties": [
+            "SALT_ROUNDS"
+          ],
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable"
+          ]
+        },
+        {
+          "source": "bcrypt",
+          "specifiers": [
+            "* as bcrypt"
+          ]
+        }
+      ],
+      "exports": [
+        "BcryptService"
+      ],
+      "totalLines": 17,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/bcrypt/bcrypt.module.ts": {
+      "filePath": "libs/shared/src/bcrypt/bcrypt.module.ts",
+      "contentHash": "c020f45329d27c0b2ffa23d09d001fb634bd7d77318066b407c890f22d6b057f",
+      "functions": [],
+      "classes": [
+        {
+          "name": "BcryptModule",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Module"
+          ]
+        },
+        {
+          "source": "./bcrypt.service",
+          "specifiers": [
+            "BcryptService"
+          ]
+        }
+      ],
+      "exports": [
+        "BcryptModule"
+      ],
+      "totalLines": 10,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/cache/cache.service.ts": {
+      "filePath": "libs/shared/src/cache/cache.service.ts",
+      "contentHash": "cd8f9fc8548990967d40714dc564ca5f7f4d400218c5b1f237fdd1a37d2e22e2",
+      "functions": [],
+      "classes": [
+        {
+          "name": "CacheService",
+          "methods": [
+            "constructor",
+            "onModuleInit",
+            "get",
+            "set",
+            "del",
+            "delAll"
+          ],
+          "properties": [
+            "redisClient"
+          ],
+          "exported": true,
+          "lineCount": 90
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable",
+            "OnModuleInit"
+          ]
+        },
+        {
+          "source": "ioredis",
+          "specifiers": [
+            "Redis"
+          ]
+        },
+        {
+          "source": "../app-logger/app-logger.service",
+          "specifiers": [
+            "AppLoggerService"
+          ]
+        },
+        {
+          "source": "../redis/redis.service",
+          "specifiers": [
+            "RedisService"
+          ]
+        }
+      ],
+      "exports": [
+        "CacheService"
+      ],
+      "totalLines": 99,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/cache/cache.module.ts": {
+      "filePath": "libs/shared/src/cache/cache.module.ts",
+      "contentHash": "589082570deeaf495fe65e180075ff7afb746cbfe37061c3f66b6317473323e9",
+      "functions": [],
+      "classes": [
+        {
+          "name": "CacheModule",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Module"
+          ]
+        },
+        {
+          "source": "../redis/redis.module",
+          "specifiers": [
+            "RedisModule"
+          ]
+        },
+        {
+          "source": "./cache.service",
+          "specifiers": [
+            "CacheService"
+          ]
+        }
+      ],
+      "exports": [
+        "CacheModule"
+      ],
+      "totalLines": 13,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/database/database.module.ts": {
+      "filePath": "libs/shared/src/database/database.module.ts",
+      "contentHash": "4fa84359fd735fffaf2217ecc6af48c4b8eec17d5f557e9a92bbd0a916f2f755",
+      "functions": [],
+      "classes": [
+        {
+          "name": "DatabaseModule",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Module"
+          ]
+        },
+        {
+          "source": "@nestjs/config",
+          "specifiers": [
+            "ConfigModule"
+          ]
+        },
+        {
+          "source": "@nestjs/typeorm",
+          "specifiers": [
+            "TypeOrmModule"
+          ]
+        },
+        {
+          "source": "@app/shared/app-logger/database-logger.service",
+          "specifiers": [
+            "DatabaseLoggerService"
+          ]
+        },
+        {
+          "source": "./configurations/database-config.service",
+          "specifiers": [
+            "DatabaseConfigService"
+          ]
+        },
+        {
+          "source": "./configurations/loader",
+          "specifiers": [
+            "dbConfigLoader"
+          ]
+        }
+      ],
+      "exports": [
+        "DatabaseModule"
+      ],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/database/configurations/loader.ts": {
+      "filePath": "libs/shared/src/database/configurations/loader.ts",
+      "contentHash": "9bdc13e0d59e18d2204a1a757bcab3aa1dd1d6f7bb90246674f39a1cd28ae1c4",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@nestjs/config",
+          "specifiers": [
+            "registerAs"
+          ]
+        },
+        {
+          "source": "env-var",
+          "specifiers": [
+            "* as env"
+          ]
+        }
+      ],
+      "exports": [
+        "dbConfigLoader"
+      ],
+      "totalLines": 14,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/database/configurations/database-config.service.ts": {
+      "filePath": "libs/shared/src/database/configurations/database-config.service.ts",
+      "contentHash": "c162937617d8cbfe88be9b1a23ad64e5b12cbd6507db8a1359b8edf87afd8cde",
+      "functions": [],
+      "classes": [
+        {
+          "name": "DatabaseConfigService",
+          "methods": [
+            "constructor",
+            "host",
+            "port",
+            "user",
+            "pass",
+            "name",
+            "logging",
+            "synchronize"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 25
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable"
+          ]
+        },
+        {
+          "source": "@nestjs/config",
+          "specifiers": [
+            "ConfigService"
+          ]
+        }
+      ],
+      "exports": [
+        "DatabaseConfigService"
+      ],
+      "totalLines": 30,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/redis/redis.service.ts": {
+      "filePath": "libs/shared/src/redis/redis.service.ts",
+      "contentHash": "dbc6d681a85c0143bfbea8a399dd152c975a8d10581e93c3e4d981d4ea86dbff",
+      "functions": [],
+      "classes": [
+        {
+          "name": "RedisService",
+          "methods": [
+            "constructor",
+            "onModuleInit",
+            "onModuleDestroy",
+            "getClient"
+          ],
+          "properties": [
+            "redisClient"
+          ],
+          "exported": true,
+          "lineCount": 34
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable",
+            "OnModuleDestroy",
+            "OnModuleInit"
+          ]
+        },
+        {
+          "source": "ioredis",
+          "specifiers": [
+            "Redis",
+            "RedisOptions"
+          ]
+        },
+        {
+          "source": "../app-logger/app-logger.service",
+          "specifiers": [
+            "AppLoggerService"
+          ]
+        },
+        {
+          "source": "./configurations/redis-config.service",
+          "specifiers": [
+            "RedisConfigService"
+          ]
+        }
+      ],
+      "exports": [
+        "RedisService"
+      ],
+      "totalLines": 44,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/redis/redis.module.ts": {
+      "filePath": "libs/shared/src/redis/redis.module.ts",
+      "contentHash": "2aa04fcde741ad15b39157412ba8adbaca193f855a6d9d9b2c5cdc536fca4e27",
+      "functions": [],
+      "classes": [
+        {
+          "name": "RedisModule",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Module"
+          ]
+        },
+        {
+          "source": "@nestjs/config",
+          "specifiers": [
+            "ConfigModule"
+          ]
+        },
+        {
+          "source": "./configurations/loader",
+          "specifiers": [
+            "redisConfigLoader"
+          ]
+        },
+        {
+          "source": "./configurations/redis-config.service",
+          "specifiers": [
+            "RedisConfigService"
+          ]
+        },
+        {
+          "source": "./redis.service",
+          "specifiers": [
+            "RedisService"
+          ]
+        }
+      ],
+      "exports": [
+        "RedisModule"
+      ],
+      "totalLines": 15,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/redis/configurations/redis-config.service.ts": {
+      "filePath": "libs/shared/src/redis/configurations/redis-config.service.ts",
+      "contentHash": "554acd6acdbfcd282f7b1af87a06fa3095ff60246a08fe98b4aa332f2ce21a38",
+      "functions": [],
+      "classes": [
+        {
+          "name": "RedisConfigService",
+          "methods": [
+            "constructor",
+            "host",
+            "port",
+            "password"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 13
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable"
+          ]
+        },
+        {
+          "source": "@nestjs/config",
+          "specifiers": [
+            "ConfigService"
+          ]
+        }
+      ],
+      "exports": [
+        "RedisConfigService"
+      ],
+      "totalLines": 18,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/redis/configurations/loader.ts": {
+      "filePath": "libs/shared/src/redis/configurations/loader.ts",
+      "contentHash": "42b0086b6e3e35c56f746cd75f28dba0864110540bb550988b8e838d72511e2f",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@nestjs/config",
+          "specifiers": [
+            "registerAs"
+          ]
+        },
+        {
+          "source": "env-var",
+          "specifiers": [
+            "* as env"
+          ]
+        }
+      ],
+      "exports": [
+        "redisConfigLoader"
+      ],
+      "totalLines": 10,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/neo4j/neo4j.module.ts": {
+      "filePath": "libs/shared/src/neo4j/neo4j.module.ts",
+      "contentHash": "5397009682b48d6127637251a2be13ae75fb1c0bd1b850a1cee0be86b424bfc7",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Neo4jModule",
+          "methods": [
+            "forRoot"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 26
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "DynamicModule",
+            "Module"
+          ]
+        },
+        {
+          "source": "@nestjs/config",
+          "specifiers": [
+            "ConfigModule"
+          ]
+        },
+        {
+          "source": "neo4j-driver",
+          "specifiers": [
+            "neo4j",
+            "Driver"
+          ]
+        },
+        {
+          "source": "../providers.constant",
+          "specifiers": [
+            "NEO4J_DRIVER"
+          ]
+        },
+        {
+          "source": "./configurations/loader",
+          "specifiers": [
+            "neo4jConfigLoader"
+          ]
+        },
+        {
+          "source": "./configurations/neo4j-config.service",
+          "specifiers": [
+            "Neo4jConfigService"
+          ]
+        }
+      ],
+      "exports": [
+        "Neo4jModule"
+      ],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/neo4j/configurations/loader.ts": {
+      "filePath": "libs/shared/src/neo4j/configurations/loader.ts",
+      "contentHash": "eebe7e22039f9c2286100837f10a46971384732f8b3c2aa2e2863a40d11015b5",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@nestjs/config",
+          "specifiers": [
+            "registerAs"
+          ]
+        },
+        {
+          "source": "env-var",
+          "specifiers": [
+            "* as env"
+          ]
+        }
+      ],
+      "exports": [
+        "neo4jConfigLoader"
+      ],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/neo4j/configurations/neo4j-config.service.ts": {
+      "filePath": "libs/shared/src/neo4j/configurations/neo4j-config.service.ts",
+      "contentHash": "6a403da82eea5759e935ecfa9c37daf177dff7818dd9d669338029bcb9482a57",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Neo4jConfigService",
+          "methods": [
+            "constructor",
+            "host",
+            "port",
+            "username",
+            "password",
+            "protocol"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 19
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable"
+          ]
+        },
+        {
+          "source": "@nestjs/config",
+          "specifiers": [
+            "ConfigService"
+          ]
+        }
+      ],
+      "exports": [
+        "Neo4jConfigService"
+      ],
+      "totalLines": 24,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/graphql-router.composite.ts": {
+      "filePath": "libs/shared/src/graphql/graphql-router.composite.ts",
+      "contentHash": "f2f0cf4985086255634f88acf7c9d37883b412ddbff4b7aa86fcd0b1001d9168",
+      "functions": [],
+      "classes": [
+        {
+          "name": "GraphqlRouterComposite",
+          "methods": [
+            "constructor",
+            "createUser",
+            "createNewSession",
+            "loginUser",
+            "closeAllOpenSessionByUserId",
+            "closeSessionBySessionId",
+            "findOpenSessionByGuid",
+            "findUserById",
+            "createPost",
+            "findPostById",
+            "findPostsByUserId",
+            "archivePost",
+            "followUser",
+            "unfollowUser",
+            "userCounts"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 195
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable"
+          ]
+        },
+        {
+          "source": "./client",
+          "specifiers": [
+            "BooleanOutputDto",
+            "BooleanOutputDtoGenqlSelection",
+            "CreatePostInput",
+            "CreateUserInput",
+            "FollowUnfollowInput",
+            "LoginUserInput",
+            "PostListOutputDto",
+            "PostListOutputDtoGenqlSelection",
+            "PostOutputDto",
+            "PostOutputDtoGenqlSelection",
+            "PostsPaginationInput",
+            "SessionOutputDto",
+            "SessionOutputDtoGenqlSelection",
+            "UserCountsDto",
+            "UserCountsDtoGenqlSelection",
+            "UserOutputDto",
+            "UserOutputDtoGenqlSelection"
+          ]
+        },
+        {
+          "source": "./graphql-router.service",
+          "specifiers": [
+            "GraphqlRouterService"
+          ]
+        }
+      ],
+      "exports": [
+        "GraphqlRouterComposite"
+      ],
+      "totalLines": 220,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/graphql-router.service.ts": {
+      "filePath": "libs/shared/src/graphql/graphql-router.service.ts",
+      "contentHash": "2d7d1bb8ad2a6e3c47086a335c6f4b08988ce38234dc5284c812642a24b25c4b",
+      "functions": [],
+      "classes": [
+        {
+          "name": "GraphqlRouterService",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [
+            "client"
+          ],
+          "exported": true,
+          "lineCount": 25
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Inject",
+            "Injectable"
+          ]
+        },
+        {
+          "source": "../utils/async.store",
+          "specifiers": [
+            "AsyncStore"
+          ]
+        },
+        {
+          "source": "./client",
+          "specifiers": [
+            "Client",
+            "createClient"
+          ]
+        },
+        {
+          "source": "./graphql-router.definition",
+          "specifiers": [
+            "GRAPHQL_ROUTER_OPTIONS"
+          ]
+        },
+        {
+          "source": "./graphql-router.interface",
+          "specifiers": [
+            "GraphqlRouterModuleOptions"
+          ]
+        }
+      ],
+      "exports": [
+        "GraphqlRouterService"
+      ],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/graphql-router.module.ts": {
+      "filePath": "libs/shared/src/graphql/graphql-router.module.ts",
+      "contentHash": "ed6ffbca36754f40b58dcef5489d639ad2248ff26f1677d0c17fed8f832d2cee",
+      "functions": [],
+      "classes": [
+        {
+          "name": "GraphqlRouterModule",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Global",
+            "Module"
+          ]
+        },
+        {
+          "source": "./graphql-router.composite",
+          "specifiers": [
+            "GraphqlRouterComposite"
+          ]
+        },
+        {
+          "source": "./graphql-router.definition",
+          "specifiers": [
+            "GraphqlRouterConfigurableModuleClass"
+          ]
+        },
+        {
+          "source": "./graphql-router.service",
+          "specifiers": [
+            "GraphqlRouterService"
+          ]
+        }
+      ],
+      "exports": [
+        "GraphqlRouterModule"
+      ],
+      "totalLines": 13,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/graphql-router.definition.ts": {
+      "filePath": "libs/shared/src/graphql/graphql-router.definition.ts",
+      "contentHash": "08217a824e014c203aca521aed1f839f5ae47cc01f8ed2d0fa1d28e7d4c71b38",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "ConfigurableModuleBuilder"
+          ]
+        },
+        {
+          "source": "./graphql-router.interface",
+          "specifiers": [
+            "GraphqlRouterModuleOptions"
+          ]
+        }
+      ],
+      "exports": [
+        "GraphqlRouterConfigurableModuleClass",
+        "GRAPHQL_ROUTER_OPTIONS"
+      ],
+      "totalLines": 11,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/graphql-router.interface.ts": {
+      "filePath": "libs/shared/src/graphql/graphql-router.interface.ts",
+      "contentHash": "3384205f39f8809658051d54cf866cf7c79a0544eda5074e3a650d8ab48a25fe",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/client/index.ts": {
+      "filePath": "libs/shared/src/graphql/client/index.ts",
+      "contentHash": "759cb7a696e79c0b7f2c2ffd9971a20d8c32d018ddc0dbfedf255ad822fb92f1",
+      "functions": [
+        {
+          "name": "createClient",
+          "params": [
+            "options"
+          ],
+          "returnType": "Client",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "generateQueryOp",
+          "params": [
+            "fields"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "generateMutationOp",
+          "params": [
+            "fields"
+          ],
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "./schema",
+          "specifiers": [
+            "QueryGenqlSelection",
+            "Query",
+            "MutationGenqlSelection",
+            "Mutation"
+          ]
+        },
+        {
+          "source": "./runtime",
+          "specifiers": [
+            "linkTypeMap",
+            "createClientOriginal",
+            "generateGraphqlOperation",
+            "FieldsSelection",
+            "GraphqlOperation",
+            "ClientOptions",
+            "GenqlError"
+          ]
+        },
+        {
+          "source": "./types",
+          "specifiers": [
+            "types"
+          ]
+        }
+      ],
+      "exports": [
+        "FieldsSelection",
+        "GenqlError",
+        "createClient",
+        "everything",
+        "generateQueryOp",
+        "generateMutationOp"
+      ],
+      "totalLines": 66,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/client/schema.ts": {
+      "filePath": "libs/shared/src/graphql/client/schema.ts",
+      "contentHash": "9b437a713adc2910fd96a886ed56fca9f314bf699fd04c76daf8c0b90861a1cb",
+      "functions": [
+        {
+          "name": "isBooleanOutputDto",
+          "params": [
+            "obj"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "isFollowerFollowingCountDto",
+          "params": [
+            "obj"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "isMutation",
+          "params": [
+            "obj"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "isPaginationMeta",
+          "params": [
+            "obj"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "isPostListOutputDto",
+          "params": [
+            "obj"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "isPostOutput",
+          "params": [
+            "obj"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "isPostOutputData",
+          "params": [
+            "obj"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "isPostOutputDto",
+          "params": [
+            "obj"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "isQuery",
+          "params": [
+            "obj"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "isSessionOutput",
+          "params": [
+            "obj"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "isSessionOutputDto",
+          "params": [
+            "obj"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "isUserCountsDto",
+          "params": [
+            "obj"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "isUserOutput",
+          "params": [
+            "obj"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "isUserOutputDto",
+          "params": [
+            "obj"
+          ],
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "isBooleanOutputDto",
+        "isFollowerFollowingCountDto",
+        "isMutation",
+        "isPaginationMeta",
+        "isPostListOutputDto",
+        "isPostOutput",
+        "isPostOutputData",
+        "isPostOutputDto",
+        "isQuery",
+        "isSessionOutput",
+        "isSessionOutputDto",
+        "isUserCountsDto",
+        "isUserOutput",
+        "isUserOutputDto",
+        "enumAppCodes",
+        "enumAuthSessionEnum",
+        "enumJoinGraph",
+        "enumLinkPurpose",
+        "enumPostStatusEnum"
+      ],
+      "totalLines": 414,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/client/types.ts": {
+      "filePath": "libs/shared/src/graphql/client/types.ts",
+      "contentHash": "8040dc8c1b0eed3746e11dee796ca29d076fa95ae12e36e2836cca6d780a4890",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 411,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/client/runtime/index.ts": {
+      "filePath": "libs/shared/src/graphql/client/runtime/index.ts",
+      "contentHash": "59ffa25fe57ecbe72912cf83018d8a3c2d068b8e30fa740513775e44e01eaf35",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "createClient",
+        "ClientOptions",
+        "FieldsSelection",
+        "generateGraphqlOperation",
+        "GraphqlOperation",
+        "linkTypeMap",
+        "createFetcher",
+        "GenqlError",
+        "everything"
+      ],
+      "totalLines": 14,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/client/runtime/createClient.ts": {
+      "filePath": "libs/shared/src/graphql/client/runtime/createClient.ts",
+      "contentHash": "c4fb14f8447351948f092610a7381b5e730aef02617349e360df1723686be03d",
+      "functions": [
+        {
+          "name": "createClient",
+          "params": [
+            "{\n    queryRoot,\n    mutationRoot,\n    subscriptionRoot,\n    ...options\n}"
+          ],
+          "exported": true,
+          "lineCount": 42
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "./fetcher",
+          "specifiers": [
+            "BatchOptions",
+            "createFetcher"
+          ]
+        },
+        {
+          "source": "./types",
+          "specifiers": [
+            "ExecutionResult",
+            "LinkedType"
+          ]
+        },
+        {
+          "source": "./generateGraphqlOperation",
+          "specifiers": [
+            "generateGraphqlOperation",
+            "GraphqlOperation"
+          ]
+        }
+      ],
+      "exports": [
+        "createClient"
+      ],
+      "totalLines": 69,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/client/runtime/types.ts": {
+      "filePath": "libs/shared/src/graphql/client/runtime/types.ts",
+      "contentHash": "57a60b58202eb368e942dcab8e00b7b7578289caf2df5cd19534d240c9c560d8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 70,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/client/runtime/typeSelection.ts": {
+      "filePath": "libs/shared/src/graphql/client/runtime/typeSelection.ts",
+      "contentHash": "0664c153cd549291bd376b3037e720af9bee2938500bcfdf4b4576c1564f8bc8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 96,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/client/runtime/linkTypeMap.ts": {
+      "filePath": "libs/shared/src/graphql/client/runtime/linkTypeMap.ts",
+      "contentHash": "57bd048d5d495dec1974ba90305ba1af8f6fdf59bed24d33e39d8f661939b880",
+      "functions": [
+        {
+          "name": "linkTypeMap",
+          "params": [
+            "typeMap"
+          ],
+          "returnType": "LinkedTypeMap",
+          "exported": true,
+          "lineCount": 91
+        },
+        {
+          "name": "resolveConcreteTypes",
+          "params": [
+            "linkedTypeMap"
+          ],
+          "exported": true,
+          "lineCount": 46
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "./types",
+          "specifiers": [
+            "CompressedType",
+            "CompressedTypeMap",
+            "LinkedArgMap",
+            "LinkedField",
+            "LinkedType",
+            "LinkedTypeMap"
+          ]
+        }
+      ],
+      "exports": [
+        "linkTypeMap",
+        "resolveConcreteTypes"
+      ],
+      "totalLines": 157,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/client/runtime/fetcher.ts": {
+      "filePath": "libs/shared/src/graphql/client/runtime/fetcher.ts",
+      "contentHash": "9bc5db491f02e160da8cb0abe1bdc9e2e762c57bfd8793965f7bb5647c3d7943",
+      "functions": [
+        {
+          "name": "createFetcher",
+          "params": [
+            "{\n    url,\n    headers = {},\n    fetcher,\n    fetch: _fetch,\n    batch = false,\n    ...rest\n}"
+          ],
+          "returnType": "Fetcher",
+          "exported": true,
+          "lineCount": 76
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "./batcher",
+          "specifiers": [
+            "QueryBatcher"
+          ]
+        },
+        {
+          "source": "./createClient",
+          "specifiers": [
+            "ClientOptions"
+          ]
+        },
+        {
+          "source": "./generateGraphqlOperation",
+          "specifiers": [
+            "GraphqlOperation"
+          ]
+        },
+        {
+          "source": "./error",
+          "specifiers": [
+            "GenqlError"
+          ]
+        }
+      ],
+      "exports": [
+        "createFetcher"
+      ],
+      "totalLines": 98,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/client/runtime/generateGraphqlOperation.ts": {
+      "filePath": "libs/shared/src/graphql/client/runtime/generateGraphqlOperation.ts",
+      "contentHash": "5be9cf0dbc0692688fb54a4b0abe3ddc437db4d0e257b28521c1a92ba858fa07",
+      "functions": [
+        {
+          "name": "parseRequest",
+          "params": [
+            "request",
+            "ctx",
+            "path"
+          ],
+          "returnType": "string",
+          "exported": false,
+          "lineCount": 104
+        },
+        {
+          "name": "generateGraphqlOperation",
+          "params": [
+            "operation",
+            "root",
+            "fields"
+          ],
+          "returnType": "GraphqlOperation",
+          "exported": true,
+          "lineCount": 41
+        },
+        {
+          "name": "getFieldFromPath",
+          "params": [
+            "root",
+            "path"
+          ],
+          "exported": true,
+          "lineCount": 44
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "./types",
+          "specifiers": [
+            "LinkedField",
+            "LinkedType"
+          ]
+        }
+      ],
+      "exports": [
+        "generateGraphqlOperation",
+        "getFieldFromPath"
+      ],
+      "totalLines": 226,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/client/runtime/error.ts": {
+      "filePath": "libs/shared/src/graphql/client/runtime/error.ts",
+      "contentHash": "001aa36c226627fad59c44ff7bf6112489d2709988794bbc8cdbf2a380411675",
+      "functions": [],
+      "classes": [
+        {
+          "name": "GenqlError",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [
+            "errors",
+            "data"
+          ],
+          "exported": true,
+          "lineCount": 18
+        }
+      ],
+      "imports": [],
+      "exports": [
+        "GenqlError"
+      ],
+      "totalLines": 30,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/client/runtime/batcher.ts": {
+      "filePath": "libs/shared/src/graphql/client/runtime/batcher.ts",
+      "contentHash": "6470a9c0eee038c9e8b8c2799317cfe13c1cca3a940d04e5d6bad038b9db8628",
+      "functions": [
+        {
+          "name": "dispatchQueueBatch",
+          "params": [
+            "client",
+            "queue"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 43
+        },
+        {
+          "name": "dispatchQueue",
+          "params": [
+            "client",
+            "options"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 16
+        }
+      ],
+      "classes": [
+        {
+          "name": "QueryBatcher",
+          "methods": [
+            "constructor",
+            "fetch",
+            "forceFetch"
+          ],
+          "properties": [
+            "fetcher",
+            "_options",
+            "_queue"
+          ],
+          "exported": true,
+          "lineCount": 143
+        }
+      ],
+      "imports": [
+        {
+          "source": "./generateGraphqlOperation",
+          "specifiers": [
+            "GraphqlOperation"
+          ]
+        },
+        {
+          "source": "./error",
+          "specifiers": [
+            "GenqlError"
+          ]
+        }
+      ],
+      "exports": [
+        "QueryBatcher"
+      ],
+      "totalLines": 276,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/schema/auth.graphql": {
+      "filePath": "libs/shared/src/graphql/schema/auth.graphql",
+      "contentHash": "44b5d208b1275681164736724bbce07ab4d233eb0c891bf65cfd29defac775ca",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 84,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/schema/posts.graphql": {
+      "filePath": "libs/shared/src/graphql/schema/posts.graphql",
+      "contentHash": "147dcfb30d1618d85d5662b49a8f9f2c6159ed79b15cde69a6ea563b6484f098",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 90,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/schema/social.graphql": {
+      "filePath": "libs/shared/src/graphql/schema/social.graphql",
+      "contentHash": "edb81a27b2ad1c4b90fddedba55eb2d5958a279c3a346b3d887355885c088f59",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/schema/supergraph.graphql": {
+      "filePath": "libs/shared/src/graphql/schema/supergraph.graphql",
+      "contentHash": "b9e0f81a9d0b2ce896b936230ad017171f6705072f2ac50ec109481e8fb160ec",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 252,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/graphql/client/schema.graphql": {
+      "filePath": "libs/shared/src/graphql/client/schema.graphql",
+      "contentHash": "9d84a34f04e2fe7f4729cd34aeecd4c781c7839f1d431fb9a2d2c9a57418ee48",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 190,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/enums/app-codes.enum.ts": {
+      "filePath": "libs/shared/src/enums/app-codes.enum.ts",
+      "contentHash": "c2f635973774cd960ddae019ace1701572cb28220d177827deb4b6573052cd9b",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "registerEnumType"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 21,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/enums/app-environment.enum.ts": {
+      "filePath": "libs/shared/src/enums/app-environment.enum.ts",
+      "contentHash": "00643ecb27e51d5aa201702f32ebadf7a5e85cab1b82afb3a7b5e87a53d2490f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 5,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/enums/app-log-level.enum.ts": {
+      "filePath": "libs/shared/src/enums/app-log-level.enum.ts",
+      "contentHash": "5cb9fc7252255310728d58d9a4c31377d336bde0128a17d8cedc2a6e9ccb19ae",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/enums/auth-session.enum.ts": {
+      "filePath": "libs/shared/src/enums/auth-session.enum.ts",
+      "contentHash": "461ae9cdb85457f039c78405eaa9b1772728a5d50990fc55757959d2665d9ba1",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "registerEnumType"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 11,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/enums/database-index-type.enum.ts": {
+      "filePath": "libs/shared/src/enums/database-index-type.enum.ts",
+      "contentHash": "3b7dfc44e1cf36dc61f3bd5cfc57f7a3f1f1f437484c71b1eccba2de2ee29725",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 5,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/enums/post-status.enum.ts": {
+      "filePath": "libs/shared/src/enums/post-status.enum.ts",
+      "contentHash": "58973f57551f9eebb4ccc4b5255ca34d85c212774ba7ccc264b92bd862221286",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@nestjs/graphql",
+          "specifiers": [
+            "registerEnumType"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 11,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/enums/validation-error-codes.enum.ts": {
+      "filePath": "libs/shared/src/enums/validation-error-codes.enum.ts",
+      "contentHash": "24ca95edd22f1630219b42659cc40c6f146a13f129c78adc69970afecca577bf",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 15,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/interfaces/app-response.interface.ts": {
+      "filePath": "libs/shared/src/interfaces/app-response.interface.ts",
+      "contentHash": "7816224cd667774874a275d69d80a85d7a843840e82ae608690ddc40afaa5656",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../enums/app-codes.enum",
+          "specifiers": [
+            "AppCodes"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 7,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/interfaces/app-list-response.interface.ts": {
+      "filePath": "libs/shared/src/interfaces/app-list-response.interface.ts",
+      "contentHash": "fbd098eff9d65b1241e606c8785bcc68fb643aa3297ae43a3493ab07ef81f280",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "./app-response.interface",
+          "specifiers": [
+            "IAppResponse"
+          ]
+        },
+        {
+          "source": "./paginated-data.interface",
+          "specifiers": [
+            "IPaginatedData"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 5,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/interfaces/paginated-data.interface.ts": {
+      "filePath": "libs/shared/src/interfaces/paginated-data.interface.ts",
+      "contentHash": "b7ab5ca6b58f9dee18005460bf9d07e5cdc8159c035d56be16f9d3ae76f873f1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/interfaces/pagination-input.interface.ts": {
+      "filePath": "libs/shared/src/interfaces/pagination-input.interface.ts",
+      "contentHash": "d5e7c21ff55a1e255c292dc6cedc64c4b83eefc3e2d88ca981c1e2b45db61dae",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 5,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/interfaces/base-entity.interface.ts": {
+      "filePath": "libs/shared/src/interfaces/base-entity.interface.ts",
+      "contentHash": "d4bdcfadda959ac9654f32d070ab8ad42a12ccb5bc75aa8a17fc62a505da993b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 7,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/interfaces/user/users.interface.ts": {
+      "filePath": "libs/shared/src/interfaces/user/users.interface.ts",
+      "contentHash": "b1987b766bf5e98a3a57a2316ca12d7d7ba0ca08d83de2be2c6d2dfad03a2330",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 17,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/interfaces/post/post.interface.ts": {
+      "filePath": "libs/shared/src/interfaces/post/post.interface.ts",
+      "contentHash": "d7f5521bccd1aa0b0c45fbaedf5cc7757931ac490d9bd404c2effcfb773726af",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@app/shared/enums/post-status.enum",
+          "specifiers": [
+            "PostStatusEnum"
+          ]
+        },
+        {
+          "source": "../base-entity.interface",
+          "specifiers": [
+            "IBaseEntity"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 18,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/interfaces/social/follow-unfollow.interface.ts": {
+      "filePath": "libs/shared/src/interfaces/social/follow-unfollow.interface.ts",
+      "contentHash": "a79c4830949c826250a4793babc2579551d068f8f0c8c7f63b7f9c91e5067708",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 5,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/interfaces/social/follower-following-count.interface.ts": {
+      "filePath": "libs/shared/src/interfaces/social/follower-following-count.interface.ts",
+      "contentHash": "5215ae8e13f3955a93c7b2bebba49578a19aecdda52f9bbd4f277b1a03d41b60",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 5,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/interfaces/session/session.interface.ts": {
+      "filePath": "libs/shared/src/interfaces/session/session.interface.ts",
+      "contentHash": "7d6b30fa92ccd75e2416fac5074fb4a92148e30af4ba328e2efc9fadd0752018",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@app/shared/enums/auth-session.enum",
+          "specifiers": [
+            "AuthSessionEnum"
+          ]
+        },
+        {
+          "source": "../base-entity.interface",
+          "specifiers": [
+            "IBaseEntity"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/interfaces/url/url.interface.ts": {
+      "filePath": "libs/shared/src/interfaces/url/url.interface.ts",
+      "contentHash": "5603895bd7ffc4affb248b7d34efef05642077939610710a8da4a63d76ccc2fa",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../base-entity.interface",
+          "specifiers": [
+            "IBaseEntity"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/interfaces/auth/auth-user.interface.ts": {
+      "filePath": "libs/shared/src/interfaces/auth/auth-user.interface.ts",
+      "contentHash": "0f0168de03546bd2bdfe63dd8d17f5608466af07b033fa7f90de1a191c2482ba",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../user/users.interface",
+          "specifiers": [
+            "ICurrentUser"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 10,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/interfaces/auth/auth-jwt-payload.interface.ts": {
+      "filePath": "libs/shared/src/interfaces/auth/auth-jwt-payload.interface.ts",
+      "contentHash": "7b3f00a425ade529efb19a89109f66882144438dc833c52df02f367124ac73c2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/middlewares/async-storage.middleware.ts": {
+      "filePath": "libs/shared/src/middlewares/async-storage.middleware.ts",
+      "contentHash": "bc3faca2dcc8acf0ff0ef89e587d9ff6b1f2ed046c41306c80b80e676c857565",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AsyncStorageMiddleware",
+          "methods": [
+            "use"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Injectable",
+            "NestMiddleware"
+          ]
+        },
+        {
+          "source": "express",
+          "specifiers": [
+            "NextFunction",
+            "Request",
+            "Response"
+          ]
+        },
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "../utils/async.store",
+          "specifiers": [
+            "AsyncStore",
+            "IAsyncStore"
+          ]
+        }
+      ],
+      "exports": [
+        "AsyncStorageMiddleware"
+      ],
+      "totalLines": 20,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/pipes/gateway-request-validation.pipe.ts": {
+      "filePath": "libs/shared/src/pipes/gateway-request-validation.pipe.ts",
+      "contentHash": "f2077e2bf8f528b8a7a310497da31d8b1e053a3c86677d54f81e7ca7c6ffacd2",
+      "functions": [],
+      "classes": [
+        {
+          "name": "GatewayRequestValidationPipe",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 33
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "BadRequestException",
+            "Injectable",
+            "ValidationError",
+            "ValidationPipe"
+          ]
+        },
+        {
+          "source": "@app/shared/app-logger/app-logger.service",
+          "specifiers": [
+            "AppLoggerService"
+          ]
+        },
+        {
+          "source": "@app/shared/app-response.dto",
+          "specifiers": [
+            "AppResponse"
+          ]
+        },
+        {
+          "source": "@app/shared/enums/app-codes.enum",
+          "specifiers": [
+            "AppCodes"
+          ]
+        },
+        {
+          "source": "../enums/validation-error-codes.enum",
+          "specifiers": [
+            "ValidationErrorCode"
+          ]
+        },
+        {
+          "source": "../validation-error-to-code.map",
+          "specifiers": [
+            "validationErrorToValidationCodeMap"
+          ]
+        }
+      ],
+      "exports": [
+        "GatewayRequestValidationPipe"
+      ],
+      "totalLines": 44,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/pipes/graphql-request-validation.pipe.ts": {
+      "filePath": "libs/shared/src/pipes/graphql-request-validation.pipe.ts",
+      "contentHash": "776fb0923f81e66a4f4e1565799ee13327678a2f9628f75dd512a1350da46f5a",
+      "functions": [],
+      "classes": [
+        {
+          "name": "GraphqlRequestValidationPipe",
+          "methods": [
+            "constructor"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 34
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "BadRequestException",
+            "Injectable",
+            "ValidationError",
+            "ValidationPipe"
+          ]
+        },
+        {
+          "source": "@app/shared/app-logger/app-logger.service",
+          "specifiers": [
+            "AppLoggerService"
+          ]
+        },
+        {
+          "source": "../enums/validation-error-codes.enum",
+          "specifiers": [
+            "ValidationErrorCode"
+          ]
+        },
+        {
+          "source": "../validation-error-to-code.map",
+          "specifiers": [
+            "validationErrorToValidationCodeMap"
+          ]
+        }
+      ],
+      "exports": [
+        "GraphqlRequestValidationPipe"
+      ],
+      "totalLines": 43,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/utils/async.store.ts": {
+      "filePath": "libs/shared/src/utils/async.store.ts",
+      "contentHash": "0d798ad4a10f819c6bfaa2f2f66d320c446ba1b935721cd7c8d519de2282e2ec",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AsyncStore",
+          "methods": [
+            "run",
+            "set",
+            "get"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 23
+        }
+      ],
+      "imports": [
+        {
+          "source": "async_hooks",
+          "specifiers": [
+            "AsyncLocalStorage"
+          ]
+        }
+      ],
+      "exports": [
+        "AsyncStore"
+      ],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/utils/create-paginated-response.ts": {
+      "filePath": "libs/shared/src/utils/create-paginated-response.ts",
+      "contentHash": "b36ff00f3f9f94816919ce4daf9a42f99d9ef48dabf5ae73bee693cf234626e2",
+      "functions": [
+        {
+          "name": "createPaginatedResponse",
+          "params": [
+            "items",
+            "total",
+            "page",
+            "take"
+          ],
+          "returnType": "IPaginatedData<T>",
+          "exported": true,
+          "lineCount": 18
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../interfaces/paginated-data.interface",
+          "specifiers": [
+            "IPaginatedData"
+          ]
+        }
+      ],
+      "exports": [
+        "createPaginatedResponse"
+      ],
+      "totalLines": 21,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/metrics/metrics.module.ts": {
+      "filePath": "libs/shared/src/metrics/metrics.module.ts",
+      "contentHash": "13111108578132739b5f5123b605b1257b73d863e538553fc216df0f49995857",
+      "functions": [],
+      "classes": [
+        {
+          "name": "AppMetricsModule",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Global",
+            "Module"
+          ]
+        },
+        {
+          "source": "@willsoto/nestjs-prometheus",
+          "specifiers": [
+            "PrometheusModule"
+          ]
+        },
+        {
+          "source": "./metrics.configuration",
+          "specifiers": [
+            "providers"
+          ]
+        }
+      ],
+      "exports": [
+        "AppMetricsModule"
+      ],
+      "totalLines": 18,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/metrics/metrics.configuration.ts": {
+      "filePath": "libs/shared/src/metrics/metrics.configuration.ts",
+      "contentHash": "09dca7c5d9a08172aad99cf66e95c58e851b93e51b9970d84bc73f5d4cf796ae",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@nestjs/common",
+          "specifiers": [
+            "Provider"
+          ]
+        },
+        {
+          "source": "@willsoto/nestjs-prometheus",
+          "specifiers": [
+            "makeCounterProvider"
+          ]
+        },
+        {
+          "source": "./metrics.constant",
+          "specifiers": [
+            "MetricLabel",
+            "MetricName"
+          ]
+        }
+      ],
+      "exports": [
+        "providers"
+      ],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    "libs/shared/src/metrics/metrics.constant.ts": {
+      "filePath": "libs/shared/src/metrics/metrics.constant.ts",
+      "contentHash": "9a6e3057e82783d1cdfdf984ce4afc4876f1b92be0b51bb564508493bbce302d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 31,
+      "hasStructuralAnalysis": true
+    }
+  }
+}
