@@ -9,15 +9,16 @@ import {
 
 import { AuthSessionEnum } from '@app/shared/enums/auth-session.enum';
 import { DatabaseIndexType } from '@app/shared/enums/database-index-type.enum';
+import { TableNamesEnum } from '@app/shared/enums/table-names.enum';
 import { ISession } from '@app/shared/interfaces/session/session.interface';
 
-@Entity('sessions')
+@Entity(TableNamesEnum.AUTH_SESSIONS)
 export class Session implements ISession {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ type: 'uuid', generated: 'uuid' })
-  @Index(`${DatabaseIndexType.IDX}_sessions_guid`)
+  @Index(`${DatabaseIndexType.IDX}_${TableNamesEnum.AUTH_SESSIONS}_guid`)
   guid: string;
 
   @Column({ enum: AuthSessionEnum, type: 'enum' })
