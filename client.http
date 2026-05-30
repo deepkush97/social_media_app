@@ -1,8 +1,8 @@
 ### 🌍 Base Environment Variables
 @baseUrl = http://localhost:3000
 @contentType = application/json
-@token = {{signup.response.body.data.jwtToken}} 
-@token = {{login.response.body.data.jwtToken}} 
+@token = {{signup.response.body.data.jwtToken}}
+@token = {{login.response.body.data.jwtToken}}
 
 
 ### SIGNUP - Signup user
@@ -86,8 +86,3 @@ Content-Type: {{contentType}}
 GET  {{baseUrl}}/users/counts
 Authorization: Bearer {{token}}
 Content-Type: {{contentType}}
-
-
-
-
-

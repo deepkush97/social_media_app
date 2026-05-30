@@ -43,6 +43,7 @@ export const appBootstrap = async (module: Type<unknown>): Promise<void> => {
     SwaggerModule.setup('api', app, documentFactory);
   }
 
+  app.enableCors();
   await app.listen(port);
   appLoggerService.info(`${serviceName} service is running on port ${port}`, {
     context: 'Bootstrap',
