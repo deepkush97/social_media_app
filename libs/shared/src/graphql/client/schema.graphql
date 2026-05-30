@@ -65,12 +65,29 @@ input FollowUnfollowInput {
   followingId: Int!
 }
 
+type InteractionDto {
+  id: Int!
+  userId: Int!
+  postId: Int!
+  createdAt: DateTime!
+}
+
+type InteractionOutputDto {
+  data: InteractionDto
+  code: AppCodes!
+}
+
 scalar join__FieldSet
 
 enum join__Graph {
   AUTH
   POSTS
   SOCIAL
+}
+
+input LikeInput {
+  userId: Int!
+  postId: Int!
 }
 
 scalar link__Import
@@ -102,6 +119,13 @@ type Mutation {
   archivePost(id: Int!): BooleanOutputDto!
   follow(input: FollowUnfollowInput!): UserCountsDto!
   unfollow(input: FollowUnfollowInput!): UserCountsDto!
+  likePost(input: LikeInput!): InteractionOutputDto!
+  unlikePost(input: LikeInput!): BooleanOutputDto!
+}
+
+type NumberOutputDto {
+  data: Int
+  code: AppCodes!
 }
 
 type PaginationMeta {
@@ -155,6 +179,8 @@ type Query {
   findPostById(id: Int!): PostOutputDto!
   findPostsByUserId(input: PostsPaginationInput!): PostListOutputDto!
   userCounts(id: Int!): UserCountsDto!
+  postLikeCount(postId: Int!): NumberOutputDto!
+  hasUserLikedPost(userId: Int!, postId: Int!): BooleanOutputDto!
 }
 
 type SessionOutput {

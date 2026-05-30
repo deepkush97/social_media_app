@@ -28,6 +28,20 @@ export interface FollowerFollowingCountDto {
     __typename: 'FollowerFollowingCountDto'
 }
 
+export interface InteractionDto {
+    id: Scalars['Int']
+    userId: Scalars['Int']
+    postId: Scalars['Int']
+    createdAt: Scalars['DateTime']
+    __typename: 'InteractionDto'
+}
+
+export interface InteractionOutputDto {
+    data: (InteractionDto | null)
+    code: AppCodes
+    __typename: 'InteractionOutputDto'
+}
+
 export type join__Graph = 'AUTH' | 'POSTS' | 'SOCIAL'
 
 export type link__Purpose = 'SECURITY' | 'EXECUTION'
@@ -42,7 +56,15 @@ export interface Mutation {
     archivePost: BooleanOutputDto
     follow: UserCountsDto
     unfollow: UserCountsDto
+    likePost: InteractionOutputDto
+    unlikePost: BooleanOutputDto
     __typename: 'Mutation'
+}
+
+export interface NumberOutputDto {
+    data: (Scalars['Int'] | null)
+    code: AppCodes
+    __typename: 'NumberOutputDto'
 }
 
 export interface PaginationMeta {
@@ -91,6 +113,8 @@ export interface Query {
     findPostById: PostOutputDto
     findPostsByUserId: PostListOutputDto
     userCounts: UserCountsDto
+    postLikeCount: NumberOutputDto
+    hasUserLikedPost: BooleanOutputDto
     __typename: 'Query'
 }
 
@@ -151,6 +175,24 @@ export interface FollowerFollowingCountDtoGenqlSelection{
 
 export interface FollowUnfollowInput {followerId: Scalars['Int'],followingId: Scalars['Int']}
 
+export interface InteractionDtoGenqlSelection{
+    id?: boolean | number
+    userId?: boolean | number
+    postId?: boolean | number
+    createdAt?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface InteractionOutputDtoGenqlSelection{
+    data?: InteractionDtoGenqlSelection
+    code?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface LikeInput {userId: Scalars['Int'],postId: Scalars['Int']}
+
 export interface LoginUserInput {email: Scalars['String'],password: Scalars['String']}
 
 export interface MutationGenqlSelection{
@@ -163,6 +205,15 @@ export interface MutationGenqlSelection{
     archivePost?: (BooleanOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     follow?: (UserCountsDtoGenqlSelection & { __args: {input: FollowUnfollowInput} })
     unfollow?: (UserCountsDtoGenqlSelection & { __args: {input: FollowUnfollowInput} })
+    likePost?: (InteractionOutputDtoGenqlSelection & { __args: {input: LikeInput} })
+    unlikePost?: (BooleanOutputDtoGenqlSelection & { __args: {input: LikeInput} })
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface NumberOutputDtoGenqlSelection{
+    data?: boolean | number
+    code?: boolean | number
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -218,6 +269,8 @@ export interface QueryGenqlSelection{
     findPostById?: (PostOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     findPostsByUserId?: (PostListOutputDtoGenqlSelection & { __args: {input: PostsPaginationInput} })
     userCounts?: (UserCountsDtoGenqlSelection & { __args: {id: Scalars['Int']} })
+    postLikeCount?: (NumberOutputDtoGenqlSelection & { __args: {postId: Scalars['Int']} })
+    hasUserLikedPost?: (BooleanOutputDtoGenqlSelection & { __args: {userId: Scalars['Int'], postId: Scalars['Int']} })
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -281,10 +334,34 @@ export interface UserOutputDtoGenqlSelection{
     
 
 
+    const InteractionDto_possibleTypes: string[] = ['InteractionDto']
+    export const isInteractionDto = (obj?: { __typename?: any } | null): obj is InteractionDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isInteractionDto"')
+      return InteractionDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const InteractionOutputDto_possibleTypes: string[] = ['InteractionOutputDto']
+    export const isInteractionOutputDto = (obj?: { __typename?: any } | null): obj is InteractionOutputDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isInteractionOutputDto"')
+      return InteractionOutputDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
     const Mutation_possibleTypes: string[] = ['Mutation']
     export const isMutation = (obj?: { __typename?: any } | null): obj is Mutation => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isMutation"')
       return Mutation_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const NumberOutputDto_possibleTypes: string[] = ['NumberOutputDto']
+    export const isNumberOutputDto = (obj?: { __typename?: any } | null): obj is NumberOutputDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isNumberOutputDto"')
+      return NumberOutputDto_possibleTypes.includes(obj.__typename)
     }
     
 

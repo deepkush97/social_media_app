@@ -6,11 +6,11 @@ export default {
         5,
         6,
         8,
-        11,
-        12,
         13,
         14,
-        23
+        16,
+        17,
+        27
     ],
     "types": {
         "AppCodes": {},
@@ -83,8 +83,47 @@ export default {
                 5
             ]
         },
+        "InteractionDto": {
+            "id": [
+                6
+            ],
+            "userId": [
+                6
+            ],
+            "postId": [
+                6
+            ],
+            "createdAt": [
+                8
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "InteractionOutputDto": {
+            "data": [
+                11
+            ],
+            "code": [
+                0
+            ],
+            "__typename": [
+                5
+            ]
+        },
         "join__FieldSet": {},
         "join__Graph": {},
+        "LikeInput": {
+            "userId": [
+                6
+            ],
+            "postId": [
+                6
+            ],
+            "__typename": [
+                5
+            ]
+        },
         "link__Import": {},
         "link__Purpose": {},
         "LoginUserInput": {
@@ -100,7 +139,7 @@ export default {
         },
         "Mutation": {
             "createUser": [
-                29,
+                33,
                 {
                     "input": [
                         7,
@@ -109,7 +148,7 @@ export default {
                 }
             ],
             "createSession": [
-                26,
+                30,
                 {
                     "id": [
                         6,
@@ -118,10 +157,10 @@ export default {
                 }
             ],
             "loginUser": [
-                29,
+                33,
                 {
                     "input": [
-                        15,
+                        18,
                         "LoginUserInput!"
                     ]
                 }
@@ -145,7 +184,7 @@ export default {
                 }
             ],
             "createPost": [
-                21,
+                25,
                 {
                     "input": [
                         4,
@@ -163,7 +202,7 @@ export default {
                 }
             ],
             "follow": [
-                27,
+                31,
                 {
                     "input": [
                         10,
@@ -172,13 +211,42 @@ export default {
                 }
             ],
             "unfollow": [
-                27,
+                31,
                 {
                     "input": [
                         10,
                         "FollowUnfollowInput!"
                     ]
                 }
+            ],
+            "likePost": [
+                12,
+                {
+                    "input": [
+                        15,
+                        "LikeInput!"
+                    ]
+                }
+            ],
+            "unlikePost": [
+                2,
+                {
+                    "input": [
+                        15,
+                        "LikeInput!"
+                    ]
+                }
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "NumberOutputDto": {
+            "data": [
+                6
+            ],
+            "code": [
+                0
             ],
             "__typename": [
                 5
@@ -203,7 +271,7 @@ export default {
         },
         "PostListOutputDto": {
             "data": [
-                20
+                24
             ],
             "code": [
                 0
@@ -229,7 +297,7 @@ export default {
                 6
             ],
             "status": [
-                23
+                27
             ],
             "createdAt": [
                 8
@@ -243,10 +311,10 @@ export default {
         },
         "PostOutputData": {
             "items": [
-                19
+                23
             ],
             "meta": [
-                17
+                21
             ],
             "__typename": [
                 5
@@ -254,7 +322,7 @@ export default {
         },
         "PostOutputDto": {
             "data": [
-                19
+                23
             ],
             "code": [
                 0
@@ -274,7 +342,7 @@ export default {
                 6
             ],
             "status": [
-                23
+                27
             ],
             "__typename": [
                 5
@@ -283,7 +351,7 @@ export default {
         "PostStatusEnum": {},
         "Query": {
             "findUserById": [
-                29,
+                33,
                 {
                     "id": [
                         6,
@@ -292,7 +360,7 @@ export default {
                 }
             ],
             "findOpenSessionByGuid": [
-                26,
+                30,
                 {
                     "id": [
                         5,
@@ -301,7 +369,7 @@ export default {
                 }
             ],
             "findPostById": [
-                21,
+                25,
                 {
                     "id": [
                         6,
@@ -310,18 +378,40 @@ export default {
                 }
             ],
             "findPostsByUserId": [
-                18,
+                22,
                 {
                     "input": [
-                        22,
+                        26,
                         "PostsPaginationInput!"
                     ]
                 }
             ],
             "userCounts": [
-                27,
+                31,
                 {
                     "id": [
+                        6,
+                        "Int!"
+                    ]
+                }
+            ],
+            "postLikeCount": [
+                20,
+                {
+                    "postId": [
+                        6,
+                        "Int!"
+                    ]
+                }
+            ],
+            "hasUserLikedPost": [
+                2,
+                {
+                    "userId": [
+                        6,
+                        "Int!"
+                    ],
+                    "postId": [
                         6,
                         "Int!"
                     ]
@@ -356,7 +446,7 @@ export default {
         },
         "SessionOutputDto": {
             "data": [
-                25
+                29
             ],
             "code": [
                 0
@@ -398,7 +488,7 @@ export default {
         },
         "UserOutputDto": {
             "data": [
-                28
+                32
             ],
             "code": [
                 0
