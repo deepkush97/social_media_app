@@ -7,6 +7,7 @@ import { AppConfigService } from '@app/shared/app-config/app-config.service';
 import { AppLoggerModule } from '@app/shared/app-logger/app-logger.module';
 import { GraphqlRouterModule } from '@app/shared/graphql/graphql-router.module';
 import { AsyncStorageMiddleware } from '@app/shared/middlewares/async-storage.middleware';
+import { NatsModule } from '@app/shared/nats/nats.module';
 import { GatewayRequestValidationPipe } from '@app/shared/pipes/gateway-request-validation.pipe';
 
 import { AuthModule } from './auth/auth.module';
@@ -23,6 +24,7 @@ import { AppController } from './app.controller';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    NatsModule.forRoot(),
     AuthModule,
     GraphqlRouterModule.registerAsync({
       inject: [AppConfigService],

@@ -39,8 +39,35 @@ services:
       - '7687:7687'
     environment:
       - NEO4J_AUTH=neo4j/password
+      - NEO4J_PLUGINS='["graph-data-science"]'
     volumes:
       - neo4j_data:/data
+    networks:
+      - backend
+
+  nats:
+    container_name: nats
+    image: nats:2.10-alpine
+    command: ['-js', '-m', '8222', '-sd', '/data']
+    ports:
+      - '4222:4222'
+      - '8222:8222'
+    volumes:
+      - nats_data:/data
+    networks:
+      - backend
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch:8.12.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - '9200:9200'
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
     networks:
       - backend
 
@@ -60,6 +87,8 @@ volumes:
   mysql_data:
   redis_data:
   neo4j_data:
+  nats_data:
+  elasticsearch_data:
 
 networks:
   backend:

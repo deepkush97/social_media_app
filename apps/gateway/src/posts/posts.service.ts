@@ -4,10 +4,12 @@ import { AppResponse } from '@app/shared/app-response.dto';
 import { CacheService } from '@app/shared/cache/cache.service';
 import { AppCodes } from '@app/shared/enums/app-codes.enum';
 import { PostStatusEnum } from '@app/shared/enums/post-status.enum';
+import { PostCreatedEvent } from '@app/shared/events/post-created.event';
 import { GraphqlRouterComposite } from '@app/shared/graphql/graphql-router.composite';
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
 import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface';
 import { INewPost, IPost } from '@app/shared/interfaces/post/post.interface';
+import { EventBusClient } from '@app/shared/nats/event-bus-client.service';
 
 import { CACHE_TTL_IN_SECONDS } from '../app.constant';
 
@@ -16,6 +18,7 @@ export class PostsService {
   constructor(
     private readonly routerComposite: GraphqlRouterComposite,
     private readonly cacheService: CacheService,
+    private readonly eventBusClient: EventBusClient,
   ) {}
 
   private createPostCacheKey(userId: number, postId: number): string {
@@ -66,6 +69,16 @@ export class PostsService {
       CACHE_TTL_IN_SECONDS,
     );
     await this.cacheService.delAll(this.deletePostListForUserKey(userId), 3);
+
+    await this.eventBusClient.emit(
+      new PostCreatedEvent({
+        content: postData.content,
+        id: postData.id,
+        title: postData.title,
+        userId,
+      }),
+      this.constructor.name,
+    );
 
     return new AppResponse({
       code: AppCodes.OK_CREATED,

@@ -7,6 +7,7 @@ export default defineConfig({
   test: {
     globals: true,
     root: './',
+    include: ['apps/**/*.spec.ts', 'libs/**/*.spec.ts', 'test/**/*.spec.ts'],
     alias: {
       src: resolve(__dirname, './src'),
       '@src': './src',
