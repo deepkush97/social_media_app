@@ -76,6 +76,7 @@ export class PostsService {
         id: postData.id,
         title: postData.title,
         userId,
+        createdAt: postData.createdAt,
       }),
       this.constructor.name,
     );

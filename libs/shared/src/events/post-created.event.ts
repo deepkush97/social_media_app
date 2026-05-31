@@ -3,7 +3,10 @@ import { IPost } from '../interfaces/post/post.interface';
 
 import { BaseEvent } from './base-event.abstract';
 
-export type PostCreatedEventPayload = Pick<IPost, 'content' | 'title' | 'userId' | 'id'>;
+export type PostCreatedEventPayload = Pick<
+  IPost,
+  'content' | 'title' | 'userId' | 'id' | 'createdAt'
+>;
 
 export class PostCreatedEvent implements BaseEvent<PostCreatedEventPayload> {
   public event: NatsEvents = NatsEvents.POST_CREATED;

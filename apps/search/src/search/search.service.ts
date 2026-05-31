@@ -1,6 +1,8 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 
+import { PostCreatedEventPayload } from '@app/shared/events/post-created.event';
+import { UserCreateEventPayload } from '@app/shared/events/user-created.event';
 import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface';
 
 @Injectable()
@@ -35,6 +37,7 @@ export class SearchService implements OnModuleInit {
           id: { type: 'integer' },
           title: { type: 'text', analyzer: 'synonym_analyzer' },
           content: { type: 'text', analyzer: 'synonym_analyzer' },
+          tags: { type: 'keyword' },
           userId: { type: 'integer' },
           createdAt: { type: 'date' },
         },
@@ -63,12 +66,12 @@ export class SearchService implements OnModuleInit {
       mappings: {
         properties: {
           id: { type: 'integer' },
-          username: {
+          email: {
             type: 'text',
             analyzer: 'autocomplete',
             fields: { raw: { type: 'keyword' } },
           },
-          displayName: {
+          name: {
             type: 'text',
             analyzer: 'autocomplete',
           },
@@ -97,7 +100,6 @@ export class SearchService implements OnModuleInit {
       },
       mappings: {
         properties: {
-          id: { type: 'integer' },
           name: {
             type: 'text',
             analyzer: 'autocomplete',
@@ -118,13 +120,7 @@ export class SearchService implements OnModuleInit {
     }
   }
 
-  async indexPost(post: {
-    id: number;
-    title: string;
-    content?: string;
-    userId: number;
-    createdAt?: string;
-  }): Promise<void> {
+  async indexPost(post: PostCreatedEventPayload & { tags: string[] }): Promise<void> {
     await this.esService.index({
       index: 'posts',
       id: String(post.id),
@@ -132,32 +128,34 @@ export class SearchService implements OnModuleInit {
         id: post.id,
         title: post.title,
         content: post.content,
+        tags: post.tags,
         userId: post.userId,
         createdAt: post.createdAt ?? new Date().toISOString(),
       },
     });
   }
 
-  async indexUser(user: { id: number; username: string; displayName?: string }): Promise<void> {
+  async indexUser(document: UserCreateEventPayload): Promise<void> {
     await this.esService.index({
       index: 'users',
-      id: String(user.id),
-      document: {
-        id: user.id,
-        username: user.username,
-        displayName: user.displayName,
-      },
+      id: String(document.id),
+      document,
     });
   }
 
-  async indexTag(tag: { id: number; name: string }): Promise<void> {
+  async indexTag(name: string): Promise<void> {
     await this.esService.index({
       index: 'tags',
-      id: String(tag.id),
-      document: {
-        id: tag.id,
-        name: tag.name,
-      },
+      id: name,
+      document: { name },
+    });
+  }
+
+  async bulkIndexTags(tagNames: string[]): Promise<void> {
+    if (tagNames.length === 0) return;
+
+    await this.esService.bulk({
+      operations: tagNames.flatMap((name) => [{ index: { _index: 'tags', _id: name } }, { name }]),
     });
   }
 
@@ -185,6 +183,7 @@ export class SearchService implements OnModuleInit {
         postId: (h._source as Record<string, unknown>).id as number,
         title: (h._source as Record<string, unknown>).title as string,
         content: (h._source as Record<string, unknown>).content as string | undefined,
+        tags: (h._source as Record<string, unknown>).tags as string[] | undefined,
         userId: (h._source as Record<string, unknown>).userId as number,
         score: h._score,
       })),
@@ -201,9 +200,9 @@ export class SearchService implements OnModuleInit {
       query: {
         bool: {
           should: [
-            { match: { username: { query, boost: 3 } } },
-            { match: { displayName: { query, boost: 2 } } },
-            { prefix: { username: { value: query } } },
+            { match: { email: { query, boost: 3 } } },
+            { match: { name: { query, boost: 2 } } },
+            { prefix: { email: { value: query } } },
           ],
         },
       },
@@ -216,8 +215,8 @@ export class SearchService implements OnModuleInit {
     return {
       items: hits.map((h) => ({
         userId: (h._source as Record<string, unknown>).id as number,
-        username: (h._source as Record<string, unknown>).username as string,
-        displayName: (h._source as Record<string, unknown>).displayName as string | undefined,
+        email: (h._source as Record<string, unknown>).email as string,
+        name: (h._source as Record<string, unknown>).name as string | undefined,
         score: h._score,
       })),
       meta: { total, page, lastPage: Math.ceil(total / take), take },
@@ -241,7 +240,7 @@ export class SearchService implements OnModuleInit {
 
     return {
       items: hits.map((h) => ({
-        id: (h._source as Record<string, unknown>).id as number,
+        id: h._id,
         name: (h._source as Record<string, unknown>).name as string,
         score: h._score,
       })),

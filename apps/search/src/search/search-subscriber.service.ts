@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 
 import { AppLoggerService } from '@app/shared/app-logger/app-logger.service';
 import { NatsEvents } from '@app/shared/enums/nats-events.enum';
+import { PostCreatedEventPayload } from '@app/shared/events/post-created.event';
+import { UserCreateEventPayload } from '@app/shared/events/user-created.event';
 import { EventHandler } from '@app/shared/nats/event-handler.decorator';
+
+import { extractTags } from './utils/extract-tags';
 
 import { SearchService } from './search.service';
 
@@ -14,15 +18,15 @@ export class SearchSubscriberService {
   ) {}
 
   @EventHandler(NatsEvents.POST_CREATED)
-  async handlePostCreated(data: {
-    id: number;
-    title: string;
-    content?: string;
-    userId: number;
-    createdAt?: string;
-  }): Promise<void> {
+  async handlePostCreated(data: PostCreatedEventPayload): Promise<void> {
     try {
-      await this.searchService.indexPost(data);
+      const tags = extractTags(data.content);
+      await this.searchService.indexPost({ ...data, tags });
+
+      if (tags.length > 0) {
+        await this.searchService.bulkIndexTags(tags);
+      }
+
       this.logger.info(`Indexed post ${data.id}`, {
         context: SearchSubscriberService.name,
       });
@@ -35,13 +39,9 @@ export class SearchSubscriberService {
   }
 
   @EventHandler(NatsEvents.USER_CREATED)
-  async handleUserCreated(data: { id: number; email: string; name: string }): Promise<void> {
+  async handleUserCreated(data: UserCreateEventPayload): Promise<void> {
     try {
-      await this.searchService.indexUser({
-        id: data.id,
-        username: data.email,
-        displayName: data.name,
-      });
+      await this.searchService.indexUser(data);
       this.logger.info(`Indexed user ${data.id}`, {
         context: SearchSubscriberService.name,
       });
@@ -50,23 +50,6 @@ export class SearchSubscriberService {
         context: SearchSubscriberService.name,
         error: error instanceof Error ? error.message : error,
       });
-    }
-  }
-
-  @EventHandler(NatsEvents.TAG_CREATED)
-  async handleTagCreated(data: { tags: { id: number; name: string }[] }): Promise<void> {
-    for (const tag of data.tags) {
-      try {
-        await this.searchService.indexTag(tag);
-        this.logger.info(`Indexed tag ${tag.id}`, {
-          context: SearchSubscriberService.name,
-        });
-      } catch (error) {
-        this.logger.error(`Failed to index tag ${tag.id}`, {
-          context: SearchSubscriberService.name,
-          error: error instanceof Error ? error.message : error,
-        });
-      }
     }
   }
 }
