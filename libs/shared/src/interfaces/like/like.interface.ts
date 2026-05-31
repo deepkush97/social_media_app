@@ -1,10 +1,10 @@
-import { IBaseEntity } from '../base-entity.interface';
+import { IBaseWithUserIdEntity } from '../base-entity.interface';
 
 export interface INewLike {
   postId: number;
 }
 
-export interface ILike extends INewLike, IBaseEntity {}
+export interface ILike extends INewLike, IBaseWithUserIdEntity {}
 
 export interface INewLikeWithUserId extends INewLike {
   userId: number;
