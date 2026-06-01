@@ -7,7 +7,7 @@ import { AppResponse } from '@app/shared/app-response.dto';
 import { ApiController } from '@app/shared/decorators/api-controller.decorator';
 import { ICurrentUser } from '@app/shared/interfaces/user/users.interface';
 
-import { LikeApiResponse, LikeResponse } from './responses/like.response';
+import { LikeApiResponse } from './responses/like.response';
 
 import { LikesService } from './likes.service';
 
@@ -23,7 +23,7 @@ export class LikesController {
   async handleLikePost(
     @CurrentUser() user: ICurrentUser,
     @Param('postId', new ParseIntPipe({ optional: false })) postId: number,
-  ): Promise<AppResponse<LikeResponse>> {
+  ): Promise<LikeApiResponse> {
     return this.likesService.likePost(user.id, postId);
   }
 

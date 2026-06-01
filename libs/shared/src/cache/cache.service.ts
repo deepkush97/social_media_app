@@ -51,48 +51,56 @@ export class CacheService implements OnModuleInit {
       context: CacheService.name,
     });
 
-    const stream = this.redisClient.scanStream({
-      match: pattern,
-      count: batchSize,
-    });
-
-    let pipeline = this.redisClient.pipeline();
-    let localKeys = [];
-    const count = 0;
-
-    stream.on('data', (resultKeys) => {
-      this.logger.debug(`delAll: keys found ${resultKeys.length} count ${count}`, {
-        context: CacheService.name,
+    return new Promise<void>((resolve, reject) => {
+      const stream = this.redisClient.scanStream({
+        match: pattern,
+        count: batchSize,
       });
-      for (const resultKey of resultKeys) {
-        localKeys.push(resultKey);
-        pipeline.del(resultKey);
-      }
 
-      if (localKeys.length > batchSize) {
-        void pipeline.exec((error, result) => {
-          if (error)
-            this.logger.error('error in executing pipeline', { error, context: CacheService.name });
-          if (result)
-            this.logger.info('batch completed', { data: result, context: CacheService.name });
+      let pipeline = this.redisClient.pipeline();
+      let localKeys: string[] = [];
+
+      stream.on('data', (resultKeys: string[]) => {
+        this.logger.debug(`delAll: keys found ${resultKeys.length}`, {
+          context: CacheService.name,
         });
-        localKeys = [];
-        pipeline = this.redisClient.pipeline();
-      }
-    });
+        for (const resultKey of resultKeys) {
+          localKeys.push(resultKey);
+          pipeline.del(resultKey);
+        }
 
-    stream.on('end', () => {
-      void pipeline.exec((error, result) => {
-        if (error)
-          this.logger.error('error in executing pipeline', { error, context: CacheService.name });
-        if (result)
-          this.logger.info('batch completed', { data: result, context: CacheService.name });
+        if (localKeys.length > batchSize) {
+          void pipeline.exec((error, result) => {
+            if (error)
+              this.logger.error('error in executing pipeline', {
+                error,
+                context: CacheService.name,
+              });
+            if (result)
+              this.logger.info('batch completed', { data: result, context: CacheService.name });
+          });
+          localKeys = [];
+          pipeline = this.redisClient.pipeline();
+        }
       });
-    });
 
-    stream.on('error', (error) => {
-      if (error)
-        this.logger.error('error in executing pipeline', { error, context: CacheService.name });
+      stream.on('end', () => {
+        void pipeline.exec((error, result) => {
+          if (error) {
+            this.logger.error('error in executing pipeline', { error, context: CacheService.name });
+            reject(error);
+          } else {
+            if (result)
+              this.logger.info('batch completed', { data: result, context: CacheService.name });
+            resolve();
+          }
+        });
+      });
+
+      stream.on('error', (error) => {
+        this.logger.error('error in stream', { error, context: CacheService.name });
+        reject(error);
+      });
     });
   }
 }

@@ -52,7 +52,7 @@ export class GlobalInterceptor implements NestInterceptor {
 
         return {
           code,
-          ...(res?.data ? { data: res.data } : {}),
+          ...(res?.data !== undefined ? { data: res.data } : {}),
         };
       }),
       tap(() => {

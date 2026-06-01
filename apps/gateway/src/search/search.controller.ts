@@ -3,15 +3,13 @@ import { ApiOkResponse, ApiOperation, ApiQuery } from '@nestjs/swagger';
 
 import { Authenticated, CurrentUser } from 'apps/gateway/src/guards/jwt.guard';
 
-import { AppResponse } from '@app/shared/app-response.dto';
 import { ApiController } from '@app/shared/decorators/api-controller.decorator';
-import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface';
 import { ICurrentUser } from '@app/shared/interfaces/user/users.interface';
 
 import { SearchRequest } from './requests/search.request';
-import { SearchPostHitItem, SearchPostListApiResponse } from './responses/search-post-hit.response';
-import { SearchTagHitItem, SearchTagListApiResponse } from './responses/search-tag-hit.response';
-import { SearchUserHitItem, SearchUserListApiResponse } from './responses/search-user-hit.response';
+import { SearchPostListApiResponse } from './responses/search-post-hit.response';
+import { SearchTagListApiResponse } from './responses/search-tag-hit.response';
+import { SearchUserListApiResponse } from './responses/search-user-hit.response';
 
 import { SearchService } from './search.service';
 
@@ -27,7 +25,7 @@ export class SearchController {
   async handleSearchPosts(
     @CurrentUser() _user: ICurrentUser,
     @Query() { q, page, take }: SearchRequest,
-  ): Promise<AppResponse<IPaginatedData<SearchPostHitItem>>> {
+  ): Promise<SearchPostListApiResponse> {
     return this.searchService.searchPosts(q, page ?? 1, take ?? 20);
   }
 
@@ -39,7 +37,7 @@ export class SearchController {
   async handleSearchUsers(
     @CurrentUser() _user: ICurrentUser,
     @Query() { q, page, take }: SearchRequest,
-  ): Promise<AppResponse<IPaginatedData<SearchUserHitItem>>> {
+  ): Promise<SearchUserListApiResponse> {
     return this.searchService.searchUsers(q, page ?? 1, take ?? 20);
   }
 
@@ -51,7 +49,7 @@ export class SearchController {
   async handleSearchTags(
     @CurrentUser() _user: ICurrentUser,
     @Query() { q, page, take }: SearchRequest,
-  ): Promise<AppResponse<IPaginatedData<SearchTagHitItem>>> {
+  ): Promise<SearchTagListApiResponse> {
     return this.searchService.searchTags(q, page ?? 1, take ?? 20);
   }
 }

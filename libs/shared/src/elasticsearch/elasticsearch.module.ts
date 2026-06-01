@@ -21,6 +21,8 @@ export class ElasticsearchSharedModule {
           inject: [ElasticsearchConfigService],
           useFactory: (configService: ElasticsearchConfigService) => ({
             node: configService.url,
+            requestTimeout: 50_000,
+            maxRetries: 2,
           }),
         }),
       ],

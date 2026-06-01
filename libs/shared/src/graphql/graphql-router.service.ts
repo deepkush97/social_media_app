@@ -27,7 +27,19 @@ export class GraphqlRouterService {
           body: JSON.stringify(operation),
         });
 
-        return response.json();
+        const text = await response.text();
+
+        if (!response.ok) {
+          throw new Error(
+            `GraphQL router fetch failed: ${response.status} ${response.statusText} — ${text}`,
+          );
+        }
+
+        try {
+          return JSON.parse(text);
+        } catch {
+          throw new Error(`GraphQL router returned non-JSON response: ${text}`);
+        }
       },
     });
   }
