@@ -10,11 +10,12 @@ type PaginationMeta {
 }
 
 type SearchPostHitDto {
-  postId: Int!
+  id: Int!
   title: String!
   content: String
   userId: Int!
   score: Float!
+  tags: [String!]
 }
 
 type SearchPostOutputDto {
@@ -42,10 +43,26 @@ enum AppCodes {
   NOT_FOUND
 }
 
+type SearchTagHitDto {
+  id: String!
+  name: String!
+  score: Float!
+}
+
+type SearchTagOutputDto {
+  data: SearchTagHitDtoData
+  code: AppCodes!
+}
+
+type SearchTagHitDtoData {
+  items: [SearchTagHitDto!]!
+  meta: PaginationMeta!
+}
+
 type SearchUserHitDto {
-  userId: Int!
-  username: String!
-  displayName: String
+  id: Int!
+  email: String!
+  name: String
   score: Float!
 }
 
@@ -60,7 +77,13 @@ type SearchUserHitDtoData {
 }
 
 type Query {
-  searchPosts(query: String!, page: Int, take: Int): SearchPostOutputDto!
-  searchUsers(query: String!, page: Int, take: Int): SearchUserOutputDto!
-  searchTags(query: String!, page: Int, take: Int): SearchUserOutputDto!
+  searchPosts(input: SearchInput!): SearchPostOutputDto!
+  searchUsers(input: SearchInput!): SearchUserOutputDto!
+  searchTags(input: SearchInput!): SearchTagOutputDto!
+}
+
+input SearchInput {
+  query: String!
+  page: Int = 1
+  take: Int = 20
 }

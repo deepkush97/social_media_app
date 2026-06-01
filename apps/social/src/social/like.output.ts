@@ -1,9 +1,10 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 import { AppGraphqlResponse } from '@app/shared/app-graphql-response.dto';
+import { ILike } from '@app/shared/interfaces/like/like.interface';
 
 @ObjectType()
-export class InteractionDto {
+export class LikeDto implements ILike {
   @Field(() => Int)
   id: number;
 
@@ -15,7 +16,10 @@ export class InteractionDto {
 
   @Field()
   createdAt: Date;
+
+  @Field()
+  updatedAt: Date;
 }
 
 @ObjectType()
-export class InteractionOutputDto extends AppGraphqlResponse(InteractionDto) {}
+export class LikeOutputDto extends AppGraphqlResponse(LikeDto) {}

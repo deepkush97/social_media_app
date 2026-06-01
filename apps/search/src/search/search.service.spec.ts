@@ -3,16 +3,19 @@ import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { createMockEs, MockElasticsearchService } from '@app/shared/test-utils/elasticsearch.mock';
+import { createMockLogger, MockLogger } from '@app/shared/test-utils/logger.mock';
 
 import { SearchService } from './search.service';
 
 describe('SearchService', () => {
   let service: SearchService;
   let mockEs: MockElasticsearchService;
+  let mockLogger: MockLogger;
 
   beforeEach(() => {
     mockEs = createMockEs();
-    service = new SearchService(mockEs as unknown as ElasticsearchService);
+    mockLogger = createMockLogger();
+    service = new SearchService(mockEs as unknown as ElasticsearchService, mockLogger as never);
   });
 
   describe('onModuleInit', () => {
@@ -162,7 +165,7 @@ describe('SearchService', () => {
 
       expect(result.items).toHaveLength(1);
       expect(result.items[0]).toEqual({
-        postId: 1,
+        id: 1,
         title: 'Test Post',
         content: 'Some content',
         tags: ['react'],
@@ -237,7 +240,7 @@ describe('SearchService', () => {
 
       expect(result.items).toHaveLength(1);
       expect(result.items[0]).toEqual({
-        userId: 1,
+        id: 1,
         email: 'alice@example.com',
         name: 'Alice',
         score: 2.0,

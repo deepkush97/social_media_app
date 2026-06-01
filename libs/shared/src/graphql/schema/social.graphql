@@ -37,11 +37,12 @@ type UserCountsDto {
   code: AppCodes!
 }
 
-type InteractionDto {
+type LikeDto {
   id: Int!
   userId: Int!
   postId: Int!
   createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """
@@ -49,8 +50,8 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type InteractionOutputDto {
-  data: InteractionDto
+type LikeOutputDto {
+  data: LikeDto
   code: AppCodes!
 }
 
@@ -63,7 +64,7 @@ type Query {
 type Mutation {
   follow(input: FollowUnfollowInput!): UserCountsDto!
   unfollow(input: FollowUnfollowInput!): UserCountsDto!
-  likePost(input: LikeInput!): InteractionOutputDto!
+  likePost(input: LikeInput!): LikeOutputDto!
   unlikePost(input: LikeInput!): BooleanOutputDto!
 }
 

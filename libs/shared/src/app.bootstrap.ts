@@ -9,7 +9,18 @@ import { AppLoggerService } from '@app/shared/app-logger/app-logger.service';
 
 import { version } from '../../../package.json';
 
+const handleUnhandledError =
+  (type: string) =>
+  (err: unknown, origin?: unknown): void => {
+    // eslint-disable-next-line no-console
+    console.error(`[${type}]`, err, origin);
+    process.exit(1);
+  };
+
 export const appBootstrap = async (module: Type<unknown>): Promise<void> => {
+  process.on('unhandledRejection', handleUnhandledError('UNHANDLED_REJECTION'));
+  process.on('uncaughtException', handleUnhandledError('UNCAUGHT_EXCEPTION'));
+
   const isGeneratingSchema = process.env.GENERATE_SCHEMA === 'true';
   const serviceName = process.env.SERVICE;
 

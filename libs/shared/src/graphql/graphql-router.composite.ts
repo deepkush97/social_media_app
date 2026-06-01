@@ -6,12 +6,24 @@ import {
   CreatePostInput,
   CreateUserInput,
   FollowUnfollowInput,
+  LikeInput,
+  LikeOutputDto,
+  LikeOutputDtoGenqlSelection,
   LoginUserInput,
+  NumberOutputDto,
+  NumberOutputDtoGenqlSelection,
   PostListOutputDto,
   PostListOutputDtoGenqlSelection,
   PostOutputDto,
   PostOutputDtoGenqlSelection,
   PostsPaginationInput,
+  SearchInput,
+  SearchPostOutputDto,
+  SearchPostOutputDtoGenqlSelection,
+  SearchTagOutputDto,
+  SearchTagOutputDtoGenqlSelection,
+  SearchUserOutputDto,
+  SearchUserOutputDtoGenqlSelection,
   SessionOutputDto,
   SessionOutputDtoGenqlSelection,
   UserCountsDto,
@@ -215,5 +227,104 @@ export class GraphqlRouterComposite {
     });
 
     return result.userCounts;
+  }
+
+  public async likePost(
+    input: LikeInput,
+    projection: LikeOutputDtoGenqlSelection,
+  ): Promise<LikeOutputDto> {
+    const result = await this.routerService.client.mutation({
+      likePost: {
+        __args: { input },
+        ...projection,
+      },
+    });
+
+    return result.likePost;
+  }
+
+  public async unlikePost(
+    input: LikeInput,
+    projection: BooleanOutputDtoGenqlSelection,
+  ): Promise<BooleanOutputDto> {
+    const result = await this.routerService.client.mutation({
+      unlikePost: {
+        __args: { input },
+        ...projection,
+      },
+    });
+
+    return result.unlikePost;
+  }
+
+  public async postLikeCount(
+    postId: number,
+    projection: NumberOutputDtoGenqlSelection,
+  ): Promise<NumberOutputDto> {
+    const result = await this.routerService.client.query({
+      postLikeCount: {
+        __args: { postId },
+        ...projection,
+      },
+    });
+
+    return result.postLikeCount;
+  }
+
+  public async hasUserLikedPost(
+    userId: number,
+    postId: number,
+    projection: BooleanOutputDtoGenqlSelection,
+  ): Promise<BooleanOutputDto> {
+    const result = await this.routerService.client.query({
+      hasUserLikedPost: {
+        __args: { userId, postId },
+        ...projection,
+      },
+    });
+
+    return result.hasUserLikedPost;
+  }
+
+  public async searchPosts(
+    input: SearchInput,
+    projection: SearchPostOutputDtoGenqlSelection,
+  ): Promise<SearchPostOutputDto> {
+    const result = await this.routerService.client.query({
+      searchPosts: {
+        __args: { input },
+        ...projection,
+      },
+    });
+
+    return result.searchPosts;
+  }
+
+  public async searchUsers(
+    input: SearchInput,
+    projection: SearchUserOutputDtoGenqlSelection,
+  ): Promise<SearchUserOutputDto> {
+    const result = await this.routerService.client.query({
+      searchUsers: {
+        __args: { input },
+        ...projection,
+      },
+    });
+
+    return result.searchUsers;
+  }
+
+  public async searchTags(
+    input: SearchInput,
+    projection: SearchTagOutputDtoGenqlSelection,
+  ): Promise<SearchTagOutputDto> {
+    const result = await this.routerService.client.query({
+      searchTags: {
+        __args: { input },
+        ...projection,
+      },
+    });
+
+    return result.searchTags;
   }
 }

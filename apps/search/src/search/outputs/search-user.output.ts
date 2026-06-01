@@ -1,17 +1,18 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
 
 import { AppPaginatedDataGraphqlResponse } from '@app/shared/app-paginated-data-graphql-response.dto';
+import { ISearchUserHitOutput } from '@app/shared/interfaces/search/search-user-hit-output.interface';
 
 @ObjectType()
-export class SearchUserHitDto {
+export class SearchUserHitDto implements ISearchUserHitOutput {
   @Field(() => Int)
-  userId: number;
+  id: number;
 
   @Field()
-  username: string;
+  email: string;
 
   @Field({ nullable: true })
-  displayName?: string;
+  name?: string;
 
   @Field(() => Float)
   score: number;

@@ -29,21 +29,22 @@ export interface FollowerFollowingCountDto {
     __typename: 'FollowerFollowingCountDto'
 }
 
-export interface InteractionDto {
+export type join__Graph = 'AUTH' | 'POSTS' | 'SEARCH' | 'SOCIAL'
+
+export interface LikeDto {
     id: Scalars['Int']
     userId: Scalars['Int']
     postId: Scalars['Int']
     createdAt: Scalars['DateTime']
-    __typename: 'InteractionDto'
+    updatedAt: Scalars['DateTime']
+    __typename: 'LikeDto'
 }
 
-export interface InteractionOutputDto {
-    data: (InteractionDto | null)
+export interface LikeOutputDto {
+    data: (LikeDto | null)
     code: AppCodes
-    __typename: 'InteractionOutputDto'
+    __typename: 'LikeOutputDto'
 }
-
-export type join__Graph = 'AUTH' | 'POSTS' | 'SEARCH' | 'SOCIAL'
 
 export type link__Purpose = 'SECURITY' | 'EXECUTION'
 
@@ -57,7 +58,7 @@ export interface Mutation {
     archivePost: BooleanOutputDto
     follow: UserCountsDto
     unfollow: UserCountsDto
-    likePost: InteractionOutputDto
+    likePost: LikeOutputDto
     unlikePost: BooleanOutputDto
     __typename: 'Mutation'
 }
@@ -115,7 +116,7 @@ export interface Query {
     findPostsByUserId: PostListOutputDto
     searchPosts: SearchPostOutputDto
     searchUsers: SearchUserOutputDto
-    searchTags: SearchUserOutputDto
+    searchTags: SearchTagOutputDto
     userCounts: UserCountsDto
     postLikeCount: NumberOutputDto
     hasUserLikedPost: BooleanOutputDto
@@ -123,11 +124,12 @@ export interface Query {
 }
 
 export interface SearchPostHitDto {
-    postId: Scalars['Int']
+    id: Scalars['Int']
     title: Scalars['String']
     content: (Scalars['String'] | null)
     userId: Scalars['Int']
     score: Scalars['Float']
+    tags: (Scalars['String'][] | null)
     __typename: 'SearchPostHitDto'
 }
 
@@ -143,10 +145,29 @@ export interface SearchPostOutputDto {
     __typename: 'SearchPostOutputDto'
 }
 
+export interface SearchTagHitDto {
+    id: Scalars['String']
+    name: Scalars['String']
+    score: Scalars['Float']
+    __typename: 'SearchTagHitDto'
+}
+
+export interface SearchTagHitDtoData {
+    items: SearchTagHitDto[]
+    meta: PaginationMeta
+    __typename: 'SearchTagHitDtoData'
+}
+
+export interface SearchTagOutputDto {
+    data: (SearchTagHitDtoData | null)
+    code: AppCodes
+    __typename: 'SearchTagOutputDto'
+}
+
 export interface SearchUserHitDto {
-    userId: Scalars['Int']
-    username: Scalars['String']
-    displayName: (Scalars['String'] | null)
+    id: Scalars['Int']
+    email: Scalars['String']
+    name: (Scalars['String'] | null)
     score: Scalars['Float']
     __typename: 'SearchUserHitDto'
 }
@@ -220,23 +241,24 @@ export interface FollowerFollowingCountDtoGenqlSelection{
 
 export interface FollowUnfollowInput {followerId: Scalars['Int'],followingId: Scalars['Int']}
 
-export interface InteractionDtoGenqlSelection{
+export interface LikeDtoGenqlSelection{
     id?: boolean | number
     userId?: boolean | number
     postId?: boolean | number
     createdAt?: boolean | number
-    __typename?: boolean | number
-    __scalar?: boolean | number
-}
-
-export interface InteractionOutputDtoGenqlSelection{
-    data?: InteractionDtoGenqlSelection
-    code?: boolean | number
+    updatedAt?: boolean | number
     __typename?: boolean | number
     __scalar?: boolean | number
 }
 
 export interface LikeInput {userId: Scalars['Int'],postId: Scalars['Int']}
+
+export interface LikeOutputDtoGenqlSelection{
+    data?: LikeDtoGenqlSelection
+    code?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
 
 export interface LoginUserInput {email: Scalars['String'],password: Scalars['String']}
 
@@ -250,7 +272,7 @@ export interface MutationGenqlSelection{
     archivePost?: (BooleanOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     follow?: (UserCountsDtoGenqlSelection & { __args: {input: FollowUnfollowInput} })
     unfollow?: (UserCountsDtoGenqlSelection & { __args: {input: FollowUnfollowInput} })
-    likePost?: (InteractionOutputDtoGenqlSelection & { __args: {input: LikeInput} })
+    likePost?: (LikeOutputDtoGenqlSelection & { __args: {input: LikeInput} })
     unlikePost?: (BooleanOutputDtoGenqlSelection & { __args: {input: LikeInput} })
     __typename?: boolean | number
     __scalar?: boolean | number
@@ -313,9 +335,9 @@ export interface QueryGenqlSelection{
     findOpenSessionByGuid?: (SessionOutputDtoGenqlSelection & { __args: {id: Scalars['String']} })
     findPostById?: (PostOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     findPostsByUserId?: (PostListOutputDtoGenqlSelection & { __args: {input: PostsPaginationInput} })
-    searchPosts?: (SearchPostOutputDtoGenqlSelection & { __args: {query: Scalars['String'], page?: (Scalars['Int'] | null), take?: (Scalars['Int'] | null)} })
-    searchUsers?: (SearchUserOutputDtoGenqlSelection & { __args: {query: Scalars['String'], page?: (Scalars['Int'] | null), take?: (Scalars['Int'] | null)} })
-    searchTags?: (SearchUserOutputDtoGenqlSelection & { __args: {query: Scalars['String'], page?: (Scalars['Int'] | null), take?: (Scalars['Int'] | null)} })
+    searchPosts?: (SearchPostOutputDtoGenqlSelection & { __args: {input: SearchInput} })
+    searchUsers?: (SearchUserOutputDtoGenqlSelection & { __args: {input: SearchInput} })
+    searchTags?: (SearchTagOutputDtoGenqlSelection & { __args: {input: SearchInput} })
     userCounts?: (UserCountsDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     postLikeCount?: (NumberOutputDtoGenqlSelection & { __args: {postId: Scalars['Int']} })
     hasUserLikedPost?: (BooleanOutputDtoGenqlSelection & { __args: {userId: Scalars['Int'], postId: Scalars['Int']} })
@@ -323,12 +345,15 @@ export interface QueryGenqlSelection{
     __scalar?: boolean | number
 }
 
+export interface SearchInput {query: Scalars['String'],page?: (Scalars['Int'] | null),take?: (Scalars['Int'] | null)}
+
 export interface SearchPostHitDtoGenqlSelection{
-    postId?: boolean | number
+    id?: boolean | number
     title?: boolean | number
     content?: boolean | number
     userId?: boolean | number
     score?: boolean | number
+    tags?: boolean | number
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -347,10 +372,32 @@ export interface SearchPostOutputDtoGenqlSelection{
     __scalar?: boolean | number
 }
 
+export interface SearchTagHitDtoGenqlSelection{
+    id?: boolean | number
+    name?: boolean | number
+    score?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface SearchTagHitDtoDataGenqlSelection{
+    items?: SearchTagHitDtoGenqlSelection
+    meta?: PaginationMetaGenqlSelection
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface SearchTagOutputDtoGenqlSelection{
+    data?: SearchTagHitDtoDataGenqlSelection
+    code?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
 export interface SearchUserHitDtoGenqlSelection{
-    userId?: boolean | number
-    username?: boolean | number
-    displayName?: boolean | number
+    id?: boolean | number
+    email?: boolean | number
+    name?: boolean | number
     score?: boolean | number
     __typename?: boolean | number
     __scalar?: boolean | number
@@ -429,18 +476,18 @@ export interface UserOutputDtoGenqlSelection{
     
 
 
-    const InteractionDto_possibleTypes: string[] = ['InteractionDto']
-    export const isInteractionDto = (obj?: { __typename?: any } | null): obj is InteractionDto => {
-      if (!obj?.__typename) throw new Error('__typename is missing in "isInteractionDto"')
-      return InteractionDto_possibleTypes.includes(obj.__typename)
+    const LikeDto_possibleTypes: string[] = ['LikeDto']
+    export const isLikeDto = (obj?: { __typename?: any } | null): obj is LikeDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isLikeDto"')
+      return LikeDto_possibleTypes.includes(obj.__typename)
     }
     
 
 
-    const InteractionOutputDto_possibleTypes: string[] = ['InteractionOutputDto']
-    export const isInteractionOutputDto = (obj?: { __typename?: any } | null): obj is InteractionOutputDto => {
-      if (!obj?.__typename) throw new Error('__typename is missing in "isInteractionOutputDto"')
-      return InteractionOutputDto_possibleTypes.includes(obj.__typename)
+    const LikeOutputDto_possibleTypes: string[] = ['LikeOutputDto']
+    export const isLikeOutputDto = (obj?: { __typename?: any } | null): obj is LikeOutputDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isLikeOutputDto"')
+      return LikeOutputDto_possibleTypes.includes(obj.__typename)
     }
     
 
@@ -529,6 +576,30 @@ export interface UserOutputDtoGenqlSelection{
     export const isSearchPostOutputDto = (obj?: { __typename?: any } | null): obj is SearchPostOutputDto => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isSearchPostOutputDto"')
       return SearchPostOutputDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const SearchTagHitDto_possibleTypes: string[] = ['SearchTagHitDto']
+    export const isSearchTagHitDto = (obj?: { __typename?: any } | null): obj is SearchTagHitDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isSearchTagHitDto"')
+      return SearchTagHitDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const SearchTagHitDtoData_possibleTypes: string[] = ['SearchTagHitDtoData']
+    export const isSearchTagHitDtoData = (obj?: { __typename?: any } | null): obj is SearchTagHitDtoData => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isSearchTagHitDtoData"')
+      return SearchTagHitDtoData_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const SearchTagOutputDto_possibleTypes: string[] = ['SearchTagOutputDto']
+    export const isSearchTagOutputDto = (obj?: { __typename?: any } | null): obj is SearchTagOutputDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isSearchTagOutputDto"')
+      return SearchTagOutputDto_possibleTypes.includes(obj.__typename)
     }
     
 

@@ -65,18 +65,6 @@ input FollowUnfollowInput {
   followingId: Int!
 }
 
-type InteractionDto {
-  id: Int!
-  userId: Int!
-  postId: Int!
-  createdAt: DateTime!
-}
-
-type InteractionOutputDto {
-  data: InteractionDto
-  code: AppCodes!
-}
-
 scalar join__FieldSet
 
 enum join__Graph {
@@ -86,9 +74,22 @@ enum join__Graph {
   SOCIAL
 }
 
+type LikeDto {
+  id: Int!
+  userId: Int!
+  postId: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 input LikeInput {
   userId: Int!
   postId: Int!
+}
+
+type LikeOutputDto {
+  data: LikeDto
+  code: AppCodes!
 }
 
 scalar link__Import
@@ -120,7 +121,7 @@ type Mutation {
   archivePost(id: Int!): BooleanOutputDto!
   follow(input: FollowUnfollowInput!): UserCountsDto!
   unfollow(input: FollowUnfollowInput!): UserCountsDto!
-  likePost(input: LikeInput!): InteractionOutputDto!
+  likePost(input: LikeInput!): LikeOutputDto!
   unlikePost(input: LikeInput!): BooleanOutputDto!
 }
 
@@ -179,20 +180,27 @@ type Query {
   findOpenSessionByGuid(id: String!): SessionOutputDto!
   findPostById(id: Int!): PostOutputDto!
   findPostsByUserId(input: PostsPaginationInput!): PostListOutputDto!
-  searchPosts(query: String!, page: Int, take: Int): SearchPostOutputDto!
-  searchUsers(query: String!, page: Int, take: Int): SearchUserOutputDto!
-  searchTags(query: String!, page: Int, take: Int): SearchUserOutputDto!
+  searchPosts(input: SearchInput!): SearchPostOutputDto!
+  searchUsers(input: SearchInput!): SearchUserOutputDto!
+  searchTags(input: SearchInput!): SearchTagOutputDto!
   userCounts(id: Int!): UserCountsDto!
   postLikeCount(postId: Int!): NumberOutputDto!
   hasUserLikedPost(userId: Int!, postId: Int!): BooleanOutputDto!
 }
 
+input SearchInput {
+  query: String!
+  page: Int = 1
+  take: Int = 20
+}
+
 type SearchPostHitDto {
-  postId: Int!
+  id: Int!
   title: String!
   content: String
   userId: Int!
   score: Float!
+  tags: [String!]
 }
 
 type SearchPostHitDtoData {
@@ -205,10 +213,26 @@ type SearchPostOutputDto {
   code: AppCodes!
 }
 
+type SearchTagHitDto {
+  id: String!
+  name: String!
+  score: Float!
+}
+
+type SearchTagHitDtoData {
+  items: [SearchTagHitDto!]!
+  meta: PaginationMeta!
+}
+
+type SearchTagOutputDto {
+  data: SearchTagHitDtoData
+  code: AppCodes!
+}
+
 type SearchUserHitDto {
-  userId: Int!
-  username: String!
-  displayName: String
+  id: Int!
+  email: String!
+  name: String
   score: Float!
 }
 

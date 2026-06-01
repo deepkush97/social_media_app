@@ -6,7 +6,7 @@ import { NumberOutputDto } from '@app/shared/number.output';
 import { FollowUnfollowInput } from './inputs/follow-unfollow.input';
 import { UserCountsDto } from './outputs/user-counts.output';
 import { LikeInput } from './social/like.input';
-import { InteractionOutputDto } from './social/like.output';
+import { LikeOutputDto } from './social/like.output';
 
 import { AppService } from './app.service';
 
@@ -29,8 +29,8 @@ export class AppResolver {
     return this.appService.userCounts(userId);
   }
 
-  @Mutation(() => InteractionOutputDto)
-  async likePost(@Args('input') input: LikeInput): Promise<InteractionOutputDto> {
+  @Mutation(() => LikeOutputDto)
+  async likePost(@Args('input') input: LikeInput): Promise<LikeOutputDto> {
     return this.appService.likePost(input);
   }
 
