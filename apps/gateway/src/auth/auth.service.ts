@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { AppResponse } from '@app/shared/app-response.dto';
 import { CacheService } from '@app/shared/cache/cache.service';
 import { AppCodes } from '@app/shared/enums/app-codes.enum';
+import { UserCreatedEvent } from '@app/shared/events/user-created.event';
 import { GraphqlRouterComposite } from '@app/shared/graphql/graphql-router.composite';
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
 import { IAuthJWTPayload } from '@app/shared/interfaces/auth/auth-jwt-payload.interface';
@@ -14,6 +15,7 @@ import {
   INewUser,
   IUser,
 } from '@app/shared/interfaces/user/users.interface';
+import { EventBusClient } from '@app/shared/nats/event-bus-client.service';
 
 import { CACHE_TTL_IN_SECONDS } from '../app.constant';
 
@@ -23,6 +25,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly routerComposite: GraphqlRouterComposite,
     private readonly cacheService: CacheService,
+    private readonly eventBusClient: EventBusClient,
   ) {}
 
   private createSessionCacheKey(sessionId: string): string {
@@ -64,6 +67,15 @@ export class AuthService {
       this.createSessionCacheKey(session.guid),
       profile,
       CACHE_TTL_IN_SECONDS,
+    );
+
+    await this.eventBusClient.emit(
+      new UserCreatedEvent({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+      }),
+      this.constructor.name,
     );
 
     return new AppResponse({

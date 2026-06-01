@@ -42,7 +42,7 @@ export const appBootstrap = async (module: Type<unknown>): Promise<void> => {
     const documentFactory = (): OpenAPIObject => SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, documentFactory);
   }
-
+  app.enableShutdownHooks();
   app.enableCors();
   await app.listen(port);
   appLoggerService.info(`${serviceName} service is running on port ${port}`, {

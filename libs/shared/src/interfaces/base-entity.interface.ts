@@ -1,6 +1,9 @@
 export interface IBaseEntity {
-  userId: number;
   id: number;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface IBaseWithUserIdEntity extends IBaseEntity {
+  userId: number;
 }

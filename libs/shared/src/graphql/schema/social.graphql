@@ -2,13 +2,8 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type FollowerFollowingCountDto {
-  followers: Int!
-  followings: Int!
-}
-
-type UserCountsDto {
-  data: FollowerFollowingCountDto
+type BooleanOutputDto {
+  data: Boolean
   code: AppCodes!
 }
 
@@ -27,16 +22,57 @@ enum AppCodes {
   NOT_FOUND
 }
 
+type NumberOutputDto {
+  data: Int
+  code: AppCodes!
+}
+
+type FollowerFollowingCountDto {
+  followers: Int!
+  followings: Int!
+}
+
+type UserCountsDto {
+  data: FollowerFollowingCountDto
+  code: AppCodes!
+}
+
+type InteractionDto {
+  id: Int!
+  userId: Int!
+  postId: Int!
+  createdAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type InteractionOutputDto {
+  data: InteractionDto
+  code: AppCodes!
+}
+
 type Query {
   userCounts(id: Int!): UserCountsDto!
+  postLikeCount(postId: Int!): NumberOutputDto!
+  hasUserLikedPost(userId: Int!, postId: Int!): BooleanOutputDto!
 }
 
 type Mutation {
   follow(input: FollowUnfollowInput!): UserCountsDto!
   unfollow(input: FollowUnfollowInput!): UserCountsDto!
+  likePost(input: LikeInput!): InteractionOutputDto!
+  unlikePost(input: LikeInput!): BooleanOutputDto!
 }
 
 input FollowUnfollowInput {
   followerId: Int!
   followingId: Int!
+}
+
+input LikeInput {
+  userId: Int!
+  postId: Int!
 }

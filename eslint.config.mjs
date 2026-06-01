@@ -17,6 +17,7 @@ export default defineConfig(
       'dist/**',
       'node_modules/**',
       'eslint.config.mjs',
+      'webpack.config.mjs',
       '**/*.js',
       'libs/shared/src/graphql/client/*',
     ],

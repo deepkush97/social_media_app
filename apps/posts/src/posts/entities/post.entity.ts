@@ -7,9 +7,10 @@ import {
 } from 'typeorm';
 
 import { PostStatusEnum } from '@app/shared/enums/post-status.enum';
+import { TableNamesEnum } from '@app/shared/enums/table-names.enum';
 import { IPost } from '@app/shared/interfaces/post/post.interface';
 
-@Entity('posts')
+@Entity(TableNamesEnum.POSTS_POSTS)
 export class Post implements IPost {
   @PrimaryGeneratedColumn()
   id: number;
@@ -23,7 +24,7 @@ export class Post implements IPost {
   @Column({ nullable: true, type: 'varchar', length: 255 })
   image?: string;
 
-  @Column({ nullable: true, type: 'int' })
+  @Column({ type: 'int' })
   userId: number;
 
   @Column({ enum: PostStatusEnum, type: 'enum', default: PostStatusEnum.ACTIVE })

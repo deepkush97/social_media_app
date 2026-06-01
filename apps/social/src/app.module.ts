@@ -9,6 +9,7 @@ import { ApolloServerPluginInlineTrace } from '@apollo/server/plugin/inlineTrace
 import { AppConfigModule } from '@app/shared/app-config/app-config.module';
 import { AppConfigService } from '@app/shared/app-config/app-config.service';
 import { AppLoggerModule } from '@app/shared/app-logger/app-logger.module';
+import { DatabaseModule } from '@app/shared/database/database.module';
 import { AsyncStorageMiddleware } from '@app/shared/middlewares/async-storage.middleware';
 import { GraphqlRequestValidationPipe } from '@app/shared/pipes/graphql-request-validation.pipe';
 
@@ -21,6 +22,7 @@ import { AppService } from './app.service';
   imports: [
     AppConfigModule,
     AppLoggerModule,
+    DatabaseModule,
     GraphQLModule.forRootAsync<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       inject: [AppConfigService],

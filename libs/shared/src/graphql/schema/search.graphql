@@ -1,0 +1,66 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type PaginationMeta {
+  total: Int!
+  page: Int!
+  lastPage: Int!
+  take: Int!
+}
+
+type SearchPostHitDto {
+  postId: Int!
+  title: String!
+  content: String
+  userId: Int!
+  score: Float!
+}
+
+type SearchPostOutputDto {
+  data: SearchPostHitDtoData
+  code: AppCodes!
+}
+
+type SearchPostHitDtoData {
+  items: [SearchPostHitDto!]!
+  meta: PaginationMeta!
+}
+
+enum AppCodes {
+  OPERATION_SUCCESS
+  INVALID_CREDENTIALS
+  INVALID_EMAIL
+  INTERNAL_ERROR
+  UNAUTHORIZED
+  FORBIDDEN
+  USER_CREATED
+  OK_CREATED
+  BAD_REQUEST
+  URL_CREATED
+  URL_NOT_FOUND
+  NOT_FOUND
+}
+
+type SearchUserHitDto {
+  userId: Int!
+  username: String!
+  displayName: String
+  score: Float!
+}
+
+type SearchUserOutputDto {
+  data: SearchUserHitDtoData
+  code: AppCodes!
+}
+
+type SearchUserHitDtoData {
+  items: [SearchUserHitDto!]!
+  meta: PaginationMeta!
+}
+
+type Query {
+  searchPosts(query: String!, page: Int, take: Int): SearchPostOutputDto!
+  searchUsers(query: String!, page: Int, take: Int): SearchUserOutputDto!
+  searchTags(query: String!, page: Int, take: Int): SearchUserOutputDto!
+}

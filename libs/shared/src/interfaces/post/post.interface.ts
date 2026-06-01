@@ -1,6 +1,6 @@
 import { PostStatusEnum } from '@app/shared/enums/post-status.enum';
 
-import { IBaseEntity } from '../base-entity.interface';
+import { IBaseWithUserIdEntity } from '../base-entity.interface';
 
 export interface INewPost {
   title: string;
@@ -8,7 +8,7 @@ export interface INewPost {
   image?: string;
 }
 
-export interface IPost extends INewPost, IBaseEntity {
+export interface IPost extends INewPost, IBaseWithUserIdEntity {
   status: PostStatusEnum;
 }
 

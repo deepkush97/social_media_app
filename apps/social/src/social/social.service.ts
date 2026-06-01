@@ -1,16 +1,24 @@
 import { Inject, Injectable, OnModuleDestroy } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import { Driver } from 'neo4j-driver';
+import { Repository } from 'typeorm';
 
+import { ILike } from '@app/shared/interfaces/like/like.interface';
 import { IFollowUnfollow } from '@app/shared/interfaces/social/follow-unfollow.interface';
 import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-following-count.interface';
 import { NEO4J_DRIVER } from '@app/shared/providers.constant';
+
+import { LikeEntity } from './like.entity';
+import { LikeInput } from './like.input';
 
 @Injectable()
 export class SocialService implements OnModuleDestroy {
   constructor(
     @Inject(NEO4J_DRIVER)
     private readonly neo4jDriver: Driver,
+    @InjectRepository(LikeEntity)
+    private readonly likeRepository: Repository<LikeEntity>,
   ) {}
 
   async follow({ followerId, followingId }: IFollowUnfollow): Promise<IFollowerFollowingCount> {
@@ -31,7 +39,7 @@ export class SocialService implements OnModuleDestroy {
         { followerId, followingId },
       );
 
-      const record = result.records[0];
+      const record = result.records?.[0];
 
       if (!record) {
         throw new Error('Not a valid user');
@@ -65,7 +73,7 @@ export class SocialService implements OnModuleDestroy {
         { followerId, followingId },
       );
 
-      const record = result.records[0];
+      const record = result.records?.[0];
 
       if (!record) {
         throw new Error('Not a valid user');
@@ -97,7 +105,7 @@ export class SocialService implements OnModuleDestroy {
     );
     await session.close();
 
-    const record = result.records[0];
+    const record = result.records?.[0];
 
     if (!record) {
       throw new Error('Not a valid user');
@@ -107,6 +115,58 @@ export class SocialService implements OnModuleDestroy {
       followers: record.get('followers').toNumber(),
       followings: record.get('followings').toNumber(),
     };
+  }
+
+  async like({ userId, postId }: LikeInput): Promise<ILike> {
+    const like = this.likeRepository.create({ userId, postId });
+    const saved = await this.likeRepository.save(like);
+
+    const session = this.neo4jDriver.session();
+
+    await session.executeWrite(async (tx) => {
+      await tx.run(
+        `
+          MERGE (u:User {id: $userId})
+          MERGE (p:Post {id: $postId})
+          MERGE (u)-[r:LIKED]->(p)
+          SET r.weight = 1.0,
+              r.createdAt = datetime()
+          `,
+        { userId, postId },
+      );
+    });
+
+    await session.close();
+
+    return saved;
+  }
+
+  async unlike({ userId, postId }: LikeInput): Promise<boolean> {
+    await this.likeRepository.delete({ userId, postId });
+
+    const session = this.neo4jDriver.session();
+
+    await session.executeWrite(async (tx) => {
+      await tx.run(
+        `
+          MATCH (u:User {id: $userId})-[r:LIKED]->(p:Post {id: $postId})
+          DELETE r
+          `,
+        { userId, postId },
+      );
+    });
+
+    await session.close();
+    return true;
+  }
+
+  async likeCount(postId: number): Promise<number> {
+    return this.likeRepository.count({ where: { postId } });
+  }
+
+  async hasLiked(userId: number, postId: number): Promise<boolean> {
+    const count = await this.likeRepository.count({ where: { userId, postId } });
+    return count > 0;
   }
 
   async onModuleDestroy(): Promise<void> {

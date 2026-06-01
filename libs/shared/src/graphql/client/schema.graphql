@@ -65,12 +65,30 @@ input FollowUnfollowInput {
   followingId: Int!
 }
 
+type InteractionDto {
+  id: Int!
+  userId: Int!
+  postId: Int!
+  createdAt: DateTime!
+}
+
+type InteractionOutputDto {
+  data: InteractionDto
+  code: AppCodes!
+}
+
 scalar join__FieldSet
 
 enum join__Graph {
   AUTH
   POSTS
+  SEARCH
   SOCIAL
+}
+
+input LikeInput {
+  userId: Int!
+  postId: Int!
 }
 
 scalar link__Import
@@ -102,6 +120,13 @@ type Mutation {
   archivePost(id: Int!): BooleanOutputDto!
   follow(input: FollowUnfollowInput!): UserCountsDto!
   unfollow(input: FollowUnfollowInput!): UserCountsDto!
+  likePost(input: LikeInput!): InteractionOutputDto!
+  unlikePost(input: LikeInput!): BooleanOutputDto!
+}
+
+type NumberOutputDto {
+  data: Int
+  code: AppCodes!
 }
 
 type PaginationMeta {
@@ -154,7 +179,47 @@ type Query {
   findOpenSessionByGuid(id: String!): SessionOutputDto!
   findPostById(id: Int!): PostOutputDto!
   findPostsByUserId(input: PostsPaginationInput!): PostListOutputDto!
+  searchPosts(query: String!, page: Int, take: Int): SearchPostOutputDto!
+  searchUsers(query: String!, page: Int, take: Int): SearchUserOutputDto!
+  searchTags(query: String!, page: Int, take: Int): SearchUserOutputDto!
   userCounts(id: Int!): UserCountsDto!
+  postLikeCount(postId: Int!): NumberOutputDto!
+  hasUserLikedPost(userId: Int!, postId: Int!): BooleanOutputDto!
+}
+
+type SearchPostHitDto {
+  postId: Int!
+  title: String!
+  content: String
+  userId: Int!
+  score: Float!
+}
+
+type SearchPostHitDtoData {
+  items: [SearchPostHitDto!]!
+  meta: PaginationMeta!
+}
+
+type SearchPostOutputDto {
+  data: SearchPostHitDtoData
+  code: AppCodes!
+}
+
+type SearchUserHitDto {
+  userId: Int!
+  username: String!
+  displayName: String
+  score: Float!
+}
+
+type SearchUserHitDtoData {
+  items: [SearchUserHitDto!]!
+  meta: PaginationMeta!
+}
+
+type SearchUserOutputDto {
+  data: SearchUserHitDtoData
+  code: AppCodes!
 }
 
 type SessionOutput {
