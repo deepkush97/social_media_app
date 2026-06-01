@@ -21,8 +21,11 @@ import { NatsConfigService } from './configurations/nats-config.service';
 
 import { NATS_EVENT_HANDLER_METADATA } from './event-handler.decorator';
 
-const STREAM_NAME = 'social-media-stream';
 const MAX_MSG_AGE_NS = 7 * 24 * 60 * 60 * 1_000_000_000;
+
+function streamName(event: string): string {
+  return `${event.replace(/\./g, '-')}-stream`;
+}
 
 interface HandlerEntry {
   instance: unknown;
@@ -52,7 +55,6 @@ export class EventBusClient implements OnModuleInit, OnApplicationBootstrap, OnM
     this.js = this.nc.jetstream();
     this.jsm = await this.nc.jetstreamManager();
 
-    await this.ensureStream();
     this.logger.info(`NATS EventBus connected at ${this.configService.url}`, {
       context: EventBusClient.name,
     });
@@ -82,9 +84,11 @@ export class EventBusClient implements OnModuleInit, OnApplicationBootstrap, OnM
     this.active = true;
 
     for (const [event, eventHandlers] of grouped) {
+      const sName = streamName(event);
+      await this.ensureStream(sName, event);
       const consumerName = `${this.appConfigService.name}-${event.replace(/\./g, '-')}`;
-      await this.ensurePullConsumer(consumerName, event);
-      this.startPullLoop(consumerName, event, eventHandlers);
+      await this.ensurePullConsumer(sName, consumerName, event);
+      this.startPullLoop(sName, consumerName, event, eventHandlers);
     }
 
     this.logger.info(
@@ -119,38 +123,29 @@ export class EventBusClient implements OnModuleInit, OnApplicationBootstrap, OnM
     }
   }
 
-  private async ensureStream(): Promise<void> {
+  private async ensureStream(sName: string, subject: string): Promise<void> {
     const streams = await this.jsm.streams.list().next();
-    const existing = streams.find((s) => s.config.name === STREAM_NAME);
-
-    const allSubjects = Object.values(NatsEvents);
+    const existing = streams.find((s) => s.config.name === sName);
 
     if (!existing) {
       await this.jsm.streams.add({
-        name: STREAM_NAME,
-        subjects: allSubjects,
+        name: sName,
+        subjects: [subject],
         max_age: MAX_MSG_AGE_NS,
         storage: StorageType.File,
         retention: RetentionPolicy.Limits,
       });
-      this.logger.info(`Created stream ${STREAM_NAME}`, { context: EventBusClient.name });
-    } else {
-      const currentSubjects = existing.config.subjects ?? [];
-      const hasAll = allSubjects.every((s) => currentSubjects.includes(s));
-      if (!hasAll) {
-        await this.jsm.streams.update(STREAM_NAME, {
-          subjects: [...new Set([...currentSubjects, ...allSubjects])],
-        });
-        this.logger.info(`Updated stream ${STREAM_NAME} subjects`, {
-          context: EventBusClient.name,
-        });
-      }
+      this.logger.info(`Created stream ${sName} for ${subject}`, { context: EventBusClient.name });
     }
   }
 
-  private async ensurePullConsumer(consumerName: string, filterSubject: string): Promise<void> {
+  private async ensurePullConsumer(
+    sName: string,
+    consumerName: string,
+    filterSubject: string,
+  ): Promise<void> {
     try {
-      await this.jsm.consumers.add(STREAM_NAME, {
+      await this.jsm.consumers.add(sName, {
         durable_name: consumerName,
         ack_policy: 'explicit',
         deliver_policy: 'new',
@@ -158,7 +153,7 @@ export class EventBusClient implements OnModuleInit, OnApplicationBootstrap, OnM
         max_deliver: 3,
         ack_wait: 30_000_000_000,
       } as ConsumerConfig);
-      this.logger.info(`Created pull consumer ${consumerName} for ${filterSubject}`, {
+      this.logger.info(`Created pull consumer ${consumerName} on ${sName} for ${filterSubject}`, {
         context: EventBusClient.name,
       });
     } catch {
@@ -167,6 +162,7 @@ export class EventBusClient implements OnModuleInit, OnApplicationBootstrap, OnM
   }
 
   private startPullLoop(
+    sName: string,
     consumerName: string,
     event: NatsEvents,
     eventHandlers: HandlerEntry[],
@@ -175,7 +171,7 @@ export class EventBusClient implements OnModuleInit, OnApplicationBootstrap, OnM
       if (!this.active) return;
 
       try {
-        const c = await this.js.consumers.get(STREAM_NAME, consumerName);
+        const c = await this.js.consumers.get(sName, consumerName);
         const msgs = await c.fetch({ max_messages: 10, expires: 5_000 });
 
         for await (const msg of msgs) {
