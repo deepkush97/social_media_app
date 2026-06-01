@@ -12,7 +12,9 @@ import { GatewayRequestValidationPipe } from '@app/shared/pipes/gateway-request-
 
 import { AuthModule } from './auth/auth.module';
 import { GlobalInterceptor } from './interceptors/global.interceptor';
+import { LikesModule } from './likes/likes.module';
 import { PostsModule } from './posts/posts.module';
+import { SearchModule } from './search/search.module';
 import { UsersModule } from './users/users.module';
 
 import { AppController } from './app.controller';
@@ -36,6 +38,8 @@ import { AppController } from './app.controller';
     }),
     PostsModule,
     UsersModule,
+    LikesModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [

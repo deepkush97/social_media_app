@@ -4,6 +4,12 @@ import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { PostCreatedEventPayload } from '@app/shared/events/post-created.event';
 import { UserCreateEventPayload } from '@app/shared/events/user-created.event';
 import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface';
+import { PostSource } from '@app/shared/interfaces/search/post-source.interface';
+import { ISearchPostHit } from '@app/shared/interfaces/search/search-post-hit.interface';
+import { ISearchTagHit } from '@app/shared/interfaces/search/search-tag-hit.interface';
+import { ISearchUserHit } from '@app/shared/interfaces/search/search-user-hit.interface';
+import { TagSource } from '@app/shared/interfaces/search/tag-source.interface';
+import { UserSource } from '@app/shared/interfaces/search/user-source.interface';
 
 @Injectable()
 export class SearchService implements OnModuleInit {
@@ -159,9 +165,13 @@ export class SearchService implements OnModuleInit {
     });
   }
 
-  async searchPosts(query: string, page: number, take: number): Promise<IPaginatedData<unknown>> {
+  async searchPosts(
+    query: string,
+    page: number,
+    take: number,
+  ): Promise<IPaginatedData<ISearchPostHit>> {
     const from = (page - 1) * take;
-    const result = await this.esService.search({
+    const result = await this.esService.search<PostSource>({
       index: 'posts',
       from,
       size: take,
@@ -179,21 +189,28 @@ export class SearchService implements OnModuleInit {
     const total = typeof rawTotal === 'object' ? rawTotal.value : (rawTotal ?? 0);
 
     return {
-      items: hits.map((h) => ({
-        postId: (h._source as Record<string, unknown>).id as number,
-        title: (h._source as Record<string, unknown>).title as string,
-        content: (h._source as Record<string, unknown>).content as string | undefined,
-        tags: (h._source as Record<string, unknown>).tags as string[] | undefined,
-        userId: (h._source as Record<string, unknown>).userId as number,
-        score: h._score,
-      })),
+      items: hits.map((h) => {
+        const { id, title, content, tags, userId } = h._source;
+        return {
+          id,
+          title,
+          content,
+          tags,
+          userId,
+          score: h._score,
+        };
+      }),
       meta: { total, page, lastPage: Math.ceil(total / take), take },
     };
   }
 
-  async searchUsers(query: string, page: number, take: number): Promise<IPaginatedData<unknown>> {
+  async searchUsers(
+    query: string,
+    page: number,
+    take: number,
+  ): Promise<IPaginatedData<ISearchUserHit>> {
     const from = (page - 1) * take;
-    const result = await this.esService.search({
+    const result = await this.esService.search<UserSource>({
       index: 'users',
       from,
       size: take,
@@ -213,19 +230,26 @@ export class SearchService implements OnModuleInit {
     const total = typeof rawTotal === 'object' ? rawTotal.value : (rawTotal ?? 0);
 
     return {
-      items: hits.map((h) => ({
-        userId: (h._source as Record<string, unknown>).id as number,
-        email: (h._source as Record<string, unknown>).email as string,
-        name: (h._source as Record<string, unknown>).name as string | undefined,
-        score: h._score,
-      })),
+      items: hits.map((h) => {
+        const { id, email, name } = h._source;
+        return {
+          id,
+          email,
+          name,
+          score: h._score,
+        };
+      }),
       meta: { total, page, lastPage: Math.ceil(total / take), take },
     };
   }
 
-  async searchTags(query: string, page: number, take: number): Promise<IPaginatedData<unknown>> {
+  async searchTags(
+    query: string,
+    page: number,
+    take: number,
+  ): Promise<IPaginatedData<ISearchTagHit>> {
     const from = (page - 1) * take;
-    const result = await this.esService.search({
+    const result = await this.esService.search<TagSource>({
       index: 'tags',
       from,
       size: take,
@@ -239,11 +263,14 @@ export class SearchService implements OnModuleInit {
     const total = typeof rawTotal === 'object' ? rawTotal.value : (rawTotal ?? 0);
 
     return {
-      items: hits.map((h) => ({
-        id: h._id,
-        name: (h._source as Record<string, unknown>).name as string,
-        score: h._score,
-      })),
+      items: hits.map((h) => {
+        const { name } = h._source;
+        return {
+          id: h._id,
+          name,
+          score: h._score,
+        };
+      }),
       meta: { total, page, lastPage: Math.ceil(total / take), take },
     };
   }
