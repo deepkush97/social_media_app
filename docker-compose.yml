@@ -75,11 +75,25 @@ services:
     image: ghcr.io/apollographql/router:v1.38.0
     ports:
       - '4000:4000'
+    environment:
+      - OTEL_SERVICE_NAME=router
     command:
       ['--dev', '-c', 'config/router.yaml', '-s', 'schema/supergraph.graphql', '--log', 'info']
     volumes:
       - ./libs/shared/src/graphql/schema/supergraph.graphql:/dist/schema/supergraph.graphql
       - ./router/router.yaml:/dist/config/router.yaml
+    networks:
+      - backend
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger
+    ports:
+      - '16686:16686'
+      - '4317:4317'
+      - '4318:4318'
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
     networks:
       - backend
 
