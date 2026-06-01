@@ -101,9 +101,11 @@ export class EventBusClient implements OnModuleInit, OnApplicationBootstrap, OnM
       if (!instance || !metatype) continue;
 
       const prototype = Object.getPrototypeOf(instance);
-      const methodNames = Object.getOwnPropertyNames(prototype).filter(
-        (name) => name !== 'constructor' && typeof prototype[name] === 'function',
-      );
+      const methodNames = Object.getOwnPropertyNames(prototype).filter((name) => {
+        if (name === 'constructor') return false;
+        const descriptor = Object.getOwnPropertyDescriptor(prototype, name);
+        return descriptor && typeof descriptor.value === 'function';
+      });
 
       for (const methodName of methodNames) {
         const event = this.reflector.get<NatsEvents>(
@@ -119,17 +121,30 @@ export class EventBusClient implements OnModuleInit, OnApplicationBootstrap, OnM
 
   private async ensureStream(): Promise<void> {
     const streams = await this.jsm.streams.list().next();
-    const exists = streams.some((s) => s.config.name === STREAM_NAME);
+    const existing = streams.find((s) => s.config.name === STREAM_NAME);
 
-    if (!exists) {
+    const allSubjects = Object.values(NatsEvents);
+
+    if (!existing) {
       await this.jsm.streams.add({
         name: STREAM_NAME,
-        subjects: ['social.>'],
+        subjects: allSubjects,
         max_age: MAX_MSG_AGE_NS,
         storage: StorageType.File,
         retention: RetentionPolicy.Limits,
       });
       this.logger.info(`Created stream ${STREAM_NAME}`, { context: EventBusClient.name });
+    } else {
+      const currentSubjects = existing.config.subjects ?? [];
+      const hasAll = allSubjects.every((s) => currentSubjects.includes(s));
+      if (!hasAll) {
+        await this.jsm.streams.update(STREAM_NAME, {
+          subjects: [...new Set([...currentSubjects, ...allSubjects])],
+        });
+        this.logger.info(`Updated stream ${STREAM_NAME} subjects`, {
+          context: EventBusClient.name,
+        });
+      }
     }
   }
 

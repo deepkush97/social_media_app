@@ -1,11 +1,16 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { DynamicModule, Global, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ElasticsearchModule, ElasticsearchService } from '@nestjs/elasticsearch';
+import { ElasticsearchModule } from '@nestjs/elasticsearch';
 
 import { ElasticsearchConfigService } from './configurations/elasticsearch-config.service';
 import { elasticsearchConfigLoader } from './configurations/loader';
 
-@Module({})
+@Global()
+@Module({
+  imports: [ConfigModule.forFeature(elasticsearchConfigLoader)],
+  providers: [ElasticsearchConfigService],
+  exports: [ElasticsearchConfigService],
+})
 export class ElasticsearchSharedModule {
   static register(): DynamicModule {
     return {
@@ -19,8 +24,7 @@ export class ElasticsearchSharedModule {
           }),
         }),
       ],
-      providers: [ElasticsearchConfigService],
-      exports: [ElasticsearchService],
+      exports: [ElasticsearchModule],
     };
   }
 }

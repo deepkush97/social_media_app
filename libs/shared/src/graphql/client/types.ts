@@ -10,7 +10,8 @@ export default {
         14,
         16,
         17,
-        27
+        27,
+        30
     ],
     "types": {
         "AppCodes": {},
@@ -139,7 +140,7 @@ export default {
         },
         "Mutation": {
             "createUser": [
-                33,
+                40,
                 {
                     "input": [
                         7,
@@ -148,7 +149,7 @@ export default {
                 }
             ],
             "createSession": [
-                30,
+                37,
                 {
                     "id": [
                         6,
@@ -157,7 +158,7 @@ export default {
                 }
             ],
             "loginUser": [
-                33,
+                40,
                 {
                     "input": [
                         18,
@@ -202,7 +203,7 @@ export default {
                 }
             ],
             "follow": [
-                31,
+                38,
                 {
                     "input": [
                         10,
@@ -211,7 +212,7 @@ export default {
                 }
             ],
             "unfollow": [
-                31,
+                38,
                 {
                     "input": [
                         10,
@@ -351,7 +352,7 @@ export default {
         "PostStatusEnum": {},
         "Query": {
             "findUserById": [
-                33,
+                40,
                 {
                     "id": [
                         6,
@@ -360,7 +361,7 @@ export default {
                 }
             ],
             "findOpenSessionByGuid": [
-                30,
+                37,
                 {
                     "id": [
                         5,
@@ -386,8 +387,53 @@ export default {
                     ]
                 }
             ],
+            "searchPosts": [
+                32,
+                {
+                    "query": [
+                        5,
+                        "String!"
+                    ],
+                    "page": [
+                        6
+                    ],
+                    "take": [
+                        6
+                    ]
+                }
+            ],
+            "searchUsers": [
+                35,
+                {
+                    "query": [
+                        5,
+                        "String!"
+                    ],
+                    "page": [
+                        6
+                    ],
+                    "take": [
+                        6
+                    ]
+                }
+            ],
+            "searchTags": [
+                35,
+                {
+                    "query": [
+                        5,
+                        "String!"
+                    ],
+                    "page": [
+                        6
+                    ],
+                    "take": [
+                        6
+                    ]
+                }
+            ],
             "userCounts": [
-                31,
+                38,
                 {
                     "id": [
                         6,
@@ -421,6 +467,88 @@ export default {
                 5
             ]
         },
+        "SearchPostHitDto": {
+            "postId": [
+                6
+            ],
+            "title": [
+                5
+            ],
+            "content": [
+                5
+            ],
+            "userId": [
+                6
+            ],
+            "score": [
+                30
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "Float": {},
+        "SearchPostHitDtoData": {
+            "items": [
+                29
+            ],
+            "meta": [
+                21
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "SearchPostOutputDto": {
+            "data": [
+                31
+            ],
+            "code": [
+                0
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "SearchUserHitDto": {
+            "userId": [
+                6
+            ],
+            "username": [
+                5
+            ],
+            "displayName": [
+                5
+            ],
+            "score": [
+                30
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "SearchUserHitDtoData": {
+            "items": [
+                33
+            ],
+            "meta": [
+                21
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "SearchUserOutputDto": {
+            "data": [
+                34
+            ],
+            "code": [
+                0
+            ],
+            "__typename": [
+                5
+            ]
+        },
         "SessionOutput": {
             "id": [
                 6
@@ -446,7 +574,7 @@ export default {
         },
         "SessionOutputDto": {
             "data": [
-                29
+                36
             ],
             "code": [
                 0
@@ -488,7 +616,7 @@ export default {
         },
         "UserOutputDto": {
             "data": [
-                32
+                39
             ],
             "code": [
                 0

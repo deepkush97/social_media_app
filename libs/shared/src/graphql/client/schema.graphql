@@ -82,6 +82,7 @@ scalar join__FieldSet
 enum join__Graph {
   AUTH
   POSTS
+  SEARCH
   SOCIAL
 }
 
@@ -178,9 +179,47 @@ type Query {
   findOpenSessionByGuid(id: String!): SessionOutputDto!
   findPostById(id: Int!): PostOutputDto!
   findPostsByUserId(input: PostsPaginationInput!): PostListOutputDto!
+  searchPosts(query: String!, page: Int, take: Int): SearchPostOutputDto!
+  searchUsers(query: String!, page: Int, take: Int): SearchUserOutputDto!
+  searchTags(query: String!, page: Int, take: Int): SearchUserOutputDto!
   userCounts(id: Int!): UserCountsDto!
   postLikeCount(postId: Int!): NumberOutputDto!
   hasUserLikedPost(userId: Int!, postId: Int!): BooleanOutputDto!
+}
+
+type SearchPostHitDto {
+  postId: Int!
+  title: String!
+  content: String
+  userId: Int!
+  score: Float!
+}
+
+type SearchPostHitDtoData {
+  items: [SearchPostHitDto!]!
+  meta: PaginationMeta!
+}
+
+type SearchPostOutputDto {
+  data: SearchPostHitDtoData
+  code: AppCodes!
+}
+
+type SearchUserHitDto {
+  userId: Int!
+  username: String!
+  displayName: String
+  score: Float!
+}
+
+type SearchUserHitDtoData {
+  items: [SearchUserHitDto!]!
+  meta: PaginationMeta!
+}
+
+type SearchUserOutputDto {
+  data: SearchUserHitDtoData
+  code: AppCodes!
 }
 
 type SessionOutput {

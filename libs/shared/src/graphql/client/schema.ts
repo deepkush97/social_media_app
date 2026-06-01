@@ -10,6 +10,7 @@ export type Scalars = {
     DateTime: any,
     join__FieldSet: any,
     link__Import: any,
+    Float: number,
 }
 
 export type AppCodes = 'OPERATION_SUCCESS' | 'INVALID_CREDENTIALS' | 'INVALID_EMAIL' | 'INTERNAL_ERROR' | 'UNAUTHORIZED' | 'FORBIDDEN' | 'USER_CREATED' | 'OK_CREATED' | 'BAD_REQUEST' | 'URL_CREATED' | 'URL_NOT_FOUND' | 'NOT_FOUND'
@@ -42,7 +43,7 @@ export interface InteractionOutputDto {
     __typename: 'InteractionOutputDto'
 }
 
-export type join__Graph = 'AUTH' | 'POSTS' | 'SOCIAL'
+export type join__Graph = 'AUTH' | 'POSTS' | 'SEARCH' | 'SOCIAL'
 
 export type link__Purpose = 'SECURITY' | 'EXECUTION'
 
@@ -112,10 +113,54 @@ export interface Query {
     findOpenSessionByGuid: SessionOutputDto
     findPostById: PostOutputDto
     findPostsByUserId: PostListOutputDto
+    searchPosts: SearchPostOutputDto
+    searchUsers: SearchUserOutputDto
+    searchTags: SearchUserOutputDto
     userCounts: UserCountsDto
     postLikeCount: NumberOutputDto
     hasUserLikedPost: BooleanOutputDto
     __typename: 'Query'
+}
+
+export interface SearchPostHitDto {
+    postId: Scalars['Int']
+    title: Scalars['String']
+    content: (Scalars['String'] | null)
+    userId: Scalars['Int']
+    score: Scalars['Float']
+    __typename: 'SearchPostHitDto'
+}
+
+export interface SearchPostHitDtoData {
+    items: SearchPostHitDto[]
+    meta: PaginationMeta
+    __typename: 'SearchPostHitDtoData'
+}
+
+export interface SearchPostOutputDto {
+    data: (SearchPostHitDtoData | null)
+    code: AppCodes
+    __typename: 'SearchPostOutputDto'
+}
+
+export interface SearchUserHitDto {
+    userId: Scalars['Int']
+    username: Scalars['String']
+    displayName: (Scalars['String'] | null)
+    score: Scalars['Float']
+    __typename: 'SearchUserHitDto'
+}
+
+export interface SearchUserHitDtoData {
+    items: SearchUserHitDto[]
+    meta: PaginationMeta
+    __typename: 'SearchUserHitDtoData'
+}
+
+export interface SearchUserOutputDto {
+    data: (SearchUserHitDtoData | null)
+    code: AppCodes
+    __typename: 'SearchUserOutputDto'
 }
 
 export interface SessionOutput {
@@ -268,9 +313,59 @@ export interface QueryGenqlSelection{
     findOpenSessionByGuid?: (SessionOutputDtoGenqlSelection & { __args: {id: Scalars['String']} })
     findPostById?: (PostOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     findPostsByUserId?: (PostListOutputDtoGenqlSelection & { __args: {input: PostsPaginationInput} })
+    searchPosts?: (SearchPostOutputDtoGenqlSelection & { __args: {query: Scalars['String'], page?: (Scalars['Int'] | null), take?: (Scalars['Int'] | null)} })
+    searchUsers?: (SearchUserOutputDtoGenqlSelection & { __args: {query: Scalars['String'], page?: (Scalars['Int'] | null), take?: (Scalars['Int'] | null)} })
+    searchTags?: (SearchUserOutputDtoGenqlSelection & { __args: {query: Scalars['String'], page?: (Scalars['Int'] | null), take?: (Scalars['Int'] | null)} })
     userCounts?: (UserCountsDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     postLikeCount?: (NumberOutputDtoGenqlSelection & { __args: {postId: Scalars['Int']} })
     hasUserLikedPost?: (BooleanOutputDtoGenqlSelection & { __args: {userId: Scalars['Int'], postId: Scalars['Int']} })
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface SearchPostHitDtoGenqlSelection{
+    postId?: boolean | number
+    title?: boolean | number
+    content?: boolean | number
+    userId?: boolean | number
+    score?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface SearchPostHitDtoDataGenqlSelection{
+    items?: SearchPostHitDtoGenqlSelection
+    meta?: PaginationMetaGenqlSelection
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface SearchPostOutputDtoGenqlSelection{
+    data?: SearchPostHitDtoDataGenqlSelection
+    code?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface SearchUserHitDtoGenqlSelection{
+    userId?: boolean | number
+    username?: boolean | number
+    displayName?: boolean | number
+    score?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface SearchUserHitDtoDataGenqlSelection{
+    items?: SearchUserHitDtoGenqlSelection
+    meta?: PaginationMetaGenqlSelection
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface SearchUserOutputDtoGenqlSelection{
+    data?: SearchUserHitDtoDataGenqlSelection
+    code?: boolean | number
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -414,6 +509,54 @@ export interface UserOutputDtoGenqlSelection{
     
 
 
+    const SearchPostHitDto_possibleTypes: string[] = ['SearchPostHitDto']
+    export const isSearchPostHitDto = (obj?: { __typename?: any } | null): obj is SearchPostHitDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isSearchPostHitDto"')
+      return SearchPostHitDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const SearchPostHitDtoData_possibleTypes: string[] = ['SearchPostHitDtoData']
+    export const isSearchPostHitDtoData = (obj?: { __typename?: any } | null): obj is SearchPostHitDtoData => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isSearchPostHitDtoData"')
+      return SearchPostHitDtoData_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const SearchPostOutputDto_possibleTypes: string[] = ['SearchPostOutputDto']
+    export const isSearchPostOutputDto = (obj?: { __typename?: any } | null): obj is SearchPostOutputDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isSearchPostOutputDto"')
+      return SearchPostOutputDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const SearchUserHitDto_possibleTypes: string[] = ['SearchUserHitDto']
+    export const isSearchUserHitDto = (obj?: { __typename?: any } | null): obj is SearchUserHitDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isSearchUserHitDto"')
+      return SearchUserHitDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const SearchUserHitDtoData_possibleTypes: string[] = ['SearchUserHitDtoData']
+    export const isSearchUserHitDtoData = (obj?: { __typename?: any } | null): obj is SearchUserHitDtoData => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isSearchUserHitDtoData"')
+      return SearchUserHitDtoData_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const SearchUserOutputDto_possibleTypes: string[] = ['SearchUserOutputDto']
+    export const isSearchUserOutputDto = (obj?: { __typename?: any } | null): obj is SearchUserOutputDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isSearchUserOutputDto"')
+      return SearchUserOutputDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
     const SessionOutput_possibleTypes: string[] = ['SessionOutput']
     export const isSessionOutput = (obj?: { __typename?: any } | null): obj is SessionOutput => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isSessionOutput"')
@@ -476,6 +619,7 @@ export const enumAuthSessionEnum = {
 export const enumJoinGraph = {
    AUTH: 'AUTH' as const,
    POSTS: 'POSTS' as const,
+   SEARCH: 'SEARCH' as const,
    SOCIAL: 'SOCIAL' as const
 }
 

@@ -6,10 +6,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "types": [
-      "node",
-      "vitest/globals"
-    ],
+    "esModuleInterop": true,
+    "types": ["node", "vitest/globals"],
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
@@ -23,20 +21,10 @@
     "noFallthroughCasesInSwitch": false,
     "resolveJsonModule": true,
     "paths": {
-      "@app/*": [
-        "src/*"
-      ],
-      "@app/shared": [
-        "libs/shared/src"
-      ],
-      "@app/shared/*": [
-        "libs/shared/src/*"
-      ]
+      "@app/*": ["src/*"],
+      "@app/shared": ["libs/shared/src"],
+      "@app/shared/*": ["libs/shared/src/*"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "test"
-  ]
+  "exclude": ["node_modules", "dist", "test"]
 }

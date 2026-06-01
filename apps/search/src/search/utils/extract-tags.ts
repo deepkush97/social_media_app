@@ -2,7 +2,7 @@ import nlp from 'compromise';
 
 function cleanWord(word: string): string {
   return word
-    .replace(/[^\w.+]+$/g, '')
+    .replace(/[^\w]+$/g, '')
     .toLowerCase()
     .trim();
 }
