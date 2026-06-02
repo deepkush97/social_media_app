@@ -2,6 +2,8 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
+
 import { AppConfigModule } from '@app/shared/app-config/app-config.module';
 import { AppConfigService } from '@app/shared/app-config/app-config.service';
 import { AppLoggerModule } from '@app/shared/app-logger/app-logger.module';
@@ -13,6 +15,7 @@ import { GatewayRequestValidationPipe } from '@app/shared/pipes/gateway-request-
 import { AuthModule } from './auth/auth.module';
 import { GlobalInterceptor } from './interceptors/global.interceptor';
 import { LikesModule } from './likes/likes.module';
+import { metricsProviders } from './metrics/metrics.providers';
 import { PostsModule } from './posts/posts.module';
 import { SearchModule } from './search/search.module';
 import { UsersModule } from './users/users.module';
@@ -40,9 +43,13 @@ import { AppController } from './app.controller';
     UsersModule,
     LikesModule,
     SearchModule,
+    PrometheusModule.register({
+      defaultMetrics: { enabled: true },
+    }),
   ],
   controllers: [AppController],
   providers: [
+    ...metricsProviders,
     {
       provide: APP_INTERCEPTOR,
       useClass: GlobalInterceptor,
