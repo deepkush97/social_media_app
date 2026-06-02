@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnModuleDestroy } from '@nestjs/common';
+import { Inject, Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Driver } from 'neo4j-driver';
@@ -13,7 +13,7 @@ import { LikeEntity } from './like.entity';
 import { LikeInput } from './like.input';
 
 @Injectable()
-export class SocialService implements OnModuleDestroy {
+export class SocialService implements OnModuleInit, OnModuleDestroy {
   constructor(
     @Inject(NEO4J_DRIVER)
     private readonly neo4jDriver: Driver,
@@ -21,7 +21,29 @@ export class SocialService implements OnModuleDestroy {
     private readonly likeRepository: Repository<LikeEntity>,
   ) {}
 
+  async onModuleInit(): Promise<void> {
+    const session = this.neo4jDriver.session();
+    try {
+      await session.executeWrite((tx) =>
+        tx.run(`
+          CREATE CONSTRAINT IF NOT EXISTS FOR (u:User) REQUIRE u.id IS UNIQUE
+        `),
+      );
+      await session.executeWrite((tx) =>
+        tx.run(`
+          CREATE CONSTRAINT IF NOT EXISTS FOR (p:Post) REQUIRE p.id IS UNIQUE
+        `),
+      );
+    } finally {
+      await session.close();
+    }
+  }
+
   async follow({ followerId, followingId }: IFollowUnfollow): Promise<IFollowerFollowingCount> {
+    if (followerId === followingId) {
+      throw new Error('Cannot follow yourself');
+    }
+
     const session = this.neo4jDriver.session();
 
     const counts = await session.executeWrite(async (tx) => {
@@ -31,10 +53,10 @@ export class SocialService implements OnModuleDestroy {
         MERGE (u2:User {id: $followingId})
         MERGE (u1)-[:FOLLOWS]->(u2)
         
-        WITH u1
+        WITH u2
         RETURN 
-        COUNT { (u1)<-[:FOLLOWS]-() } AS followers,
-        COUNT { (u1)-[:FOLLOWS]->() } AS followings
+        COUNT { (u2)<-[:FOLLOWS]-() } AS followers,
+        COUNT { (u2)-[:FOLLOWS]->() } AS followings
         `,
         { followerId, followingId },
       );
@@ -57,6 +79,10 @@ export class SocialService implements OnModuleDestroy {
   }
 
   async unfollow({ followerId, followingId }: IFollowUnfollow): Promise<IFollowerFollowingCount> {
+    if (followerId === followingId) {
+      throw new Error('Cannot unfollow yourself');
+    }
+
     const session = this.neo4jDriver.session();
 
     const counts = await session.executeWrite(async (tx) => {
@@ -65,10 +91,10 @@ export class SocialService implements OnModuleDestroy {
         MATCH (u1:User {id: $followerId})-[r:FOLLOWS]->(u2:User {id:$followingId})
         DELETE r
         
-        WITH u1
+        WITH u2
         RETURN 
-        COUNT { (u1)<-[:FOLLOWS]-() } AS followers,
-        COUNT { (u1)-[:FOLLOWS]->() } AS followings
+        COUNT { (u2)<-[:FOLLOWS]-() } AS followers,
+        COUNT { (u2)-[:FOLLOWS]->() } AS followings
         `,
         { followerId, followingId },
       );
@@ -93,9 +119,9 @@ export class SocialService implements OnModuleDestroy {
   async userCounts(userId: number): Promise<IFollowerFollowingCount> {
     const session = this.neo4jDriver.session();
 
-    const result = await session.executeRead((tx) =>
+    const result = await session.executeWrite((tx) =>
       tx.run(
-        `MATCH (u:User {id: $userId})
+        `MERGE (u:User {id: $userId})
         RETURN 
           COUNT { (u)<-[:FOLLOWS]-() } AS followers,
           COUNT { (u)-[:FOLLOWS]->() } AS followings
@@ -106,10 +132,6 @@ export class SocialService implements OnModuleDestroy {
     await session.close();
 
     const record = result.records?.[0];
-
-    if (!record) {
-      throw new Error('Not a valid user');
-    }
 
     return {
       followers: record.get('followers').toNumber(),
@@ -123,20 +145,25 @@ export class SocialService implements OnModuleDestroy {
 
     const session = this.neo4jDriver.session();
 
-    await session.executeWrite(async (tx) => {
-      await tx.run(
-        `
+    try {
+      await session.executeWrite(async (tx) => {
+        await tx.run(
+          `
           MERGE (u:User {id: $userId})
           MERGE (p:Post {id: $postId})
           MERGE (u)-[r:LIKED]->(p)
           SET r.weight = 1.0,
               r.createdAt = datetime()
           `,
-        { userId, postId },
-      );
-    });
-
-    await session.close();
+          { userId, postId },
+        );
+      });
+    } catch {
+      await this.likeRepository.delete(saved.id);
+      throw new Error('Failed to sync like to Neo4j');
+    } finally {
+      await session.close();
+    }
 
     return saved;
   }
