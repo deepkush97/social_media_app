@@ -8,3 +8,19 @@ headers:
     request:
       - propagate:
           matching: ^x-request-id$
+      - propagate:
+          matching: ^traceparent$
+      - propagate:
+          matching: ^tracestate$
+      - propagate:
+          matching: ^baggage$
+telemetry:
+  exporters:
+    tracing:
+      otlp:
+        enabled: true
+        endpoint: http://jaeger:4317
+        protocol: grpc
+  instrumentation:
+    spans:
+      mode: spec_compliant
