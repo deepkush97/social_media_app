@@ -7,6 +7,7 @@ import { PostStatusEnum } from '@app/shared/enums/post-status.enum';
 import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface';
 import { INewPostWithUserId, IPost } from '@app/shared/interfaces/post/post.interface';
 import { createPaginatedResponse } from '@app/shared/utils/create-paginated-response';
+import { extractTags } from '@app/shared/utils/extract-tags';
 
 import { Post } from './entities/post.entity';
 
@@ -18,7 +19,8 @@ export class PostsService {
   ) {}
 
   async createNewPost(input: INewPostWithUserId): Promise<IPost> {
-    const newPost = this.postRepository.create(input);
+    const tags = extractTags(input.content);
+    const newPost = this.postRepository.create({ ...input, tags });
 
     return this.postRepository.save(newPost);
   }

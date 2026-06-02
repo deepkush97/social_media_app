@@ -42,10 +42,8 @@ export class LikesService {
     await this.eventBusClient.emit(
       new PostLikedEvent({
         userId,
-        postId,
         postOwnerId: post.userId,
-        content: post.content,
-        createdAt: result.data.createdAt,
+        tags: post.tags,
       }),
       this.constructor.name,
     );
@@ -72,10 +70,8 @@ export class LikesService {
     await this.eventBusClient.emit(
       new PostUnlikedEvent({
         userId,
-        postId,
         postOwnerId: post.userId,
-        content: post.content,
-        createdAt: new Date(),
+        tags: post.tags,
       }),
       this.constructor.name,
     );

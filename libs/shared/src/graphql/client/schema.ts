@@ -90,6 +90,7 @@ export interface PostOutput {
     title: Scalars['String']
     content: Scalars['String']
     image: (Scalars['String'] | null)
+    tags: Scalars['String'][]
     userId: Scalars['Int']
     status: PostStatusEnum
     createdAt: Scalars['DateTime']
@@ -308,6 +309,7 @@ export interface PostOutputGenqlSelection{
     title?: boolean | number
     content?: boolean | number
     image?: boolean | number
+    tags?: boolean | number
     userId?: boolean | number
     status?: boolean | number
     createdAt?: boolean | number

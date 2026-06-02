@@ -10,6 +10,7 @@ export interface INewPost {
 
 export interface IPost extends INewPost, IBaseWithUserIdEntity {
   status: PostStatusEnum;
+  tags: string[];
 }
 
 export interface INewPostWithUserId extends INewPost {

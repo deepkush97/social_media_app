@@ -49,6 +49,7 @@ export class PostsService {
           content: 1,
           image: 1,
           status: 1,
+          tags: 1,
           title: 1,
           updatedAt: 1,
         },
@@ -77,6 +78,7 @@ export class PostsService {
         title: postData.title,
         userId,
         createdAt: postData.createdAt,
+        tags: postData.tags,
       }),
       this.constructor.name,
     );

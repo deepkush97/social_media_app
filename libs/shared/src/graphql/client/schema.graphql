@@ -155,6 +155,7 @@ type PostOutput {
   title: String!
   content: String!
   image: String
+  tags: [String!]!
   userId: Int!
   status: PostStatusEnum!
   createdAt: DateTime!

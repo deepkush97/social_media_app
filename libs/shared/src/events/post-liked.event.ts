@@ -1,14 +1,11 @@
 import { NatsEvents } from '../enums/nats-events.enum';
+import { IPost } from '../interfaces/post/post.interface';
 
 import { BaseEvent } from './base-event.abstract';
 
-export interface PostLikedEventPayload {
-  userId: number;
-  postId: number;
+export type PostLikedEventPayload = Pick<IPost, 'userId' | 'tags'> & {
   postOwnerId: number;
-  content: string;
-  createdAt: Date;
-}
+};
 
 export class PostLikedEvent implements BaseEvent<PostLikedEventPayload> {
   public event: NatsEvents = NatsEvents.POST_LIKED;

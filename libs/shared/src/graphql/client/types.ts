@@ -302,6 +302,9 @@ export default {
             "image": [
                 5
             ],
+            "tags": [
+                5
+            ],
             "userId": [
                 6
             ],

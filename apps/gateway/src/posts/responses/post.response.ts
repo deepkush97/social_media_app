@@ -41,6 +41,9 @@ export class PostItem implements IPost {
   @ApiProperty({ description: 'Post status', enum: PostStatusEnum })
   @Expose()
   status: PostStatusEnum;
+
+  @ApiProperty({ description: 'Post tags', isArray: true })
+  tags: string[];
 }
 
 export class PostItemApiResponse extends ApiResponse(PostItem) {}
