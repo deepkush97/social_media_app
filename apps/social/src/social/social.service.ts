@@ -139,6 +139,29 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
     }
   }
 
+  async trackPostCreation(userId: number, postId: number, tags: string[]): Promise<void> {
+    const session = this.neo4jDriver.session();
+
+    try {
+      await session.executeWrite(async (tx) => {
+        await tx.run(
+          `
+          MERGE (u:User {id: $userId})
+          MERGE (p:Post {id: $postId})
+          MERGE (u)-[:CREATED]->(p)
+          WITH u, p
+          UNWIND $tags AS tag
+          MERGE (t:Tag {name: tag})
+          MERGE (p)-[:TAGGED {weight: 1.0}]->(t)
+          `,
+          { userId, postId, tags },
+        );
+      });
+    } finally {
+      await session.close();
+    }
+  }
+
   async unfollow({ followerId, followingId }: IFollowUnfollow): Promise<IFollowerFollowingCount> {
     if (followerId === followingId) {
       throw new Error('Cannot unfollow yourself');
