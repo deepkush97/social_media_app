@@ -4,9 +4,11 @@ import { AppLoggerService } from '@app/shared/app-logger/app-logger.service';
 import { AppResponse } from '@app/shared/app-response.dto';
 import { CacheService } from '@app/shared/cache/cache.service';
 import { AppCodes } from '@app/shared/enums/app-codes.enum';
+import { UserFollowedEvent, UserUnfollowedEvent } from '@app/shared/events/user-followed.event';
 import { GraphqlRouterComposite } from '@app/shared/graphql/graphql-router.composite';
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
 import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-following-count.interface';
+import { EventBusClient } from '@app/shared/nats/event-bus-client.service';
 
 import { CACHE_TTL_IN_SECONDS } from '../app.constant';
 
@@ -16,6 +18,7 @@ export class UsersService {
     private readonly logger: AppLoggerService,
     private readonly routerComposite: GraphqlRouterComposite,
     private readonly cacheService: CacheService,
+    private readonly eventBusClient: EventBusClient,
   ) {}
 
   private createUserCountsCacheKey(userId: number): string {
@@ -23,6 +26,10 @@ export class UsersService {
   }
 
   async follow(followerId: number, followingId: number): Promise<IAppResponse<boolean>> {
+    if (followerId === followingId) {
+      return new AppResponse({ code: AppCodes.BAD_REQUEST });
+    }
+
     const userResult = await this.isUserExists(followingId, 'follow');
     if (userResult.code !== AppCodes.OPERATION_SUCCESS) {
       return userResult;
@@ -43,9 +50,20 @@ export class UsersService {
     }
 
     const data = followResult.data;
-    const cacheKey = this.createUserCountsCacheKey(followerId);
+    const targetCacheKey = this.createUserCountsCacheKey(followingId);
+    const followerCacheKey = this.createUserCountsCacheKey(followerId);
 
-    await this.cacheService.set(cacheKey, data, CACHE_TTL_IN_SECONDS);
+    await this.cacheService.set(targetCacheKey, data, CACHE_TTL_IN_SECONDS);
+    await this.cacheService.del(followerCacheKey);
+
+    await this.eventBusClient.emit(
+      new UserFollowedEvent({
+        followerId,
+        followingId,
+        createdAt: new Date(),
+      }),
+      this.constructor.name,
+    );
 
     return new AppResponse({
       code: AppCodes.OPERATION_SUCCESS,
@@ -53,6 +71,10 @@ export class UsersService {
   }
 
   async unfollow(followerId: number, followingId: number): Promise<IAppResponse<boolean>> {
+    if (followerId === followingId) {
+      return new AppResponse({ code: AppCodes.BAD_REQUEST });
+    }
+
     const userResult = await this.isUserExists(followingId, 'unfollow');
     if (userResult.code !== AppCodes.OPERATION_SUCCESS) {
       return userResult;
@@ -73,9 +95,20 @@ export class UsersService {
     }
 
     const data = unfollowResult.data;
-    const cacheKey = this.createUserCountsCacheKey(followerId);
+    const targetCacheKey = this.createUserCountsCacheKey(followingId);
+    const followerCacheKey = this.createUserCountsCacheKey(followerId);
 
-    await this.cacheService.set(cacheKey, data, CACHE_TTL_IN_SECONDS);
+    await this.cacheService.set(targetCacheKey, data, CACHE_TTL_IN_SECONDS);
+    await this.cacheService.del(followerCacheKey);
+
+    await this.eventBusClient.emit(
+      new UserUnfollowedEvent({
+        followerId,
+        followingId,
+        createdAt: new Date(),
+      }),
+      this.constructor.name,
+    );
 
     return new AppResponse({
       code: AppCodes.OPERATION_SUCCESS,
