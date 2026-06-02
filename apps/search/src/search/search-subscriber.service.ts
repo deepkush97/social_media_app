@@ -5,8 +5,7 @@ import { NatsEvents } from '@app/shared/enums/nats-events.enum';
 import { PostCreatedEventPayload } from '@app/shared/events/post-created.event';
 import { UserCreateEventPayload } from '@app/shared/events/user-created.event';
 import { EventHandler } from '@app/shared/nats/event-handler.decorator';
-
-import { extractTags } from './utils/extract-tags';
+import { extractTags } from '@app/shared/utils/extract-tags';
 
 import { SearchService } from './search.service';
 

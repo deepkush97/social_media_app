@@ -14,7 +14,7 @@ vi.mock('./utils/extract-tags', () => ({
   extractTags: vi.fn(),
 }));
 
-import { extractTags } from './utils/extract-tags';
+import { extractTags } from '../../../../libs/shared/src/utils/extract-tags';
 
 describe('SearchSubscriberService', () => {
   let service: SearchSubscriberService;

@@ -60,9 +60,17 @@ type FollowerFollowingCountDto {
   followings: Int!
 }
 
+enum FollowSource {
+  search
+  suggested
+  profile
+  feed
+}
+
 input FollowUnfollowInput {
   followerId: Int!
   followingId: Int!
+  source: FollowSource
 }
 
 scalar join__FieldSet

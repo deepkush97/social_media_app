@@ -5,6 +5,8 @@ import { BaseEvent } from './base-event.abstract';
 export interface PostLikedEventPayload {
   userId: number;
   postId: number;
+  postOwnerId: number;
+  content: string;
   createdAt: Date;
 }
 

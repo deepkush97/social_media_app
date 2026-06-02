@@ -4,6 +4,7 @@ import { AppLoggerService } from '@app/shared/app-logger/app-logger.service';
 import { AppResponse } from '@app/shared/app-response.dto';
 import { CacheService } from '@app/shared/cache/cache.service';
 import { AppCodes } from '@app/shared/enums/app-codes.enum';
+import { FollowSource } from '@app/shared/enums/follow-source.enum';
 import { UserFollowedEvent, UserUnfollowedEvent } from '@app/shared/events/user-followed.event';
 import { GraphqlRouterComposite } from '@app/shared/graphql/graphql-router.composite';
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
@@ -25,7 +26,11 @@ export class UsersService {
     return `user_counts:${userId}`;
   }
 
-  async follow(followerId: number, followingId: number): Promise<IAppResponse<boolean>> {
+  async follow(
+    followerId: number,
+    followingId: number,
+    source?: FollowSource,
+  ): Promise<IAppResponse<boolean>> {
     if (followerId === followingId) {
       return new AppResponse({ code: AppCodes.BAD_REQUEST });
     }
@@ -36,7 +41,7 @@ export class UsersService {
     }
 
     const followResult = await this.routerComposite.followUser(
-      { followerId, followingId },
+      { followerId, followingId, source },
       {
         code: 1,
         data: {

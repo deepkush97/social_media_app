@@ -67,10 +67,9 @@ export class PostsController {
   })
   @ApiOkResponse({ type: PostItemApiResponse })
   async getPost(
-    @CurrentUser() user: ICurrentUser,
     @Param('id', new ParseIntPipe({ optional: true })) id: number,
   ): Promise<PostItemApiResponse> {
-    return await this.postService.findPostById(user.id, id);
+    return await this.postService.findPostById(id);
   }
 
   @Authenticated()

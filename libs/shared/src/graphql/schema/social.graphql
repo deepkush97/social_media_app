@@ -71,6 +71,14 @@ type Mutation {
 input FollowUnfollowInput {
   followerId: Int!
   followingId: Int!
+  source: FollowSource
+}
+
+enum FollowSource {
+  search
+  suggested
+  profile
+  feed
 }
 
 input LikeInput {

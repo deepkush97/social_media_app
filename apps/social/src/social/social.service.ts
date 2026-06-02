@@ -34,12 +34,21 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
           CREATE CONSTRAINT IF NOT EXISTS FOR (p:Post) REQUIRE p.id IS UNIQUE
         `),
       );
+      await session.executeWrite((tx) =>
+        tx.run(`
+          CREATE CONSTRAINT IF NOT EXISTS FOR (t:Tag) REQUIRE t.name IS UNIQUE
+        `),
+      );
     } finally {
       await session.close();
     }
   }
 
-  async follow({ followerId, followingId }: IFollowUnfollow): Promise<IFollowerFollowingCount> {
+  async follow({
+    followerId,
+    followingId,
+    source,
+  }: IFollowUnfollow): Promise<IFollowerFollowingCount> {
     if (followerId === followingId) {
       throw new Error('Cannot follow yourself');
     }
@@ -51,14 +60,18 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
         `
         MERGE (u1:User {id: $followerId})
         MERGE (u2:User {id: $followingId})
-        MERGE (u1)-[:FOLLOWS]->(u2)
+        MERGE (u1)-[r:FOLLOWS]->(u2)
+        ON CREATE SET r.weight = 1.0,
+                      r.createdAt = datetime(),
+                      r.source = $source,
+                      r.interactions = 0
         
         WITH u2
         RETURN 
         COUNT { (u2)<-[:FOLLOWS]-() } AS followers,
         COUNT { (u2)-[:FOLLOWS]->() } AS followings
         `,
-        { followerId, followingId },
+        { followerId, followingId, source: source ?? 'profile' },
       );
 
       const record = result.records?.[0];
@@ -76,6 +89,54 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
     await session.close();
 
     return counts;
+  }
+
+  async boostFollowWeight(
+    followerId: number,
+    followingId: number,
+    weightIncrement: number,
+  ): Promise<void> {
+    const session = this.neo4jDriver.session();
+
+    try {
+      await session.executeWrite(async (tx) => {
+        await tx.run(
+          `
+        MATCH (u1:User {id: $followerId})-[r:FOLLOWS]->(u2:User {id: $followingId})
+        SET r.interactions = COALESCE(r.interactions, 0) + 1,
+            r.weight = COALESCE(r.weight, 1.0) + $weightIncrement
+        `,
+          { followerId, followingId, weightIncrement },
+        );
+      });
+    } finally {
+      await session.close();
+    }
+  }
+
+  async boostTagWeight(userId: number, tags: string[], weightIncrement: number): Promise<void> {
+    if (!tags.length) return;
+
+    const session = this.neo4jDriver.session();
+
+    try {
+      await session.executeWrite(async (tx) => {
+        await tx.run(
+          `
+          UNWIND $tags AS tag
+          MERGE (u:User {id: $userId})
+          MERGE (t:Tag {name: tag})
+          MERGE (u)-[r:INTERESTED_IN]->(t)
+          ON CREATE SET r.weight = $weightIncrement,
+                        r.createdAt = datetime()
+          ON MATCH SET r.weight = COALESCE(r.weight, 0) + $weightIncrement
+          `,
+          { userId, tags, weightIncrement },
+        );
+      });
+    } finally {
+      await session.close();
+    }
   }
 
   async unfollow({ followerId, followingId }: IFollowUnfollow): Promise<IFollowerFollowingCount> {

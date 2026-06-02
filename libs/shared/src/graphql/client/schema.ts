@@ -29,6 +29,8 @@ export interface FollowerFollowingCountDto {
     __typename: 'FollowerFollowingCountDto'
 }
 
+export type FollowSource = 'search' | 'suggested' | 'profile' | 'feed'
+
 export type join__Graph = 'AUTH' | 'POSTS' | 'SEARCH' | 'SOCIAL'
 
 export interface LikeDto {
@@ -239,7 +241,7 @@ export interface FollowerFollowingCountDtoGenqlSelection{
     __scalar?: boolean | number
 }
 
-export interface FollowUnfollowInput {followerId: Scalars['Int'],followingId: Scalars['Int']}
+export interface FollowUnfollowInput {followerId: Scalars['Int'],followingId: Scalars['Int'],source?: (FollowSource | null)}
 
 export interface LikeDtoGenqlSelection{
     id?: boolean | number
@@ -685,6 +687,13 @@ export const enumAppCodes = {
 export const enumAuthSessionEnum = {
    OPEN: 'OPEN' as const,
    CLOSED: 'CLOSED' as const
+}
+
+export const enumFollowSource = {
+   search: 'search' as const,
+   suggested: 'suggested' as const,
+   profile: 'profile' as const,
+   feed: 'feed' as const
 }
 
 export const enumJoinGraph = {
