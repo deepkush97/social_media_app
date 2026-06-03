@@ -72,9 +72,9 @@ type Query {
 }
 
 input PostsPaginationInput {
-  userId: Int!
   take: Int! = 10
   page: Int! = 0
+  userId: Int!
   status: PostStatusEnum! = ACTIVE
 }
 

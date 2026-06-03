@@ -123,7 +123,26 @@ export interface Query {
     userCounts: UserCountsDto
     postLikeCount: NumberOutputDto
     hasUserLikedPost: BooleanOutputDto
+    recommendedPosts: RecommendedPostOutputDto
     __typename: 'Query'
+}
+
+export interface RecommendedPostDto {
+    postId: Scalars['Int']
+    score: Scalars['Float']
+    __typename: 'RecommendedPostDto'
+}
+
+export interface RecommendedPostDtoData {
+    items: RecommendedPostDto[]
+    meta: PaginationMeta
+    __typename: 'RecommendedPostDtoData'
+}
+
+export interface RecommendedPostOutputDto {
+    data: (RecommendedPostDtoData | null)
+    code: AppCodes
+    __typename: 'RecommendedPostOutputDto'
 }
 
 export interface SearchPostHitDto {
@@ -332,7 +351,7 @@ export interface PostOutputDtoGenqlSelection{
     __scalar?: boolean | number
 }
 
-export interface PostsPaginationInput {userId: Scalars['Int'],take?: Scalars['Int'],page?: Scalars['Int'],status?: PostStatusEnum}
+export interface PostsPaginationInput {take?: Scalars['Int'],page?: Scalars['Int'],userId: Scalars['Int'],status?: PostStatusEnum}
 
 export interface QueryGenqlSelection{
     findUserById?: (UserOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
@@ -345,9 +364,33 @@ export interface QueryGenqlSelection{
     userCounts?: (UserCountsDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     postLikeCount?: (NumberOutputDtoGenqlSelection & { __args: {postId: Scalars['Int']} })
     hasUserLikedPost?: (BooleanOutputDtoGenqlSelection & { __args: {userId: Scalars['Int'], postId: Scalars['Int']} })
+    recommendedPosts?: (RecommendedPostOutputDtoGenqlSelection & { __args: {input: RecommendedPostsInput} })
     __typename?: boolean | number
     __scalar?: boolean | number
 }
+
+export interface RecommendedPostDtoGenqlSelection{
+    postId?: boolean | number
+    score?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface RecommendedPostDtoDataGenqlSelection{
+    items?: RecommendedPostDtoGenqlSelection
+    meta?: PaginationMetaGenqlSelection
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface RecommendedPostOutputDtoGenqlSelection{
+    data?: RecommendedPostDtoDataGenqlSelection
+    code?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface RecommendedPostsInput {take?: Scalars['Int'],page?: Scalars['Int'],userId: Scalars['Int']}
 
 export interface SearchInput {query: Scalars['String'],page?: (Scalars['Int'] | null),take?: (Scalars['Int'] | null)}
 
@@ -556,6 +599,30 @@ export interface UserOutputDtoGenqlSelection{
     export const isQuery = (obj?: { __typename?: any } | null): obj is Query => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isQuery"')
       return Query_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const RecommendedPostDto_possibleTypes: string[] = ['RecommendedPostDto']
+    export const isRecommendedPostDto = (obj?: { __typename?: any } | null): obj is RecommendedPostDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isRecommendedPostDto"')
+      return RecommendedPostDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const RecommendedPostDtoData_possibleTypes: string[] = ['RecommendedPostDtoData']
+    export const isRecommendedPostDtoData = (obj?: { __typename?: any } | null): obj is RecommendedPostDtoData => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isRecommendedPostDtoData"')
+      return RecommendedPostDtoData_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const RecommendedPostOutputDto_possibleTypes: string[] = ['RecommendedPostOutputDto']
+    export const isRecommendedPostOutputDto = (obj?: { __typename?: any } | null): obj is RecommendedPostOutputDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isRecommendedPostOutputDto"')
+      return RecommendedPostOutputDto_possibleTypes.includes(obj.__typename)
     }
     
 

@@ -173,9 +173,9 @@ type PostOutputDto {
 }
 
 input PostsPaginationInput {
-  userId: Int!
   take: Int! = 10
   page: Int! = 0
+  userId: Int!
   status: PostStatusEnum! = ACTIVE
 }
 
@@ -195,6 +195,28 @@ type Query {
   userCounts(id: Int!): UserCountsDto!
   postLikeCount(postId: Int!): NumberOutputDto!
   hasUserLikedPost(userId: Int!, postId: Int!): BooleanOutputDto!
+  recommendedPosts(input: RecommendedPostsInput!): RecommendedPostOutputDto!
+}
+
+type RecommendedPostDto {
+  postId: Int!
+  score: Float!
+}
+
+type RecommendedPostDtoData {
+  items: [RecommendedPostDto!]!
+  meta: PaginationMeta!
+}
+
+type RecommendedPostOutputDto {
+  data: RecommendedPostDtoData
+  code: AppCodes!
+}
+
+input RecommendedPostsInput {
+  take: Int! = 10
+  page: Int! = 0
+  userId: Int!
 }
 
 input SearchInput {

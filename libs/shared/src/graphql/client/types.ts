@@ -12,7 +12,7 @@ export default {
         17,
         18,
         28,
-        32
+        31
     ],
     "types": {
         "AppCodes": {},
@@ -148,7 +148,7 @@ export default {
         },
         "Mutation": {
             "createUser": [
-                45,
+                49,
                 {
                     "input": [
                         7,
@@ -157,7 +157,7 @@ export default {
                 }
             ],
             "createSession": [
-                42,
+                46,
                 {
                     "id": [
                         6,
@@ -166,7 +166,7 @@ export default {
                 }
             ],
             "loginUser": [
-                45,
+                49,
                 {
                     "input": [
                         19,
@@ -211,7 +211,7 @@ export default {
                 }
             ],
             "follow": [
-                43,
+                47,
                 {
                     "input": [
                         11,
@@ -220,7 +220,7 @@ export default {
                 }
             ],
             "unfollow": [
-                43,
+                47,
                 {
                     "input": [
                         11,
@@ -344,13 +344,13 @@ export default {
             ]
         },
         "PostsPaginationInput": {
-            "userId": [
-                6
-            ],
             "take": [
                 6
             ],
             "page": [
+                6
+            ],
+            "userId": [
                 6
             ],
             "status": [
@@ -363,7 +363,7 @@ export default {
         "PostStatusEnum": {},
         "Query": {
             "findUserById": [
-                45,
+                49,
                 {
                     "id": [
                         6,
@@ -372,7 +372,7 @@ export default {
                 }
             ],
             "findOpenSessionByGuid": [
-                42,
+                46,
                 {
                     "id": [
                         5,
@@ -399,34 +399,34 @@ export default {
                 }
             ],
             "searchPosts": [
-                34,
+                38,
                 {
                     "input": [
-                        30,
+                        35,
                         "SearchInput!"
                     ]
                 }
             ],
             "searchUsers": [
-                40,
+                44,
                 {
                     "input": [
-                        30,
+                        35,
                         "SearchInput!"
                     ]
                 }
             ],
             "searchTags": [
-                37,
+                41,
                 {
                     "input": [
-                        30,
+                        35,
                         "SearchInput!"
                     ]
                 }
             ],
             "userCounts": [
-                43,
+                47,
                 {
                     "id": [
                         6,
@@ -455,6 +455,63 @@ export default {
                         "Int!"
                     ]
                 }
+            ],
+            "recommendedPosts": [
+                33,
+                {
+                    "input": [
+                        34,
+                        "RecommendedPostsInput!"
+                    ]
+                }
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "RecommendedPostDto": {
+            "postId": [
+                6
+            ],
+            "score": [
+                31
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "Float": {},
+        "RecommendedPostDtoData": {
+            "items": [
+                30
+            ],
+            "meta": [
+                22
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "RecommendedPostOutputDto": {
+            "data": [
+                32
+            ],
+            "code": [
+                0
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "RecommendedPostsInput": {
+            "take": [
+                6
+            ],
+            "page": [
+                6
+            ],
+            "userId": [
+                6
             ],
             "__typename": [
                 5
@@ -488,7 +545,7 @@ export default {
                 6
             ],
             "score": [
-                32
+                31
             ],
             "tags": [
                 5
@@ -497,10 +554,9 @@ export default {
                 5
             ]
         },
-        "Float": {},
         "SearchPostHitDtoData": {
             "items": [
-                31
+                36
             ],
             "meta": [
                 22
@@ -511,7 +567,7 @@ export default {
         },
         "SearchPostOutputDto": {
             "data": [
-                33
+                37
             ],
             "code": [
                 0
@@ -528,7 +584,7 @@ export default {
                 5
             ],
             "score": [
-                32
+                31
             ],
             "__typename": [
                 5
@@ -536,7 +592,7 @@ export default {
         },
         "SearchTagHitDtoData": {
             "items": [
-                35
+                39
             ],
             "meta": [
                 22
@@ -547,7 +603,7 @@ export default {
         },
         "SearchTagOutputDto": {
             "data": [
-                36
+                40
             ],
             "code": [
                 0
@@ -567,7 +623,7 @@ export default {
                 5
             ],
             "score": [
-                32
+                31
             ],
             "__typename": [
                 5
@@ -575,7 +631,7 @@ export default {
         },
         "SearchUserHitDtoData": {
             "items": [
-                38
+                42
             ],
             "meta": [
                 22
@@ -586,7 +642,7 @@ export default {
         },
         "SearchUserOutputDto": {
             "data": [
-                39
+                43
             ],
             "code": [
                 0
@@ -620,7 +676,7 @@ export default {
         },
         "SessionOutputDto": {
             "data": [
-                41
+                45
             ],
             "code": [
                 0
@@ -662,7 +718,7 @@ export default {
         },
         "UserOutputDto": {
             "data": [
-                44
+                48
             ],
             "code": [
                 0

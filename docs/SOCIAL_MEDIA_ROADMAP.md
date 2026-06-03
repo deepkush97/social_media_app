@@ -171,7 +171,7 @@ The recommendation Cypher queries need `[:CREATED]` (User→Post) and `[:TAGGED]
 
 Add the Cypher queries that power recommendations to `SocialService`. No endpoints yet — just methods you can call and inspect.
 
-- [ ] **Add `recommendedPosts(userId, limit, offset)`** — Cypher query returning posts scored by:
+- [x] **Add `recommendedPosts(userId, limit, offset)`** — Cypher query returning posts scored by:
   1. Posts from followed users (score 1.0)
   2. Posts tagged with tags the user is interested in (score = `0.5 * INTERESTED_IN.weight`), excluding already-followed authors
   3. Return distinct posts, ordered by score DESC
@@ -205,12 +205,12 @@ Add the Cypher queries that power recommendations to `SocialService`. No endpoin
 
 Wire the queries through GraphQL (social subgraph) → Apollo Router → gateway REST endpoints.
 
-- [ ] **Add GraphQL query in social subgraph** — `recommendedPosts(userId: Int!, limit: Int, offset: Int): RecommendedPostsOutput` and `whoToFollow(userId: Int!, limit: Int): WhoToFollowOutput`.
-- [ ] **Define output types** — `RecommendedPost { postId: Int!, score: Float! }`, `WhoToFollowUser { userId: Int!, commonFollowers: Int!, score: Float! }`.
-- [ ] **Regenerate schema** — update `social.graphql`, compose supergraph, generate genql client.
-- [ ] **Add gateway REST endpoints** — `GET /recommendations/posts?userId=1&limit=20` and `GET /recommendations/users?userId=1&limit=10`.
+- [x] **Add GraphQL query in social subgraph** — `recommendedPosts(userId: Int!, limit: Int, offset: Int): RecommendedPostsOutput`.
+- [x] **Define output types** — `RecommendedPost { postId: Int!, score: Float! }`, `RecommendedPostList { items: [RecommendedPost!]! }`.
+- [x] **Regenerate schema** — updated `social.graphql`, composed supergraph, generated genql client.
+- [x] **Add gateway REST endpoint** — `GET /recommendations` (authenticated, uses JWT userId).
 - [ ] **Add Redis caching** — cache per-user results with 5-minute TTL. Bust cache on new like/follow events.
-- [ ] **Add JWT auth** — protect endpoints (or at least require userId to match authenticated user).
+- [ ] **Add gateway REST endpoint** — `GET /recommendations/users` for `whoToFollow` (once implemented).
 
 **Verify:** Hit `GET /recommendations/posts?userId=1` → get back scored post list. Hit `GET /recommendations/users?userId=1` → get back suggested users.
 

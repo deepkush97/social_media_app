@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { ILike } from '@app/shared/interfaces/like/like.interface';
 import { IFollowUnfollow } from '@app/shared/interfaces/social/follow-unfollow.interface';
 import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-following-count.interface';
+import { IRecommendedPost } from '@app/shared/interfaces/social/recommended-post.interface';
 import { NEO4J_DRIVER } from '@app/shared/providers.constant';
 
 import { LikeEntity } from './like.entity';
@@ -157,6 +158,55 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
           { userId, postId, tags },
         );
       });
+    } finally {
+      await session.close();
+    }
+  }
+
+  async recommendedPosts(
+    userId: number,
+    limit: number,
+    offset = 0,
+  ): Promise<{ items: IRecommendedPost[]; total: number }> {
+    const session = this.neo4jDriver.session();
+
+    try {
+      const baseQuery = `
+        CALL {
+          MATCH (me:User {id: $userId})-[:FOLLOWS]->(author:User)-[:CREATED]->(post:Post)
+          RETURN post.id AS postId, 1.0 AS score
+          UNION
+          MATCH (me:User {id: $userId})-[interest:INTERESTED_IN]->(tag:Tag)<-[:TAGGED]-(post:Post)<-[:CREATED]-(author:User)
+          WHERE NOT (me)-[:FOLLOWS]->(author)
+          RETURN post.id AS postId, 0.5 * interest.weight AS score
+        }
+        WITH postId, max(score) AS score
+        ORDER BY score DESC
+      `;
+
+      const result = await session.executeRead(async (tx) => {
+        const itemsResult = await tx.run(
+          `${baseQuery} RETURN postId, score SKIP $offset LIMIT $limit`,
+          { userId, limit, offset },
+        );
+
+        const countResult = await tx.run(`${baseQuery} RETURN count(postId) AS total`, {
+          userId,
+          limit,
+          offset,
+        });
+
+        const items = itemsResult.records.map((record) => ({
+          postId: record.get('postId').toNumber(),
+          score: record.get('score').toNumber(),
+        }));
+
+        const total = countResult.records[0]?.get('total').toNumber() ?? 0;
+
+        return { items, total };
+      });
+
+      return result;
     } finally {
       await session.close();
     }

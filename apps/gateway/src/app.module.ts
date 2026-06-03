@@ -17,6 +17,7 @@ import { GlobalInterceptor } from './interceptors/global.interceptor';
 import { LikesModule } from './likes/likes.module';
 import { metricsProviders } from './metrics/metrics.providers';
 import { PostsModule } from './posts/posts.module';
+import { RecommendationsModule } from './recommendations/recommendations.module';
 import { SearchModule } from './search/search.module';
 import { UsersModule } from './users/users.module';
 
@@ -40,6 +41,7 @@ import { AppController } from './app.controller';
       },
     }),
     PostsModule,
+    RecommendationsModule,
     UsersModule,
     LikesModule,
     SearchModule,

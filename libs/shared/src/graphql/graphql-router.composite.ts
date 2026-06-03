@@ -17,6 +17,9 @@ import {
   PostOutputDto,
   PostOutputDtoGenqlSelection,
   PostsPaginationInput,
+  RecommendedPostOutputDto,
+  RecommendedPostOutputDtoGenqlSelection,
+  RecommendedPostsInput,
   SearchInput,
   SearchPostOutputDto,
   SearchPostOutputDtoGenqlSelection,
@@ -326,5 +329,19 @@ export class GraphqlRouterComposite {
     });
 
     return result.searchTags;
+  }
+
+  public async recommendedPosts(
+    input: RecommendedPostsInput,
+    projection: RecommendedPostOutputDtoGenqlSelection,
+  ): Promise<RecommendedPostOutputDto> {
+    const result = await this.routerService.client.query({
+      recommendedPosts: {
+        __args: { input },
+        ...projection,
+      },
+    });
+
+    return result.recommendedPosts;
   }
 }

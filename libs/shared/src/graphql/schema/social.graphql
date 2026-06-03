@@ -27,6 +27,28 @@ type NumberOutputDto {
   code: AppCodes!
 }
 
+type PaginationMeta {
+  total: Int!
+  page: Int!
+  lastPage: Int!
+  take: Int!
+}
+
+type RecommendedPostDto {
+  postId: Int!
+  score: Float!
+}
+
+type RecommendedPostOutputDto {
+  data: RecommendedPostDtoData
+  code: AppCodes!
+}
+
+type RecommendedPostDtoData {
+  items: [RecommendedPostDto!]!
+  meta: PaginationMeta!
+}
+
 type FollowerFollowingCountDto {
   followers: Int!
   followings: Int!
@@ -59,6 +81,13 @@ type Query {
   userCounts(id: Int!): UserCountsDto!
   postLikeCount(postId: Int!): NumberOutputDto!
   hasUserLikedPost(userId: Int!, postId: Int!): BooleanOutputDto!
+  recommendedPosts(input: RecommendedPostsInput!): RecommendedPostOutputDto!
+}
+
+input RecommendedPostsInput {
+  take: Int! = 10
+  page: Int! = 0
+  userId: Int!
 }
 
 type Mutation {

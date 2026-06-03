@@ -5,8 +5,10 @@ import { AppResponse } from '@app/shared/app-response.dto';
 import { AppCodes } from '@app/shared/enums/app-codes.enum';
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
 import { ILike } from '@app/shared/interfaces/like/like.interface';
+import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface';
 import { IFollowUnfollow } from '@app/shared/interfaces/social/follow-unfollow.interface';
 import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-following-count.interface';
+import { IRecommendedPost } from '@app/shared/interfaces/social/recommended-post.interface';
 
 import { LikeInput } from './social/like.input';
 import { SocialService } from './social/social.service';
@@ -91,5 +93,35 @@ export class AppService {
   async hasUserLikedPost(userId: number, postId: number): Promise<IAppResponse<boolean>> {
     const liked = await this.socialService.hasLiked(userId, postId);
     return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data: liked });
+  }
+
+  async recommendedPosts(
+    userId: number,
+    page = 0,
+    take = 10,
+  ): Promise<IAppResponse<IPaginatedData<IRecommendedPost>>> {
+    try {
+      const limit = take;
+      const offset = page * take;
+      const { items, total } = await this.socialService.recommendedPosts(userId, limit, offset);
+      const lastPage = total ? Math.max(0, Math.ceil(total / take) - 1) : 0;
+
+      return new AppResponse({
+        code: AppCodes.OPERATION_SUCCESS,
+        data: {
+          items,
+          meta: { total, page, lastPage, take },
+        },
+      });
+    } catch (error) {
+      this.logger.error('Error while recommendedPosts operation', {
+        context: this.constructor.name,
+        error,
+      });
+
+      return new AppResponse({
+        code: AppCodes.INTERNAL_ERROR,
+      });
+    }
   }
 }
