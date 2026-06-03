@@ -7,14 +7,9 @@ import {
   createMockSearchService,
   MockSearchService,
 } from '@app/shared/test-utils/search-service.mock';
-import { extractTags } from '@app/shared/utils/extract-tags';
 
 import { SearchService } from './search.service';
 import { SearchSubscriberService } from './search-subscriber.service';
-
-vi.mock('./utils/extract-tags', () => ({
-  extractTags: vi.fn(),
-}));
 
 describe('SearchSubscriberService', () => {
   let service: SearchSubscriberService;
@@ -43,33 +38,26 @@ describe('SearchSubscriberService', () => {
   });
 
   describe('handlePostCreated', () => {
-    it('extracts tags, indexes post, and bulk indexes tags', async () => {
-      vi.mocked(extractTags).mockReturnValue(['world']);
-
+    it('indexes post and bulk indexes tags', async () => {
       await service.handlePostCreated(postData);
 
-      expect(extractTags).toHaveBeenCalledWith('Hello #world');
-      expect(mockSearch.indexPost).toHaveBeenCalledWith({ ...postData, tags: ['world'] });
+      expect(mockSearch.indexPost).toHaveBeenCalledWith(postData);
       expect(mockSearch.bulkIndexTags).toHaveBeenCalledWith(['world']);
       expect(mockLogger.info).toHaveBeenCalledWith('Indexed post 1', {
         context: SearchSubscriberService.name,
       });
     });
 
-    it('does not call bulkIndexTags when no tags extracted', async () => {
-      vi.mocked(extractTags).mockReturnValue([]);
-
-      await service.handlePostCreated(postData);
+    it('does not call bulkIndexTags when tags array is empty', async () => {
+      await service.handlePostCreated({ ...postData, tags: [] });
 
       expect(mockSearch.indexPost).toHaveBeenCalledWith({ ...postData, tags: [] });
       expect(mockSearch.bulkIndexTags).not.toHaveBeenCalled();
     });
 
-    it('logs error when extraction or indexing fails', async () => {
+    it('logs error when indexing fails', async () => {
       const error = new Error('ES down');
-      vi.mocked(extractTags).mockImplementation(() => {
-        throw error;
-      });
+      mockSearch.indexPost.mockRejectedValue(error);
 
       await service.handlePostCreated(postData);
 
