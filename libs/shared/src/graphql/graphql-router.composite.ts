@@ -33,6 +33,9 @@ import {
   UserCountsDtoGenqlSelection,
   UserOutputDto,
   UserOutputDtoGenqlSelection,
+  WhoToFollowInput,
+  WhoToFollowOutputDto,
+  WhoToFollowOutputDtoGenqlSelection,
 } from './client';
 import { GraphqlRouterService } from './graphql-router.service';
 
@@ -343,5 +346,19 @@ export class GraphqlRouterComposite {
     });
 
     return result.recommendedPosts;
+  }
+
+  public async whoToFollow(
+    input: WhoToFollowInput,
+    projection: WhoToFollowOutputDtoGenqlSelection,
+  ): Promise<WhoToFollowOutputDto> {
+    const result = await this.routerService.client.query({
+      whoToFollow: {
+        __args: { input },
+        ...projection,
+      },
+    });
+
+    return result.whoToFollow;
   }
 }

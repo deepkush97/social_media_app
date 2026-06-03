@@ -465,6 +465,15 @@ export default {
                     ]
                 }
             ],
+            "whoToFollow": [
+                51,
+                {
+                    "input": [
+                        50,
+                        "WhoToFollowInput!"
+                    ]
+                }
+            ],
             "__typename": [
                 5
             ]
@@ -722,6 +731,59 @@ export default {
             ],
             "code": [
                 0
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "WhoToFollowInput": {
+            "take": [
+                6
+            ],
+            "page": [
+                6
+            ],
+            "userId": [
+                6
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "WhoToFollowOutputDto": {
+            "data": [
+                53
+            ],
+            "code": [
+                0
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "WhoToFollowUserDto": {
+            "userId": [
+                6
+            ],
+            "commonFollowers": [
+                6
+            ],
+            "likedPostsScore": [
+                6
+            ],
+            "score": [
+                31
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "WhoToFollowUserDtoData": {
+            "items": [
+                52
+            ],
+            "meta": [
+                22
             ],
             "__typename": [
                 5

@@ -5,8 +5,10 @@ import { NumberOutputDto } from '@app/shared/number.output';
 
 import { FollowUnfollowInput } from './inputs/follow-unfollow.input';
 import { RecommendedPostsInput } from './inputs/recommended-posts.input';
+import { WhoToFollowInput } from './inputs/who-to-follow.input';
 import { RecommendedPostOutputDto } from './outputs/recommended-post.output';
 import { UserCountsDto } from './outputs/user-counts.output';
+import { WhoToFollowOutputDto } from './outputs/who-to-follow-user.output';
 import { LikeInput } from './social/like.input';
 import { LikeOutputDto } from './social/like.output';
 
@@ -61,5 +63,10 @@ export class AppResolver {
     @Args('input') input: RecommendedPostsInput,
   ): Promise<RecommendedPostOutputDto> {
     return this.appService.recommendedPosts(input.userId, input.page, input.take);
+  }
+
+  @Query(() => WhoToFollowOutputDto)
+  async whoToFollow(@Args('input') input: WhoToFollowInput): Promise<WhoToFollowOutputDto> {
+    return this.appService.whoToFollow(input.userId, input.page, input.take);
   }
 }

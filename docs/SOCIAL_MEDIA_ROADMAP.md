@@ -190,11 +190,12 @@ Add the Cypher queries that power recommendations to `SocialService`. No endpoin
   SKIP $offset LIMIT $limit
   ```
 
-- [ ] **Add `whoToFollow(userId, limit)`** — Cypher query:
+- [x] **Add `whoToFollow(userId, limit, offset)`** — Cypher query:
   1. Friend-of-friend (users followed by people you follow), ordered by common followers count
   2. Users whose posts you've liked (exclude already-followed + self)
+  3. Combined score = commonFollowers + likedPostsScore
 
-- [ ] **Debug / inspect** — run queries directly against Neo4j (via Neo4j Browser at `http://localhost:7474`) with manual parameters to verify results.
+- [x] **Debug / inspect** — run queries directly against Neo4j (via Neo4j Browser at `http://localhost:7474`) with manual parameters to verify results.
 
 - [ ] **Unit test queries** — write a test that seeds 3 users, 2 posts, 1 follow, 1 like, and asserts `recommendedPosts` returns the expected post with the right score.
 
@@ -209,9 +210,9 @@ Wire the queries through GraphQL (social subgraph) → Apollo Router → gateway
 - [x] **Add GraphQL query in social subgraph** — `recommendedPosts(userId: Int!, limit: Int, offset: Int): RecommendedPostsOutput`.
 - [x] **Define output types** — `RecommendedPost { postId: Int!, score: Float! }`, `RecommendedPostList { items: [RecommendedPost!]! }`.
 - [x] **Regenerate schema** — updated `social.graphql`, composed supergraph, generated genql client.
-- [x] **Add gateway REST endpoint** — `GET /recommendations` (authenticated, uses JWT userId).
-- [ ] **Add Redis caching** — cache per-user results with 5-minute TTL. Bust cache on new like/follow events.
-- [ ] **Add gateway REST endpoint** — `GET /recommendations/users` for `whoToFollow` (once implemented).
+- [x] **Add gateway REST endpoint** — `GET /recommendations/posts` (authenticated, uses JWT userId).
+- [x] **Add Redis caching** — cache per-user results with 60s TTL.
+- [x] **Add gateway REST endpoint** — `GET /recommendations/users` for `whoToFollow`.
 
 **Verify:** Hit `GET /recommendations/posts?userId=1` → get back scored post list. Hit `GET /recommendations/users?userId=1` → get back suggested users.
 

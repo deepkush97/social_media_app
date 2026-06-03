@@ -9,6 +9,8 @@ import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface'
 import { IFollowUnfollow } from '@app/shared/interfaces/social/follow-unfollow.interface';
 import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-following-count.interface';
 import { IRecommendedPost } from '@app/shared/interfaces/social/recommended-post.interface';
+import { IWhoToFollowUser } from '@app/shared/interfaces/social/who-to-follow-user.interface';
+import { createPaginatedResponse } from '@app/shared/utils/create-paginated-response';
 
 import { LikeInput } from './social/like.input';
 import { SocialService } from './social/social.service';
@@ -104,17 +106,39 @@ export class AppService {
       const limit = take;
       const offset = (page - 1) * take;
       const { items, total } = await this.socialService.recommendedPosts(userId, limit, offset);
-      const lastPage = total ? Math.max(0, Math.ceil(total / take) - 1) : 0;
 
       return new AppResponse({
         code: AppCodes.OPERATION_SUCCESS,
-        data: {
-          items,
-          meta: { total, page, lastPage, take },
-        },
+        data: createPaginatedResponse(items, total, page, take),
       });
     } catch (error) {
       this.logger.error('Error while recommendedPosts operation', {
+        context: this.constructor.name,
+        error,
+      });
+
+      return new AppResponse({
+        code: AppCodes.INTERNAL_ERROR,
+      });
+    }
+  }
+
+  async whoToFollow(
+    userId: number,
+    page = 1,
+    take = 10,
+  ): Promise<IAppResponse<IPaginatedData<IWhoToFollowUser>>> {
+    try {
+      const limit = take;
+      const offset = (page - 1) * take;
+      const { items, total } = await this.socialService.whoToFollow(userId, limit, offset);
+
+      return new AppResponse({
+        code: AppCodes.OPERATION_SUCCESS,
+        data: createPaginatedResponse(items, total, page, take),
+      });
+    } catch (error) {
+      this.logger.error('Error while whoToFollow operation', {
         context: this.constructor.name,
         error,
       });

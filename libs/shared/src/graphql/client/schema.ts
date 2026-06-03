@@ -124,6 +124,7 @@ export interface Query {
     postLikeCount: NumberOutputDto
     hasUserLikedPost: BooleanOutputDto
     recommendedPosts: RecommendedPostOutputDto
+    whoToFollow: WhoToFollowOutputDto
     __typename: 'Query'
 }
 
@@ -241,6 +242,26 @@ export interface UserOutputDto {
     data: (UserOutput | null)
     code: AppCodes
     __typename: 'UserOutputDto'
+}
+
+export interface WhoToFollowOutputDto {
+    data: (WhoToFollowUserDtoData | null)
+    code: AppCodes
+    __typename: 'WhoToFollowOutputDto'
+}
+
+export interface WhoToFollowUserDto {
+    userId: Scalars['Int']
+    commonFollowers: Scalars['Int']
+    likedPostsScore: Scalars['Int']
+    score: Scalars['Float']
+    __typename: 'WhoToFollowUserDto'
+}
+
+export interface WhoToFollowUserDtoData {
+    items: WhoToFollowUserDto[]
+    meta: PaginationMeta
+    __typename: 'WhoToFollowUserDtoData'
 }
 
 export interface BooleanOutputDtoGenqlSelection{
@@ -365,6 +386,7 @@ export interface QueryGenqlSelection{
     postLikeCount?: (NumberOutputDtoGenqlSelection & { __args: {postId: Scalars['Int']} })
     hasUserLikedPost?: (BooleanOutputDtoGenqlSelection & { __args: {userId: Scalars['Int'], postId: Scalars['Int']} })
     recommendedPosts?: (RecommendedPostOutputDtoGenqlSelection & { __args: {input: RecommendedPostsInput} })
+    whoToFollow?: (WhoToFollowOutputDtoGenqlSelection & { __args: {input: WhoToFollowInput} })
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -502,6 +524,31 @@ export interface UserOutputGenqlSelection{
 export interface UserOutputDtoGenqlSelection{
     data?: UserOutputGenqlSelection
     code?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface WhoToFollowInput {take?: Scalars['Int'],page?: Scalars['Int'],userId: Scalars['Int']}
+
+export interface WhoToFollowOutputDtoGenqlSelection{
+    data?: WhoToFollowUserDtoDataGenqlSelection
+    code?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface WhoToFollowUserDtoGenqlSelection{
+    userId?: boolean | number
+    commonFollowers?: boolean | number
+    likedPostsScore?: boolean | number
+    score?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface WhoToFollowUserDtoDataGenqlSelection{
+    items?: WhoToFollowUserDtoGenqlSelection
+    meta?: PaginationMetaGenqlSelection
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -735,6 +782,30 @@ export interface UserOutputDtoGenqlSelection{
     export const isUserOutputDto = (obj?: { __typename?: any } | null): obj is UserOutputDto => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isUserOutputDto"')
       return UserOutputDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const WhoToFollowOutputDto_possibleTypes: string[] = ['WhoToFollowOutputDto']
+    export const isWhoToFollowOutputDto = (obj?: { __typename?: any } | null): obj is WhoToFollowOutputDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isWhoToFollowOutputDto"')
+      return WhoToFollowOutputDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const WhoToFollowUserDto_possibleTypes: string[] = ['WhoToFollowUserDto']
+    export const isWhoToFollowUserDto = (obj?: { __typename?: any } | null): obj is WhoToFollowUserDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isWhoToFollowUserDto"')
+      return WhoToFollowUserDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const WhoToFollowUserDtoData_possibleTypes: string[] = ['WhoToFollowUserDtoData']
+    export const isWhoToFollowUserDtoData = (obj?: { __typename?: any } | null): obj is WhoToFollowUserDtoData => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isWhoToFollowUserDtoData"')
+      return WhoToFollowUserDtoData_possibleTypes.includes(obj.__typename)
     }
     
 

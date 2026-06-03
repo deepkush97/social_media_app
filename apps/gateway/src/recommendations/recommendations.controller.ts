@@ -9,6 +9,7 @@ import { ICurrentUser } from '@app/shared/interfaces/user/users.interface';
 import { PaginationRequest } from '../requests/pagination.request';
 
 import { RecommendedPostListApiResponse } from './responses/recommended-post.response';
+import { WhoToFollowListApiResponse } from './responses/who-to-follow-user.response';
 
 import { RecommendationsService } from './recommendations.service';
 
@@ -26,5 +27,16 @@ export class RecommendationsController {
     @Query() { page, take }: PaginationRequest,
   ): Promise<RecommendedPostListApiResponse> {
     return this.recommendationsService.getRecommendedPosts(id, page, take);
+  }
+
+  @Authenticated()
+  @Get('users')
+  @ApiOperation({ summary: 'get suggested users to follow' })
+  @ApiOkResponse({ type: WhoToFollowListApiResponse })
+  async handleGetWhoToFollow(
+    @CurrentUser() { id }: ICurrentUser,
+    @Query() { page, take }: PaginationRequest,
+  ): Promise<WhoToFollowListApiResponse> {
+    return this.recommendationsService.getWhoToFollow(id, page, take);
   }
 }

@@ -6,6 +6,10 @@ export function createPaginatedResponse<T>(
   page: number,
   take: number,
 ): IPaginatedData<T> {
+  if (total === 0) {
+    return { items, meta: { total: 0, page, lastPage: 0, take } };
+  }
+
   const lastPage = Math.ceil(total / take);
 
   return {

@@ -8,6 +8,7 @@ import { ILike } from '@app/shared/interfaces/like/like.interface';
 import { IFollowUnfollow } from '@app/shared/interfaces/social/follow-unfollow.interface';
 import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-following-count.interface';
 import { IRecommendedPost } from '@app/shared/interfaces/social/recommended-post.interface';
+import { IWhoToFollowUser } from '@app/shared/interfaces/social/who-to-follow-user.interface';
 import { NEO4J_DRIVER } from '@app/shared/providers.constant';
 
 import { LikeEntity } from './like.entity';
@@ -198,6 +199,60 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
 
         const items = itemsResult.records.map((record) => ({
           postId: record.get('postId').toNumber(),
+          score: record.get('score').toNumber(),
+        }));
+
+        const total = countResult.records[0]?.get('total').toNumber() ?? 0;
+
+        return { items, total };
+      });
+
+      return result;
+    } finally {
+      await session.close();
+    }
+  }
+
+  async whoToFollow(
+    userId: number,
+    limit: number,
+    offset = 0,
+  ): Promise<{ items: IWhoToFollowUser[]; total: number }> {
+    const session = this.neo4jDriver.session();
+
+    try {
+      const baseQuery = `
+        CALL {
+          MATCH (me:User {id: $userId})-[:FOLLOWS]->(friend:User)-[:FOLLOWS]->(suggested:User)
+          WHERE NOT (me)-[:FOLLOWS]->(suggested) AND me <> suggested
+          RETURN suggested.id AS userId, count(DISTINCT friend) AS commonFollowers, 0 AS likedPostsScore
+          UNION
+          MATCH (me:User {id: $userId})-[:LIKED]->(post:Post)<-[:CREATED]-(author:User)
+          WHERE NOT (me)-[:FOLLOWS]->(author) AND me <> author
+          RETURN author.id AS userId, 0 AS commonFollowers, count(DISTINCT post) AS likedPostsScore
+        }
+        WITH userId, sum(commonFollowers) AS commonFollowers, sum(likedPostsScore) AS likedPostsScore
+        RETURN userId, commonFollowers, likedPostsScore, (commonFollowers + likedPostsScore) AS score
+        ORDER BY score DESC
+      `;
+
+      const result = await session.executeRead(async (tx) => {
+        const itemsResult = await tx.run(`${baseQuery} SKIP $offset LIMIT $limit`, {
+          userId,
+          limit,
+          offset,
+        });
+
+        const countResult = await tx.run(`${baseQuery} RETURN count(userId) AS total`, {
+          userId,
+          limit,
+          offset,
+        });
+
+        const items = itemsResult.records.map((record) => ({
+          userId: record.get('userId').toNumber(),
+          commonFollowers: record.get('commonFollowers').toNumber(),
+          likedPostsScore: record.get('likedPostsScore').toNumber(),
           score: record.get('score').toNumber(),
         }));
 

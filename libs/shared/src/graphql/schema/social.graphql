@@ -59,6 +59,23 @@ type UserCountsDto {
   code: AppCodes!
 }
 
+type WhoToFollowUserDto {
+  userId: Int!
+  commonFollowers: Int!
+  likedPostsScore: Int!
+  score: Float!
+}
+
+type WhoToFollowOutputDto {
+  data: WhoToFollowUserDtoData
+  code: AppCodes!
+}
+
+type WhoToFollowUserDtoData {
+  items: [WhoToFollowUserDto!]!
+  meta: PaginationMeta!
+}
+
 type LikeDto {
   id: Int!
   userId: Int!
@@ -82,9 +99,16 @@ type Query {
   postLikeCount(postId: Int!): NumberOutputDto!
   hasUserLikedPost(userId: Int!, postId: Int!): BooleanOutputDto!
   recommendedPosts(input: RecommendedPostsInput!): RecommendedPostOutputDto!
+  whoToFollow(input: WhoToFollowInput!): WhoToFollowOutputDto!
 }
 
 input RecommendedPostsInput {
+  take: Int! = 10
+  page: Int! = 1
+  userId: Int!
+}
+
+input WhoToFollowInput {
   take: Int! = 10
   page: Int! = 1
   userId: Int!
