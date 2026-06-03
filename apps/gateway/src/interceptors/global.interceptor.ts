@@ -55,7 +55,7 @@ export class GlobalInterceptor implements NestInterceptor {
             context: GlobalInterceptor.name,
           });
         }
-        const code = res?.code || AppCodes.INTERNAL_ERROR;
+        const code = res?.code ?? AppCodes.INTERNAL_ERROR;
         const status = appCodeToStatusMap[code] ?? 500;
 
         response.status(status);
