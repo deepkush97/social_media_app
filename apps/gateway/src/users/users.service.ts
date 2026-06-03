@@ -132,10 +132,20 @@ export class UsersService {
       ),
       this.cacheService
         .delAll(RedisFormatter.postRecommendationPattern(followerId))
-        .catch(() => undefined),
+        .catch((error) =>
+          this.logger.error('Error while removing post recommendation', {
+            error,
+            context: this.constructor.name,
+          }),
+        ),
       this.cacheService
         .delAll(RedisFormatter.userRecommendationPattern(followerId))
-        .catch(() => undefined),
+        .catch((error) =>
+          this.logger.error('Error while removing user recommendation', {
+            error,
+            context: this.constructor.name,
+          }),
+        ),
     ]);
 
     return new AppResponse({
