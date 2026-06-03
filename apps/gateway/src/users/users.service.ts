@@ -203,7 +203,7 @@ export class UsersService {
         data: id,
       });
       return new AppResponse({
-        code: AppCodes.INVALID_CREDENTIALS,
+        code: AppCodes.BAD_REQUEST,
       });
     }
 
