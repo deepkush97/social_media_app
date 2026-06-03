@@ -78,23 +78,55 @@ export class AppService {
   }
 
   async likePost(input: LikeInput): Promise<IAppResponse<ILike>> {
-    const data = await this.socialService.like(input);
-    return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data });
+    try {
+      const data = await this.socialService.like(input);
+      return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data });
+    } catch (error) {
+      this.logger.error('Error while likePost operation', {
+        context: this.constructor.name,
+        error,
+      });
+      return new AppResponse({ code: AppCodes.INTERNAL_ERROR });
+    }
   }
 
   async unlikePost(input: LikeInput): Promise<IAppResponse<boolean>> {
-    const data = await this.socialService.unlike(input);
-    return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data });
+    try {
+      const data = await this.socialService.unlike(input);
+      return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data });
+    } catch (error) {
+      this.logger.error('Error while unlikePost operation', {
+        context: this.constructor.name,
+        error,
+      });
+      return new AppResponse({ code: AppCodes.INTERNAL_ERROR });
+    }
   }
 
   async postLikeCount(postId: number): Promise<IAppResponse<number>> {
-    const data = await this.socialService.likeCount(postId);
-    return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data });
+    try {
+      const data = await this.socialService.likeCount(postId);
+      return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data });
+    } catch (error) {
+      this.logger.error('Error while postLikeCount operation', {
+        context: this.constructor.name,
+        error,
+      });
+      return new AppResponse({ code: AppCodes.INTERNAL_ERROR });
+    }
   }
 
   async hasUserLikedPost(userId: number, postId: number): Promise<IAppResponse<boolean>> {
-    const liked = await this.socialService.hasLiked(userId, postId);
-    return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data: liked });
+    try {
+      const liked = await this.socialService.hasLiked(userId, postId);
+      return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data: liked });
+    } catch (error) {
+      this.logger.error('Error while hasUserLikedPost operation', {
+        context: this.constructor.name,
+        error,
+      });
+      return new AppResponse({ code: AppCodes.INTERNAL_ERROR });
+    }
   }
 
   async postRecommendation(
