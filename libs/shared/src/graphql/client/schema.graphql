@@ -60,9 +60,17 @@ type FollowerFollowingCountDto {
   followings: Int!
 }
 
+enum FollowSource {
+  search
+  suggested
+  profile
+  feed
+}
+
 input FollowUnfollowInput {
   followerId: Int!
   followingId: Int!
+  source: FollowSource
 }
 
 scalar join__FieldSet
@@ -147,6 +155,7 @@ type PostOutput {
   title: String!
   content: String!
   image: String
+  tags: [String!]!
   userId: Int!
   status: PostStatusEnum!
   createdAt: DateTime!
@@ -164,9 +173,9 @@ type PostOutputDto {
 }
 
 input PostsPaginationInput {
-  userId: Int!
   take: Int! = 10
-  page: Int! = 0
+  page: Int! = 1
+  userId: Int!
   status: PostStatusEnum! = ACTIVE
 }
 
@@ -186,6 +195,29 @@ type Query {
   userCounts(id: Int!): UserCountsDto!
   postLikeCount(postId: Int!): NumberOutputDto!
   hasUserLikedPost(userId: Int!, postId: Int!): BooleanOutputDto!
+  recommendedPosts(input: RecommendedPostsInput!): RecommendedPostOutputDto!
+  whoToFollow(input: WhoToFollowInput!): WhoToFollowOutputDto!
+}
+
+type RecommendedPostDto {
+  postId: Int!
+  score: Float!
+}
+
+type RecommendedPostDtoData {
+  items: [RecommendedPostDto!]!
+  meta: PaginationMeta!
+}
+
+type RecommendedPostOutputDto {
+  data: RecommendedPostDtoData
+  code: AppCodes!
+}
+
+input RecommendedPostsInput {
+  take: Int! = 10
+  page: Int! = 1
+  userId: Int!
 }
 
 input SearchInput {
@@ -276,4 +308,27 @@ type UserOutput {
 type UserOutputDto {
   data: UserOutput
   code: AppCodes!
+}
+
+input WhoToFollowInput {
+  take: Int! = 10
+  page: Int! = 1
+  userId: Int!
+}
+
+type WhoToFollowOutputDto {
+  data: WhoToFollowUserDtoData
+  code: AppCodes!
+}
+
+type WhoToFollowUserDto {
+  userId: Int!
+  commonFollowers: Int!
+  likedPostsScore: Int!
+  score: Float!
+}
+
+type WhoToFollowUserDtoData {
+  items: [WhoToFollowUserDto!]!
+  meta: PaginationMeta!
 }

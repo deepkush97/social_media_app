@@ -21,6 +21,9 @@ export class Post implements IPost {
   @Column({ length: 140 })
   content: string;
 
+  @Column('json')
+  tags: string[];
+
   @Column({ nullable: true, type: 'varchar', length: 255 })
   image?: string;
 

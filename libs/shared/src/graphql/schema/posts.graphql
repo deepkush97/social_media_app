@@ -34,6 +34,7 @@ type PostOutput {
   title: String!
   content: String!
   image: String
+  tags: [String!]!
   userId: Int!
   status: PostStatusEnum!
   createdAt: DateTime!
@@ -71,9 +72,9 @@ type Query {
 }
 
 input PostsPaginationInput {
-  userId: Int!
   take: Int! = 10
-  page: Int! = 0
+  page: Int! = 1
+  userId: Int!
   status: PostStatusEnum! = ACTIVE
 }
 

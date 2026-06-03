@@ -1,26 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { Type } from 'class-transformer';
-import { IsEnum, IsInt, IsOptional, Min } from 'class-validator';
+import { IsEnum, IsOptional } from 'class-validator';
 
 import { PostStatusEnum } from '@app/shared/enums/post-status.enum';
 
-export class FindPostsRequest {
-  @ApiProperty({ description: 'page' })
-  @IsOptional()
-  @Type(() => Number)
-  @IsInt()
-  @Min(1)
-  page?: number = 1;
+import { PaginationRequest } from '../../requests/pagination.request';
 
-  @ApiProperty({ description: 'take' })
-  @IsOptional()
-  @Type(() => Number)
-  @IsInt()
-  @Min(1)
-  take?: number = 10;
-
-  @ApiProperty({ description: 'status', enum: PostStatusEnum })
+export class FindPostsRequest extends PaginationRequest {
+  @ApiProperty({ description: 'status', enum: PostStatusEnum, required: false })
   @IsOptional()
   @IsEnum(PostStatusEnum)
   status?: PostStatusEnum = PostStatusEnum.ACTIVE;

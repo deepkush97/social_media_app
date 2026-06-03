@@ -6,8 +6,6 @@ import { PostCreatedEventPayload } from '@app/shared/events/post-created.event';
 import { UserCreateEventPayload } from '@app/shared/events/user-created.event';
 import { EventHandler } from '@app/shared/nats/event-handler.decorator';
 
-import { extractTags } from './utils/extract-tags';
-
 import { SearchService } from './search.service';
 
 @Injectable()
@@ -20,11 +18,10 @@ export class SearchSubscriberService {
   @EventHandler(NatsEvents.POST_CREATED)
   async handlePostCreated(data: PostCreatedEventPayload): Promise<void> {
     try {
-      const tags = extractTags(data.content);
-      await this.searchService.indexPost({ ...data, tags });
+      await this.searchService.indexPost(data);
 
-      if (tags.length > 0) {
-        await this.searchService.bulkIndexTags(tags);
+      if (data.tags.length > 0) {
+        await this.searchService.bulkIndexTags(data.tags);
       }
 
       this.logger.info(`Indexed post ${data.id}`, {

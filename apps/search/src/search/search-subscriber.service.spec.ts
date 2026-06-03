@@ -1,11 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AppLoggerService } from '@app/shared/app-logger/app-logger.service';
+import { PostCreatedEventPayload } from '@app/shared/events/post-created.event';
 import { createMockLogger, MockLogger } from '@app/shared/test-utils/logger.mock';
 import {
   createMockSearchService,
   MockSearchService,
 } from '@app/shared/test-utils/search-service.mock';
+import { extractTags } from '@app/shared/utils/extract-tags';
 
 import { SearchService } from './search.service';
 import { SearchSubscriberService } from './search-subscriber.service';
@@ -14,19 +16,18 @@ vi.mock('./utils/extract-tags', () => ({
   extractTags: vi.fn(),
 }));
 
-import { extractTags } from './utils/extract-tags';
-
 describe('SearchSubscriberService', () => {
   let service: SearchSubscriberService;
   let mockSearch: MockSearchService;
   let mockLogger: MockLogger;
 
-  const postData = {
+  const postData: PostCreatedEventPayload = {
     id: 1,
     title: 'Test',
     content: 'Hello #world',
     userId: 42,
     createdAt: new Date(),
+    tags: ['world'],
   };
 
   const userData = { id: 1, name: 'Alice', email: 'alice@test.com' };

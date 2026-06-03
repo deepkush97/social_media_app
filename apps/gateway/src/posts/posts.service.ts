@@ -21,8 +21,8 @@ export class PostsService {
     private readonly eventBusClient: EventBusClient,
   ) {}
 
-  private createPostCacheKey(userId: number, postId: number): string {
-    return `post:${userId}:${postId}`;
+  private createPostCacheKey(postId: number): string {
+    return `post:${postId}`;
   }
 
   private postListCacheKey(
@@ -49,6 +49,7 @@ export class PostsService {
           content: 1,
           image: 1,
           status: 1,
+          tags: 1,
           title: 1,
           updatedAt: 1,
         },
@@ -64,7 +65,7 @@ export class PostsService {
     };
 
     await this.cacheService.set(
-      this.createPostCacheKey(userId, postData.id),
+      this.createPostCacheKey(postData.id),
       postData,
       CACHE_TTL_IN_SECONDS,
     );
@@ -77,6 +78,7 @@ export class PostsService {
         title: postData.title,
         userId,
         createdAt: postData.createdAt,
+        tags: postData.tags,
       }),
       this.constructor.name,
     );
@@ -97,7 +99,7 @@ export class PostsService {
       return new AppResponse({ code: AppCodes[createPostResult.code] });
     }
 
-    await this.cacheService.del(this.createPostCacheKey(userId, id));
+    await this.cacheService.del(this.createPostCacheKey(id));
     await this.cacheService.delAll(this.deletePostListForUserKey(userId), 3);
 
     return new AppResponse({
@@ -105,8 +107,8 @@ export class PostsService {
     });
   }
 
-  async findPostById(userId: number, id: number): Promise<IAppResponse<IPost>> {
-    const cacheKey = this.createPostCacheKey(userId, id);
+  async findPostById(id: number): Promise<IAppResponse<IPost>> {
+    const cacheKey = this.createPostCacheKey(id);
     const fromCache = await this.cacheService.get<IPost>(cacheKey);
 
     if (fromCache) {

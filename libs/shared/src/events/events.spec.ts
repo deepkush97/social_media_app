@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { NatsEvents } from '../enums/nats-events.enum';
 
 import { BaseEvent } from './base-event.abstract';
-import { PostCreatedEvent } from './post-created.event';
+import { PostCreatedEvent, PostCreatedEventPayload } from './post-created.event';
 import { UserCreatedEvent } from './user-created.event';
 
 describe('BaseEvent', () => {
@@ -28,18 +28,20 @@ describe('PostCreatedEvent', () => {
       content: 'Content',
       userId: 42,
       createdAt: new Date(),
+      tags: ['content'],
     });
 
     expect(event.event).toBe(NatsEvents.POST_CREATED);
   });
 
   it('stores the post data', () => {
-    const data = {
+    const data: PostCreatedEventPayload = {
       id: 1,
       title: 'My Post',
       content: 'Post content',
       userId: 42,
       createdAt: new Date(),
+      tags: ['content'],
     };
     const event = new PostCreatedEvent(data);
 

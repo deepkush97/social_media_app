@@ -27,6 +27,28 @@ type NumberOutputDto {
   code: AppCodes!
 }
 
+type PaginationMeta {
+  total: Int!
+  page: Int!
+  lastPage: Int!
+  take: Int!
+}
+
+type RecommendedPostDto {
+  postId: Int!
+  score: Float!
+}
+
+type RecommendedPostOutputDto {
+  data: RecommendedPostDtoData
+  code: AppCodes!
+}
+
+type RecommendedPostDtoData {
+  items: [RecommendedPostDto!]!
+  meta: PaginationMeta!
+}
+
 type FollowerFollowingCountDto {
   followers: Int!
   followings: Int!
@@ -35,6 +57,23 @@ type FollowerFollowingCountDto {
 type UserCountsDto {
   data: FollowerFollowingCountDto
   code: AppCodes!
+}
+
+type WhoToFollowUserDto {
+  userId: Int!
+  commonFollowers: Int!
+  likedPostsScore: Int!
+  score: Float!
+}
+
+type WhoToFollowOutputDto {
+  data: WhoToFollowUserDtoData
+  code: AppCodes!
+}
+
+type WhoToFollowUserDtoData {
+  items: [WhoToFollowUserDto!]!
+  meta: PaginationMeta!
 }
 
 type LikeDto {
@@ -59,6 +98,20 @@ type Query {
   userCounts(id: Int!): UserCountsDto!
   postLikeCount(postId: Int!): NumberOutputDto!
   hasUserLikedPost(userId: Int!, postId: Int!): BooleanOutputDto!
+  recommendedPosts(input: RecommendedPostsInput!): RecommendedPostOutputDto!
+  whoToFollow(input: WhoToFollowInput!): WhoToFollowOutputDto!
+}
+
+input RecommendedPostsInput {
+  take: Int! = 10
+  page: Int! = 1
+  userId: Int!
+}
+
+input WhoToFollowInput {
+  take: Int! = 10
+  page: Int! = 1
+  userId: Int!
 }
 
 type Mutation {
@@ -71,6 +124,14 @@ type Mutation {
 input FollowUnfollowInput {
   followerId: Int!
   followingId: Int!
+  source: FollowSource
+}
+
+enum FollowSource {
+  search
+  suggested
+  profile
+  feed
 }
 
 input LikeInput {

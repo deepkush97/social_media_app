@@ -6,11 +6,12 @@ export default {
         5,
         6,
         8,
-        11,
+        10,
         12,
-        16,
+        13,
         17,
-        27,
+        18,
+        28,
         31
     ],
     "types": {
@@ -73,12 +74,16 @@ export default {
                 5
             ]
         },
+        "FollowSource": {},
         "FollowUnfollowInput": {
             "followerId": [
                 6
             ],
             "followingId": [
                 6
+            ],
+            "source": [
+                10
             ],
             "__typename": [
                 5
@@ -119,7 +124,7 @@ export default {
         },
         "LikeOutputDto": {
             "data": [
-                13
+                14
             ],
             "code": [
                 0
@@ -143,7 +148,7 @@ export default {
         },
         "Mutation": {
             "createUser": [
-                44,
+                49,
                 {
                     "input": [
                         7,
@@ -152,7 +157,7 @@ export default {
                 }
             ],
             "createSession": [
-                41,
+                46,
                 {
                     "id": [
                         6,
@@ -161,10 +166,10 @@ export default {
                 }
             ],
             "loginUser": [
-                44,
+                49,
                 {
                     "input": [
-                        18,
+                        19,
                         "LoginUserInput!"
                     ]
                 }
@@ -188,7 +193,7 @@ export default {
                 }
             ],
             "createPost": [
-                25,
+                26,
                 {
                     "input": [
                         4,
@@ -206,28 +211,28 @@ export default {
                 }
             ],
             "follow": [
-                42,
+                47,
                 {
                     "input": [
-                        10,
+                        11,
                         "FollowUnfollowInput!"
                     ]
                 }
             ],
             "unfollow": [
-                42,
+                47,
                 {
                     "input": [
-                        10,
+                        11,
                         "FollowUnfollowInput!"
                     ]
                 }
             ],
             "likePost": [
-                15,
+                16,
                 {
                     "input": [
-                        14,
+                        15,
                         "LikeInput!"
                     ]
                 }
@@ -236,7 +241,7 @@ export default {
                 2,
                 {
                     "input": [
-                        14,
+                        15,
                         "LikeInput!"
                     ]
                 }
@@ -275,7 +280,7 @@ export default {
         },
         "PostListOutputDto": {
             "data": [
-                24
+                25
             ],
             "code": [
                 0
@@ -297,11 +302,14 @@ export default {
             "image": [
                 5
             ],
+            "tags": [
+                5
+            ],
             "userId": [
                 6
             ],
             "status": [
-                27
+                28
             ],
             "createdAt": [
                 8
@@ -315,10 +323,10 @@ export default {
         },
         "PostOutputData": {
             "items": [
-                23
+                24
             ],
             "meta": [
-                21
+                22
             ],
             "__typename": [
                 5
@@ -326,7 +334,7 @@ export default {
         },
         "PostOutputDto": {
             "data": [
-                23
+                24
             ],
             "code": [
                 0
@@ -336,17 +344,17 @@ export default {
             ]
         },
         "PostsPaginationInput": {
-            "userId": [
-                6
-            ],
             "take": [
                 6
             ],
             "page": [
                 6
             ],
+            "userId": [
+                6
+            ],
             "status": [
-                27
+                28
             ],
             "__typename": [
                 5
@@ -355,7 +363,7 @@ export default {
         "PostStatusEnum": {},
         "Query": {
             "findUserById": [
-                44,
+                49,
                 {
                     "id": [
                         6,
@@ -364,7 +372,7 @@ export default {
                 }
             ],
             "findOpenSessionByGuid": [
-                41,
+                46,
                 {
                     "id": [
                         5,
@@ -373,7 +381,7 @@ export default {
                 }
             ],
             "findPostById": [
-                25,
+                26,
                 {
                     "id": [
                         6,
@@ -382,43 +390,43 @@ export default {
                 }
             ],
             "findPostsByUserId": [
-                22,
+                23,
                 {
                     "input": [
-                        26,
+                        27,
                         "PostsPaginationInput!"
                     ]
                 }
             ],
             "searchPosts": [
-                33,
+                38,
                 {
                     "input": [
-                        29,
+                        35,
                         "SearchInput!"
                     ]
                 }
             ],
             "searchUsers": [
-                39,
+                44,
                 {
                     "input": [
-                        29,
+                        35,
                         "SearchInput!"
                     ]
                 }
             ],
             "searchTags": [
-                36,
+                41,
                 {
                     "input": [
-                        29,
+                        35,
                         "SearchInput!"
                     ]
                 }
             ],
             "userCounts": [
-                42,
+                47,
                 {
                     "id": [
                         6,
@@ -427,7 +435,7 @@ export default {
                 }
             ],
             "postLikeCount": [
-                20,
+                21,
                 {
                     "postId": [
                         6,
@@ -447,6 +455,72 @@ export default {
                         "Int!"
                     ]
                 }
+            ],
+            "recommendedPosts": [
+                33,
+                {
+                    "input": [
+                        34,
+                        "RecommendedPostsInput!"
+                    ]
+                }
+            ],
+            "whoToFollow": [
+                51,
+                {
+                    "input": [
+                        50,
+                        "WhoToFollowInput!"
+                    ]
+                }
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "RecommendedPostDto": {
+            "postId": [
+                6
+            ],
+            "score": [
+                31
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "Float": {},
+        "RecommendedPostDtoData": {
+            "items": [
+                30
+            ],
+            "meta": [
+                22
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "RecommendedPostOutputDto": {
+            "data": [
+                32
+            ],
+            "code": [
+                0
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "RecommendedPostsInput": {
+            "take": [
+                6
+            ],
+            "page": [
+                6
+            ],
+            "userId": [
+                6
             ],
             "__typename": [
                 5
@@ -489,13 +563,12 @@ export default {
                 5
             ]
         },
-        "Float": {},
         "SearchPostHitDtoData": {
             "items": [
-                30
+                36
             ],
             "meta": [
-                21
+                22
             ],
             "__typename": [
                 5
@@ -503,7 +576,7 @@ export default {
         },
         "SearchPostOutputDto": {
             "data": [
-                32
+                37
             ],
             "code": [
                 0
@@ -528,10 +601,10 @@ export default {
         },
         "SearchTagHitDtoData": {
             "items": [
-                34
+                39
             ],
             "meta": [
-                21
+                22
             ],
             "__typename": [
                 5
@@ -539,7 +612,7 @@ export default {
         },
         "SearchTagOutputDto": {
             "data": [
-                35
+                40
             ],
             "code": [
                 0
@@ -567,10 +640,10 @@ export default {
         },
         "SearchUserHitDtoData": {
             "items": [
-                37
+                42
             ],
             "meta": [
-                21
+                22
             ],
             "__typename": [
                 5
@@ -578,7 +651,7 @@ export default {
         },
         "SearchUserOutputDto": {
             "data": [
-                38
+                43
             ],
             "code": [
                 0
@@ -612,7 +685,7 @@ export default {
         },
         "SessionOutputDto": {
             "data": [
-                40
+                45
             ],
             "code": [
                 0
@@ -654,10 +727,63 @@ export default {
         },
         "UserOutputDto": {
             "data": [
-                43
+                48
             ],
             "code": [
                 0
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "WhoToFollowInput": {
+            "take": [
+                6
+            ],
+            "page": [
+                6
+            ],
+            "userId": [
+                6
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "WhoToFollowOutputDto": {
+            "data": [
+                53
+            ],
+            "code": [
+                0
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "WhoToFollowUserDto": {
+            "userId": [
+                6
+            ],
+            "commonFollowers": [
+                6
+            ],
+            "likedPostsScore": [
+                6
+            ],
+            "score": [
+                31
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "WhoToFollowUserDtoData": {
+            "items": [
+                52
+            ],
+            "meta": [
+                22
             ],
             "__typename": [
                 5

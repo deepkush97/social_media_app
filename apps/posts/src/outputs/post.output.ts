@@ -19,6 +19,9 @@ export class PostOutput implements IPost {
   @Field({ nullable: true })
   image?: string;
 
+  @Field(() => [String])
+  tags: string[];
+
   @Field(() => Int)
   userId: number;
 

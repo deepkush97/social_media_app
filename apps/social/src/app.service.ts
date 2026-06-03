@@ -5,8 +5,12 @@ import { AppResponse } from '@app/shared/app-response.dto';
 import { AppCodes } from '@app/shared/enums/app-codes.enum';
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
 import { ILike } from '@app/shared/interfaces/like/like.interface';
+import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface';
 import { IFollowUnfollow } from '@app/shared/interfaces/social/follow-unfollow.interface';
 import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-following-count.interface';
+import { IRecommendedPost } from '@app/shared/interfaces/social/recommended-post.interface';
+import { IWhoToFollowUser } from '@app/shared/interfaces/social/who-to-follow-user.interface';
+import { createPaginatedResponse } from '@app/shared/utils/create-paginated-response';
 
 import { LikeInput } from './social/like.input';
 import { SocialService } from './social/social.service';
@@ -91,5 +95,57 @@ export class AppService {
   async hasUserLikedPost(userId: number, postId: number): Promise<IAppResponse<boolean>> {
     const liked = await this.socialService.hasLiked(userId, postId);
     return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data: liked });
+  }
+
+  async recommendedPosts(
+    userId: number,
+    page = 1,
+    take = 10,
+  ): Promise<IAppResponse<IPaginatedData<IRecommendedPost>>> {
+    try {
+      const limit = take;
+      const offset = (page - 1) * take;
+      const { items, total } = await this.socialService.recommendedPosts(userId, limit, offset);
+
+      return new AppResponse({
+        code: AppCodes.OPERATION_SUCCESS,
+        data: createPaginatedResponse(items, total, page, take),
+      });
+    } catch (error) {
+      this.logger.error('Error while recommendedPosts operation', {
+        context: this.constructor.name,
+        error,
+      });
+
+      return new AppResponse({
+        code: AppCodes.INTERNAL_ERROR,
+      });
+    }
+  }
+
+  async whoToFollow(
+    userId: number,
+    page = 1,
+    take = 10,
+  ): Promise<IAppResponse<IPaginatedData<IWhoToFollowUser>>> {
+    try {
+      const limit = take;
+      const offset = (page - 1) * take;
+      const { items, total } = await this.socialService.whoToFollow(userId, limit, offset);
+
+      return new AppResponse({
+        code: AppCodes.OPERATION_SUCCESS,
+        data: createPaginatedResponse(items, total, page, take),
+      });
+    } catch (error) {
+      this.logger.error('Error while whoToFollow operation', {
+        context: this.constructor.name,
+        error,
+      });
+
+      return new AppResponse({
+        code: AppCodes.INTERNAL_ERROR,
+      });
+    }
   }
 }

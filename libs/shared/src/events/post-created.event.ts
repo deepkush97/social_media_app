@@ -5,7 +5,7 @@ import { BaseEvent } from './base-event.abstract';
 
 export type PostCreatedEventPayload = Pick<
   IPost,
-  'content' | 'title' | 'userId' | 'id' | 'createdAt'
+  'content' | 'title' | 'userId' | 'id' | 'createdAt' | 'tags'
 >;
 
 export class PostCreatedEvent implements BaseEvent<PostCreatedEventPayload> {
