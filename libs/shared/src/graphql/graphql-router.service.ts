@@ -36,11 +36,21 @@ export class GraphqlRouterService {
           );
         }
 
+        let result: Record<string, unknown>;
+
         try {
-          return JSON.parse(text);
+          result = JSON.parse(text);
         } catch {
           throw new Error(`GraphQL router returned non-JSON response: ${text}`);
         }
+
+        const errors = result.errors as Array<{ message: string }> | undefined;
+        if (errors && errors.length > 0) {
+          const messages = errors.map((e) => e.message).join('; ');
+          throw new Error(`GraphQL router returned errors: ${messages}`);
+        }
+
+        return result;
       },
     });
   }
