@@ -7,8 +7,8 @@ import { Repository } from 'typeorm';
 import { ILike } from '@app/shared/interfaces/like/like.interface';
 import { IFollowUnfollow } from '@app/shared/interfaces/social/follow-unfollow.interface';
 import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-following-count.interface';
-import { IRecommendedPost } from '@app/shared/interfaces/social/recommended-post.interface';
-import { IWhoToFollowUser } from '@app/shared/interfaces/social/who-to-follow-user.interface';
+import { IPostRecommendationItem } from '@app/shared/interfaces/social/post-recommendation.interface';
+import { IUserRecommendationItem } from '@app/shared/interfaces/social/user-recommendation.interface';
 import { NEO4J_DRIVER } from '@app/shared/providers.constant';
 
 import { LikeEntity } from './like.entity';
@@ -164,11 +164,11 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
     }
   }
 
-  async recommendedPosts(
+  async postRecommendation(
     userId: number,
     limit: number,
     offset = 0,
-  ): Promise<{ items: IRecommendedPost[]; total: number }> {
+  ): Promise<{ items: IPostRecommendationItem[]; total: number }> {
     const session = this.neo4jDriver.session();
 
     try {
@@ -213,11 +213,11 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
     }
   }
 
-  async whoToFollow(
+  async userRecommendation(
     userId: number,
     limit: number,
     offset = 0,
-  ): Promise<{ items: IWhoToFollowUser[]; total: number }> {
+  ): Promise<{ items: IUserRecommendationItem[]; total: number }> {
     const session = this.neo4jDriver.session();
 
     try {

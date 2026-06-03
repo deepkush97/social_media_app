@@ -16,10 +16,10 @@ import {
   PostListOutputDtoGenqlSelection,
   PostOutputDto,
   PostOutputDtoGenqlSelection,
+  PostRecommendationInput,
+  PostRecommendationOutputDto,
+  PostRecommendationOutputDtoGenqlSelection,
   PostsPaginationInput,
-  RecommendedPostOutputDto,
-  RecommendedPostOutputDtoGenqlSelection,
-  RecommendedPostsInput,
   SearchInput,
   SearchPostOutputDto,
   SearchPostOutputDtoGenqlSelection,
@@ -33,9 +33,9 @@ import {
   UserCountsDtoGenqlSelection,
   UserOutputDto,
   UserOutputDtoGenqlSelection,
-  WhoToFollowInput,
-  WhoToFollowOutputDto,
-  WhoToFollowOutputDtoGenqlSelection,
+  UserRecommendationInput,
+  UserRecommendationOutputDto,
+  UserRecommendationOutputDtoGenqlSelection,
 } from './client';
 import { GraphqlRouterService } from './graphql-router.service';
 
@@ -334,31 +334,31 @@ export class GraphqlRouterComposite {
     return result.searchTags;
   }
 
-  public async recommendedPosts(
-    input: RecommendedPostsInput,
-    projection: RecommendedPostOutputDtoGenqlSelection,
-  ): Promise<RecommendedPostOutputDto> {
+  public async postRecommendation(
+    input: PostRecommendationInput,
+    projection: PostRecommendationOutputDtoGenqlSelection,
+  ): Promise<PostRecommendationOutputDto> {
     const result = await this.routerService.client.query({
-      recommendedPosts: {
+      postRecommendation: {
         __args: { input },
         ...projection,
       },
     });
 
-    return result.recommendedPosts;
+    return result.postRecommendation;
   }
 
-  public async whoToFollow(
-    input: WhoToFollowInput,
-    projection: WhoToFollowOutputDtoGenqlSelection,
-  ): Promise<WhoToFollowOutputDto> {
+  public async userRecommendation(
+    input: UserRecommendationInput,
+    projection: UserRecommendationOutputDtoGenqlSelection,
+  ): Promise<UserRecommendationOutputDto> {
     const result = await this.routerService.client.query({
-      whoToFollow: {
+      userRecommendation: {
         __args: { input },
         ...projection,
       },
     });
 
-    return result.whoToFollow;
+    return result.userRecommendation;
   }
 }

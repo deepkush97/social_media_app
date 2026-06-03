@@ -11,8 +11,8 @@ export default {
         13,
         17,
         18,
-        28,
-        31
+        29,
+        33
     ],
     "types": {
         "AppCodes": {},
@@ -309,7 +309,7 @@ export default {
                 6
             ],
             "status": [
-                28
+                33
             ],
             "createdAt": [
                 8
@@ -343,6 +343,54 @@ export default {
                 5
             ]
         },
+        "PostRecommendationInput": {
+            "take": [
+                6
+            ],
+            "page": [
+                6
+            ],
+            "userId": [
+                6
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "PostRecommendationItemDto": {
+            "postId": [
+                6
+            ],
+            "score": [
+                29
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "Float": {},
+        "PostRecommendationItemDtoData": {
+            "items": [
+                28
+            ],
+            "meta": [
+                22
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "PostRecommendationOutputDto": {
+            "data": [
+                30
+            ],
+            "code": [
+                0
+            ],
+            "__typename": [
+                5
+            ]
+        },
         "PostsPaginationInput": {
             "take": [
                 6
@@ -354,7 +402,7 @@ export default {
                 6
             ],
             "status": [
-                28
+                33
             ],
             "__typename": [
                 5
@@ -393,7 +441,7 @@ export default {
                 23,
                 {
                     "input": [
-                        27,
+                        32,
                         "PostsPaginationInput!"
                     ]
                 }
@@ -456,71 +504,23 @@ export default {
                     ]
                 }
             ],
-            "recommendedPosts": [
-                33,
+            "postRecommendation": [
+                31,
                 {
                     "input": [
-                        34,
-                        "RecommendedPostsInput!"
+                        27,
+                        "PostRecommendationInput!"
                     ]
                 }
             ],
-            "whoToFollow": [
-                51,
+            "userRecommendation": [
+                53,
                 {
                     "input": [
                         50,
-                        "WhoToFollowInput!"
+                        "UserRecommendationInput!"
                     ]
                 }
-            ],
-            "__typename": [
-                5
-            ]
-        },
-        "RecommendedPostDto": {
-            "postId": [
-                6
-            ],
-            "score": [
-                31
-            ],
-            "__typename": [
-                5
-            ]
-        },
-        "Float": {},
-        "RecommendedPostDtoData": {
-            "items": [
-                30
-            ],
-            "meta": [
-                22
-            ],
-            "__typename": [
-                5
-            ]
-        },
-        "RecommendedPostOutputDto": {
-            "data": [
-                32
-            ],
-            "code": [
-                0
-            ],
-            "__typename": [
-                5
-            ]
-        },
-        "RecommendedPostsInput": {
-            "take": [
-                6
-            ],
-            "page": [
-                6
-            ],
-            "userId": [
-                6
             ],
             "__typename": [
                 5
@@ -554,7 +554,7 @@ export default {
                 6
             ],
             "score": [
-                31
+                29
             ],
             "tags": [
                 5
@@ -593,7 +593,7 @@ export default {
                 5
             ],
             "score": [
-                31
+                29
             ],
             "__typename": [
                 5
@@ -632,7 +632,7 @@ export default {
                 5
             ],
             "score": [
-                31
+                29
             ],
             "__typename": [
                 5
@@ -736,7 +736,7 @@ export default {
                 5
             ]
         },
-        "WhoToFollowInput": {
+        "UserRecommendationInput": {
             "take": [
                 6
             ],
@@ -750,18 +750,7 @@ export default {
                 5
             ]
         },
-        "WhoToFollowOutputDto": {
-            "data": [
-                53
-            ],
-            "code": [
-                0
-            ],
-            "__typename": [
-                5
-            ]
-        },
-        "WhoToFollowUserDto": {
+        "UserRecommendationItemDto": {
             "userId": [
                 6
             ],
@@ -772,18 +761,29 @@ export default {
                 6
             ],
             "score": [
-                31
+                29
             ],
             "__typename": [
                 5
             ]
         },
-        "WhoToFollowUserDtoData": {
+        "UserRecommendationItemDtoData": {
             "items": [
-                52
+                51
             ],
             "meta": [
                 22
+            ],
+            "__typename": [
+                5
+            ]
+        },
+        "UserRecommendationOutputDto": {
+            "data": [
+                52
+            ],
+            "code": [
+                0
             ],
             "__typename": [
                 5

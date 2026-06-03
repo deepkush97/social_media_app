@@ -2,13 +2,13 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { Exclude, Expose } from 'class-transformer';
 
-import { IWhoToFollowUser } from '@app/shared/interfaces/social/who-to-follow-user.interface';
+import { IUserRecommendationItem } from '@app/shared/interfaces/social/user-recommendation.interface';
 
 import { ApiResponse } from '../../responses/app-combined.response';
 import { AppPaginatedDataResponse } from '../../responses/pagination.response';
 
 @Exclude()
-export class WhoToFollowUserItem implements IWhoToFollowUser {
+export class UserRecommendationItem implements IUserRecommendationItem {
   @Expose()
   @ApiProperty({ description: 'User id' })
   userId: number;
@@ -26,6 +26,6 @@ export class WhoToFollowUserItem implements IWhoToFollowUser {
   score: number;
 }
 
-export class WhoToFollowUserList extends AppPaginatedDataResponse(WhoToFollowUserItem) {}
+export class UserRecommendationList extends AppPaginatedDataResponse(UserRecommendationItem) {}
 
-export class WhoToFollowListApiResponse extends ApiResponse(WhoToFollowUserList) {}
+export class UserRecommendationListApiResponse extends ApiResponse(UserRecommendationList) {}

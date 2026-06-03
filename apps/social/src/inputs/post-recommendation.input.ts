@@ -5,7 +5,7 @@ import { IsNumber, IsPositive } from 'class-validator';
 import { PaginationInput } from '@app/shared/inputs/pagination.input';
 
 @InputType()
-export class WhoToFollowInput extends PaginationInput {
+export class PostRecommendationInput extends PaginationInput {
   @Field(() => Int)
   @IsNumber()
   @IsPositive()

@@ -2,13 +2,13 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { Exclude, Expose } from 'class-transformer';
 
-import { IRecommendedPost } from '@app/shared/interfaces/social/recommended-post.interface';
+import { IPostRecommendationItem } from '@app/shared/interfaces/social/post-recommendation.interface';
 
 import { ApiResponse } from '../../responses/app-combined.response';
 import { AppPaginatedDataResponse } from '../../responses/pagination.response';
 
 @Exclude()
-export class RecommendedPostItem implements IRecommendedPost {
+export class PostRecommendationItem implements IPostRecommendationItem {
   @Expose()
   @ApiProperty({ description: 'Post id' })
   postId: number;
@@ -18,6 +18,6 @@ export class RecommendedPostItem implements IRecommendedPost {
   score: number;
 }
 
-export class RecommendedPostList extends AppPaginatedDataResponse(RecommendedPostItem) {}
+export class PostRecommendationList extends AppPaginatedDataResponse(PostRecommendationItem) {}
 
-export class RecommendedPostListApiResponse extends ApiResponse(RecommendedPostList) {}
+export class PostRecommendationListApiResponse extends ApiResponse(PostRecommendationList) {}

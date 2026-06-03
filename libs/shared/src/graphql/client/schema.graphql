@@ -172,6 +172,27 @@ type PostOutputDto {
   code: AppCodes!
 }
 
+input PostRecommendationInput {
+  take: Int! = 10
+  page: Int! = 1
+  userId: Int!
+}
+
+type PostRecommendationItemDto {
+  postId: Int!
+  score: Float!
+}
+
+type PostRecommendationItemDtoData {
+  items: [PostRecommendationItemDto!]!
+  meta: PaginationMeta!
+}
+
+type PostRecommendationOutputDto {
+  data: PostRecommendationItemDtoData
+  code: AppCodes!
+}
+
 input PostsPaginationInput {
   take: Int! = 10
   page: Int! = 1
@@ -195,29 +216,8 @@ type Query {
   userCounts(id: Int!): UserCountsDto!
   postLikeCount(postId: Int!): NumberOutputDto!
   hasUserLikedPost(userId: Int!, postId: Int!): BooleanOutputDto!
-  recommendedPosts(input: RecommendedPostsInput!): RecommendedPostOutputDto!
-  whoToFollow(input: WhoToFollowInput!): WhoToFollowOutputDto!
-}
-
-type RecommendedPostDto {
-  postId: Int!
-  score: Float!
-}
-
-type RecommendedPostDtoData {
-  items: [RecommendedPostDto!]!
-  meta: PaginationMeta!
-}
-
-type RecommendedPostOutputDto {
-  data: RecommendedPostDtoData
-  code: AppCodes!
-}
-
-input RecommendedPostsInput {
-  take: Int! = 10
-  page: Int! = 1
-  userId: Int!
+  postRecommendation(input: PostRecommendationInput!): PostRecommendationOutputDto!
+  userRecommendation(input: UserRecommendationInput!): UserRecommendationOutputDto!
 }
 
 input SearchInput {
@@ -310,25 +310,25 @@ type UserOutputDto {
   code: AppCodes!
 }
 
-input WhoToFollowInput {
+input UserRecommendationInput {
   take: Int! = 10
   page: Int! = 1
   userId: Int!
 }
 
-type WhoToFollowOutputDto {
-  data: WhoToFollowUserDtoData
-  code: AppCodes!
-}
-
-type WhoToFollowUserDto {
+type UserRecommendationItemDto {
   userId: Int!
   commonFollowers: Int!
   likedPostsScore: Int!
   score: Float!
 }
 
-type WhoToFollowUserDtoData {
-  items: [WhoToFollowUserDto!]!
+type UserRecommendationItemDtoData {
+  items: [UserRecommendationItemDto!]!
   meta: PaginationMeta!
+}
+
+type UserRecommendationOutputDto {
+  data: UserRecommendationItemDtoData
+  code: AppCodes!
 }

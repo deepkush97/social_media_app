@@ -8,8 +8,8 @@ import { ICurrentUser } from '@app/shared/interfaces/user/users.interface';
 
 import { PaginationRequest } from '../requests/pagination.request';
 
-import { RecommendedPostListApiResponse } from './responses/recommended-post.response';
-import { WhoToFollowListApiResponse } from './responses/who-to-follow-user.response';
+import { PostRecommendationListApiResponse } from './responses/post-recommendation.response';
+import { UserRecommendationListApiResponse } from './responses/user-recommendation.response';
 
 import { RecommendationsService } from './recommendations.service';
 
@@ -21,22 +21,22 @@ export class RecommendationsController {
   @Authenticated()
   @Get('posts')
   @ApiOperation({ summary: 'get recommended posts for user' })
-  @ApiOkResponse({ type: RecommendedPostListApiResponse })
+  @ApiOkResponse({ type: PostRecommendationListApiResponse })
   async handleGetRecommendedPosts(
     @CurrentUser() { id }: ICurrentUser,
     @Query() { page, take }: PaginationRequest,
-  ): Promise<RecommendedPostListApiResponse> {
+  ): Promise<PostRecommendationListApiResponse> {
     return this.recommendationsService.getRecommendedPosts(id, page, take);
   }
 
   @Authenticated()
   @Get('users')
   @ApiOperation({ summary: 'get suggested users to follow' })
-  @ApiOkResponse({ type: WhoToFollowListApiResponse })
-  async handleGetWhoToFollow(
+  @ApiOkResponse({ type: UserRecommendationListApiResponse })
+  async handleGetRecommendedUsers(
     @CurrentUser() { id }: ICurrentUser,
     @Query() { page, take }: PaginationRequest,
-  ): Promise<WhoToFollowListApiResponse> {
-    return this.recommendationsService.getWhoToFollow(id, page, take);
+  ): Promise<UserRecommendationListApiResponse> {
+    return this.recommendationsService.getRecommendedUsers(id, page, take);
   }
 }

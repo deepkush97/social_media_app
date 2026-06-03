@@ -110,6 +110,24 @@ export interface PostOutputDto {
     __typename: 'PostOutputDto'
 }
 
+export interface PostRecommendationItemDto {
+    postId: Scalars['Int']
+    score: Scalars['Float']
+    __typename: 'PostRecommendationItemDto'
+}
+
+export interface PostRecommendationItemDtoData {
+    items: PostRecommendationItemDto[]
+    meta: PaginationMeta
+    __typename: 'PostRecommendationItemDtoData'
+}
+
+export interface PostRecommendationOutputDto {
+    data: (PostRecommendationItemDtoData | null)
+    code: AppCodes
+    __typename: 'PostRecommendationOutputDto'
+}
+
 export type PostStatusEnum = 'ACTIVE' | 'ARCHIVED'
 
 export interface Query {
@@ -123,27 +141,9 @@ export interface Query {
     userCounts: UserCountsDto
     postLikeCount: NumberOutputDto
     hasUserLikedPost: BooleanOutputDto
-    recommendedPosts: RecommendedPostOutputDto
-    whoToFollow: WhoToFollowOutputDto
+    postRecommendation: PostRecommendationOutputDto
+    userRecommendation: UserRecommendationOutputDto
     __typename: 'Query'
-}
-
-export interface RecommendedPostDto {
-    postId: Scalars['Int']
-    score: Scalars['Float']
-    __typename: 'RecommendedPostDto'
-}
-
-export interface RecommendedPostDtoData {
-    items: RecommendedPostDto[]
-    meta: PaginationMeta
-    __typename: 'RecommendedPostDtoData'
-}
-
-export interface RecommendedPostOutputDto {
-    data: (RecommendedPostDtoData | null)
-    code: AppCodes
-    __typename: 'RecommendedPostOutputDto'
 }
 
 export interface SearchPostHitDto {
@@ -244,24 +244,24 @@ export interface UserOutputDto {
     __typename: 'UserOutputDto'
 }
 
-export interface WhoToFollowOutputDto {
-    data: (WhoToFollowUserDtoData | null)
-    code: AppCodes
-    __typename: 'WhoToFollowOutputDto'
-}
-
-export interface WhoToFollowUserDto {
+export interface UserRecommendationItemDto {
     userId: Scalars['Int']
     commonFollowers: Scalars['Int']
     likedPostsScore: Scalars['Int']
     score: Scalars['Float']
-    __typename: 'WhoToFollowUserDto'
+    __typename: 'UserRecommendationItemDto'
 }
 
-export interface WhoToFollowUserDtoData {
-    items: WhoToFollowUserDto[]
+export interface UserRecommendationItemDtoData {
+    items: UserRecommendationItemDto[]
     meta: PaginationMeta
-    __typename: 'WhoToFollowUserDtoData'
+    __typename: 'UserRecommendationItemDtoData'
+}
+
+export interface UserRecommendationOutputDto {
+    data: (UserRecommendationItemDtoData | null)
+    code: AppCodes
+    __typename: 'UserRecommendationOutputDto'
 }
 
 export interface BooleanOutputDtoGenqlSelection{
@@ -372,6 +372,29 @@ export interface PostOutputDtoGenqlSelection{
     __scalar?: boolean | number
 }
 
+export interface PostRecommendationInput {take?: Scalars['Int'],page?: Scalars['Int'],userId: Scalars['Int']}
+
+export interface PostRecommendationItemDtoGenqlSelection{
+    postId?: boolean | number
+    score?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface PostRecommendationItemDtoDataGenqlSelection{
+    items?: PostRecommendationItemDtoGenqlSelection
+    meta?: PaginationMetaGenqlSelection
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface PostRecommendationOutputDtoGenqlSelection{
+    data?: PostRecommendationItemDtoDataGenqlSelection
+    code?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
 export interface PostsPaginationInput {take?: Scalars['Int'],page?: Scalars['Int'],userId: Scalars['Int'],status?: PostStatusEnum}
 
 export interface QueryGenqlSelection{
@@ -385,34 +408,11 @@ export interface QueryGenqlSelection{
     userCounts?: (UserCountsDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     postLikeCount?: (NumberOutputDtoGenqlSelection & { __args: {postId: Scalars['Int']} })
     hasUserLikedPost?: (BooleanOutputDtoGenqlSelection & { __args: {userId: Scalars['Int'], postId: Scalars['Int']} })
-    recommendedPosts?: (RecommendedPostOutputDtoGenqlSelection & { __args: {input: RecommendedPostsInput} })
-    whoToFollow?: (WhoToFollowOutputDtoGenqlSelection & { __args: {input: WhoToFollowInput} })
+    postRecommendation?: (PostRecommendationOutputDtoGenqlSelection & { __args: {input: PostRecommendationInput} })
+    userRecommendation?: (UserRecommendationOutputDtoGenqlSelection & { __args: {input: UserRecommendationInput} })
     __typename?: boolean | number
     __scalar?: boolean | number
 }
-
-export interface RecommendedPostDtoGenqlSelection{
-    postId?: boolean | number
-    score?: boolean | number
-    __typename?: boolean | number
-    __scalar?: boolean | number
-}
-
-export interface RecommendedPostDtoDataGenqlSelection{
-    items?: RecommendedPostDtoGenqlSelection
-    meta?: PaginationMetaGenqlSelection
-    __typename?: boolean | number
-    __scalar?: boolean | number
-}
-
-export interface RecommendedPostOutputDtoGenqlSelection{
-    data?: RecommendedPostDtoDataGenqlSelection
-    code?: boolean | number
-    __typename?: boolean | number
-    __scalar?: boolean | number
-}
-
-export interface RecommendedPostsInput {take?: Scalars['Int'],page?: Scalars['Int'],userId: Scalars['Int']}
 
 export interface SearchInput {query: Scalars['String'],page?: (Scalars['Int'] | null),take?: (Scalars['Int'] | null)}
 
@@ -528,16 +528,9 @@ export interface UserOutputDtoGenqlSelection{
     __scalar?: boolean | number
 }
 
-export interface WhoToFollowInput {take?: Scalars['Int'],page?: Scalars['Int'],userId: Scalars['Int']}
+export interface UserRecommendationInput {take?: Scalars['Int'],page?: Scalars['Int'],userId: Scalars['Int']}
 
-export interface WhoToFollowOutputDtoGenqlSelection{
-    data?: WhoToFollowUserDtoDataGenqlSelection
-    code?: boolean | number
-    __typename?: boolean | number
-    __scalar?: boolean | number
-}
-
-export interface WhoToFollowUserDtoGenqlSelection{
+export interface UserRecommendationItemDtoGenqlSelection{
     userId?: boolean | number
     commonFollowers?: boolean | number
     likedPostsScore?: boolean | number
@@ -546,9 +539,16 @@ export interface WhoToFollowUserDtoGenqlSelection{
     __scalar?: boolean | number
 }
 
-export interface WhoToFollowUserDtoDataGenqlSelection{
-    items?: WhoToFollowUserDtoGenqlSelection
+export interface UserRecommendationItemDtoDataGenqlSelection{
+    items?: UserRecommendationItemDtoGenqlSelection
     meta?: PaginationMetaGenqlSelection
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface UserRecommendationOutputDtoGenqlSelection{
+    data?: UserRecommendationItemDtoDataGenqlSelection
+    code?: boolean | number
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -642,34 +642,34 @@ export interface WhoToFollowUserDtoDataGenqlSelection{
     
 
 
+    const PostRecommendationItemDto_possibleTypes: string[] = ['PostRecommendationItemDto']
+    export const isPostRecommendationItemDto = (obj?: { __typename?: any } | null): obj is PostRecommendationItemDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isPostRecommendationItemDto"')
+      return PostRecommendationItemDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const PostRecommendationItemDtoData_possibleTypes: string[] = ['PostRecommendationItemDtoData']
+    export const isPostRecommendationItemDtoData = (obj?: { __typename?: any } | null): obj is PostRecommendationItemDtoData => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isPostRecommendationItemDtoData"')
+      return PostRecommendationItemDtoData_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const PostRecommendationOutputDto_possibleTypes: string[] = ['PostRecommendationOutputDto']
+    export const isPostRecommendationOutputDto = (obj?: { __typename?: any } | null): obj is PostRecommendationOutputDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isPostRecommendationOutputDto"')
+      return PostRecommendationOutputDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
     const Query_possibleTypes: string[] = ['Query']
     export const isQuery = (obj?: { __typename?: any } | null): obj is Query => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isQuery"')
       return Query_possibleTypes.includes(obj.__typename)
-    }
-    
-
-
-    const RecommendedPostDto_possibleTypes: string[] = ['RecommendedPostDto']
-    export const isRecommendedPostDto = (obj?: { __typename?: any } | null): obj is RecommendedPostDto => {
-      if (!obj?.__typename) throw new Error('__typename is missing in "isRecommendedPostDto"')
-      return RecommendedPostDto_possibleTypes.includes(obj.__typename)
-    }
-    
-
-
-    const RecommendedPostDtoData_possibleTypes: string[] = ['RecommendedPostDtoData']
-    export const isRecommendedPostDtoData = (obj?: { __typename?: any } | null): obj is RecommendedPostDtoData => {
-      if (!obj?.__typename) throw new Error('__typename is missing in "isRecommendedPostDtoData"')
-      return RecommendedPostDtoData_possibleTypes.includes(obj.__typename)
-    }
-    
-
-
-    const RecommendedPostOutputDto_possibleTypes: string[] = ['RecommendedPostOutputDto']
-    export const isRecommendedPostOutputDto = (obj?: { __typename?: any } | null): obj is RecommendedPostOutputDto => {
-      if (!obj?.__typename) throw new Error('__typename is missing in "isRecommendedPostOutputDto"')
-      return RecommendedPostOutputDto_possibleTypes.includes(obj.__typename)
     }
     
 
@@ -786,26 +786,26 @@ export interface WhoToFollowUserDtoDataGenqlSelection{
     
 
 
-    const WhoToFollowOutputDto_possibleTypes: string[] = ['WhoToFollowOutputDto']
-    export const isWhoToFollowOutputDto = (obj?: { __typename?: any } | null): obj is WhoToFollowOutputDto => {
-      if (!obj?.__typename) throw new Error('__typename is missing in "isWhoToFollowOutputDto"')
-      return WhoToFollowOutputDto_possibleTypes.includes(obj.__typename)
+    const UserRecommendationItemDto_possibleTypes: string[] = ['UserRecommendationItemDto']
+    export const isUserRecommendationItemDto = (obj?: { __typename?: any } | null): obj is UserRecommendationItemDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isUserRecommendationItemDto"')
+      return UserRecommendationItemDto_possibleTypes.includes(obj.__typename)
     }
     
 
 
-    const WhoToFollowUserDto_possibleTypes: string[] = ['WhoToFollowUserDto']
-    export const isWhoToFollowUserDto = (obj?: { __typename?: any } | null): obj is WhoToFollowUserDto => {
-      if (!obj?.__typename) throw new Error('__typename is missing in "isWhoToFollowUserDto"')
-      return WhoToFollowUserDto_possibleTypes.includes(obj.__typename)
+    const UserRecommendationItemDtoData_possibleTypes: string[] = ['UserRecommendationItemDtoData']
+    export const isUserRecommendationItemDtoData = (obj?: { __typename?: any } | null): obj is UserRecommendationItemDtoData => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isUserRecommendationItemDtoData"')
+      return UserRecommendationItemDtoData_possibleTypes.includes(obj.__typename)
     }
     
 
 
-    const WhoToFollowUserDtoData_possibleTypes: string[] = ['WhoToFollowUserDtoData']
-    export const isWhoToFollowUserDtoData = (obj?: { __typename?: any } | null): obj is WhoToFollowUserDtoData => {
-      if (!obj?.__typename) throw new Error('__typename is missing in "isWhoToFollowUserDtoData"')
-      return WhoToFollowUserDtoData_possibleTypes.includes(obj.__typename)
+    const UserRecommendationOutputDto_possibleTypes: string[] = ['UserRecommendationOutputDto']
+    export const isUserRecommendationOutputDto = (obj?: { __typename?: any } | null): obj is UserRecommendationOutputDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isUserRecommendationOutputDto"')
+      return UserRecommendationOutputDto_possibleTypes.includes(obj.__typename)
     }
     
 

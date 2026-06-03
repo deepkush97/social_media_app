@@ -6,8 +6,8 @@ import { AppCodes } from '@app/shared/enums/app-codes.enum';
 import { GraphqlRouterComposite } from '@app/shared/graphql/graphql-router.composite';
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
 import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface';
-import { IRecommendedPost } from '@app/shared/interfaces/social/recommended-post.interface';
-import { IWhoToFollowUser } from '@app/shared/interfaces/social/who-to-follow-user.interface';
+import { IPostRecommendationItem } from '@app/shared/interfaces/social/post-recommendation.interface';
+import { IUserRecommendationItem } from '@app/shared/interfaces/social/user-recommendation.interface';
 
 import { CACHE_TTL_IN_SECONDS } from '../app.constant';
 import { RedisFormatter } from '../redis-formatter';
@@ -23,15 +23,16 @@ export class RecommendationsService {
     userId: number,
     page = 1,
     take = 10,
-  ): Promise<IAppResponse<IPaginatedData<IRecommendedPost>>> {
+  ): Promise<IAppResponse<IPaginatedData<IPostRecommendationItem>>> {
     const cacheKey = RedisFormatter.postRecommendation(userId, page, take);
-    const fromCache = await this.cacheService.get<IPaginatedData<IRecommendedPost>>(cacheKey);
+    const fromCache =
+      await this.cacheService.get<IPaginatedData<IPostRecommendationItem>>(cacheKey);
 
     if (fromCache) {
       return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data: fromCache });
     }
 
-    const result = await this.routerComposite.recommendedPosts(
+    const result = await this.routerComposite.postRecommendation(
       {
         userId,
         take,
@@ -55,19 +56,20 @@ export class RecommendationsService {
     return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data: result.data });
   }
 
-  async getWhoToFollow(
+  async getRecommendedUsers(
     userId: number,
     page = 1,
     take = 10,
-  ): Promise<IAppResponse<IPaginatedData<IWhoToFollowUser>>> {
+  ): Promise<IAppResponse<IPaginatedData<IUserRecommendationItem>>> {
     const cacheKey = RedisFormatter.userRecommendation(userId, page, take);
-    const fromCache = await this.cacheService.get<IPaginatedData<IWhoToFollowUser>>(cacheKey);
+    const fromCache =
+      await this.cacheService.get<IPaginatedData<IUserRecommendationItem>>(cacheKey);
 
     if (fromCache) {
       return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data: fromCache });
     }
 
-    const result = await this.routerComposite.whoToFollow(
+    const result = await this.routerComposite.userRecommendation(
       {
         userId,
         take,

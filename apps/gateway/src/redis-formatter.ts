@@ -26,7 +26,7 @@ export class RedisFormatter {
   }
 
   static userRecommendation(userId: number, page: number, take: number): string {
-    return `who_to_follow:${userId}:${page}:${take}`;
+    return `user_recommendation:${userId}:${page}:${take}`;
   }
 
   static postRecommendationPattern(userId: number): string {
