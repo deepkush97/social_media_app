@@ -12,8 +12,9 @@ export class PaginationInput implements IPaginationInput {
   @IsPositive()
   take?: number;
 
-  @Field(() => Int, { defaultValue: 0 })
+  @Field(() => Int, { defaultValue: 1 })
   @IsNumber()
   @IsOptional()
+  @IsPositive()
   page?: number;
 }

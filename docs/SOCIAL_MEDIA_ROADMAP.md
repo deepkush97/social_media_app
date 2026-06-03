@@ -37,6 +37,7 @@
 ### Tech Debt
 
 - [ ] **Schema generation initializes all modules** — `GENERATE_SCHEMA=true` still boots TypeORM (connects to MySQL), NATS, etc., printing connection logs and failing if infra isn't running. Fix: create a lightweight schema module per service that only imports resolvers + `GraphQLModule.forRoot()` — no TypeORM, NATS, Neo4j, or Redis. Register it conditionally when `GENERATE_SCHEMA=true`, or write a standalone script using `@nestjs/graphql`'s `GraphQLSchemaBuilder` directly without booting the full app.
+- [x] **Page index unification** — `PaginationInput.page` default changed from `0` to `1` (1-indexed) across `PaginationInput`, `PostsPaginationInput`, and `RecommendedPostsInput`. All consumers now consistently use `(page - 1) * take` for offset computation. Gateway no longer converts between 1-indexed and 0-indexed on input or output.
 
 ---
 

@@ -37,7 +37,7 @@ export class RecommendationsService {
       {
         userId,
         take,
-        page: page - 1,
+        page,
       },
       {
         data: {
@@ -52,18 +52,8 @@ export class RecommendationsService {
       return new AppResponse({ code: AppCodes[result.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
-    const data: IPaginatedData<IRecommendedPost> = {
-      items: result.data.items,
-      meta: {
-        total: result.data.meta.total,
-        page: result.data.meta.page + 1,
-        lastPage: result.data.meta.lastPage + 1,
-        take: result.data.meta.take,
-      },
-    };
+    await this.cacheService.set(cacheKey, result.data, CACHE_TTL_IN_SECONDS);
 
-    await this.cacheService.set(cacheKey, data, CACHE_TTL_IN_SECONDS);
-
-    return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data });
+    return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data: result.data });
   }
 }

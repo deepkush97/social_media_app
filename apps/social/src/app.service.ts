@@ -97,12 +97,12 @@ export class AppService {
 
   async recommendedPosts(
     userId: number,
-    page = 0,
+    page = 1,
     take = 10,
   ): Promise<IAppResponse<IPaginatedData<IRecommendedPost>>> {
     try {
       const limit = take;
-      const offset = page * take;
+      const offset = (page - 1) * take;
       const { items, total } = await this.socialService.recommendedPosts(userId, limit, offset);
       const lastPage = total ? Math.max(0, Math.ceil(total / take) - 1) : 0;
 
