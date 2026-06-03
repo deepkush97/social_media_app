@@ -322,6 +322,10 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
 
     const record = result.records?.[0];
 
+    if (!record) {
+      throw new Error('Not a valid user');
+    }
+
     return {
       followers: record.get('followers').toNumber(),
       followings: record.get('followings').toNumber(),
