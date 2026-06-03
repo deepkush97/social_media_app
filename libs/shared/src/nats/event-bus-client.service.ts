@@ -156,8 +156,13 @@ export class EventBusClient implements OnModuleInit, OnApplicationBootstrap, OnM
       this.logger.info(`Created pull consumer ${consumerName} on ${sName} for ${filterSubject}`, {
         context: EventBusClient.name,
       });
-    } catch {
-      // consumer already exists
+    } catch (error: unknown) {
+      if (
+        !(error instanceof Error) ||
+        !error.message?.toLowerCase().includes('consumer already exists')
+      ) {
+        throw error;
+      }
     }
   }
 
