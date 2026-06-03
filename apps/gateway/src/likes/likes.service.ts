@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { AppResponse } from '@app/shared/app-response.dto';
+import { CacheService } from '@app/shared/cache/cache.service';
 import { AppCodes } from '@app/shared/enums/app-codes.enum';
 import { PostLikedEvent, PostUnlikedEvent } from '@app/shared/events/post-liked.event';
 import { GraphqlRouterComposite } from '@app/shared/graphql/graphql-router.composite';
@@ -8,11 +9,13 @@ import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
 import { EventBusClient } from '@app/shared/nats/event-bus-client.service';
 
 import { PostsService } from '../posts/posts.service';
+import { RedisFormatter } from '../redis-formatter';
 
 @Injectable()
 export class LikesService {
   constructor(
     private readonly routerComposite: GraphqlRouterComposite,
+    private readonly cacheService: CacheService,
     private readonly eventBusClient: EventBusClient,
     private readonly postService: PostsService,
   ) {}
@@ -39,14 +42,18 @@ export class LikesService {
 
     const post = postResult.data;
 
-    await this.eventBusClient.emit(
-      new PostLikedEvent({
-        userId,
-        postOwnerId: post.userId,
-        tags: post.tags,
-      }),
-      this.constructor.name,
-    );
+    await Promise.all([
+      this.eventBusClient.emit(
+        new PostLikedEvent({
+          userId,
+          postOwnerId: post.userId,
+          tags: post.tags,
+        }),
+        this.constructor.name,
+      ),
+      this.cacheService.delAll(RedisFormatter.postRecommendationPattern(userId)),
+      this.cacheService.delAll(RedisFormatter.userRecommendationPattern(userId)),
+    ]);
 
     return new AppResponse({ code: AppCodes.OK_CREATED, data: result.data });
   }
@@ -67,14 +74,18 @@ export class LikesService {
 
     const post = postResult.data;
 
-    await this.eventBusClient.emit(
-      new PostUnlikedEvent({
-        userId,
-        postOwnerId: post.userId,
-        tags: post.tags,
-      }),
-      this.constructor.name,
-    );
+    await Promise.all([
+      this.eventBusClient.emit(
+        new PostUnlikedEvent({
+          userId,
+          postOwnerId: post.userId,
+          tags: post.tags,
+        }),
+        this.constructor.name,
+      ),
+      this.cacheService.delAll(RedisFormatter.postRecommendationPattern(userId)),
+      this.cacheService.delAll(RedisFormatter.userRecommendationPattern(userId)),
+    ]);
 
     return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data: result.data ?? true });
   }

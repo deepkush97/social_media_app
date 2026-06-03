@@ -10,6 +10,7 @@ import { IRecommendedPost } from '@app/shared/interfaces/social/recommended-post
 import { IWhoToFollowUser } from '@app/shared/interfaces/social/who-to-follow-user.interface';
 
 import { CACHE_TTL_IN_SECONDS } from '../app.constant';
+import { RedisFormatter } from '../redis-formatter';
 
 @Injectable()
 export class RecommendationsService {
@@ -18,20 +19,12 @@ export class RecommendationsService {
     private readonly cacheService: CacheService,
   ) {}
 
-  private recommendationsCacheKey(userId: number, page: number, take: number): string {
-    return `recommendations:${userId}:${page}:${take}`;
-  }
-
-  private whoToFollowCacheKey(userId: number, page: number, take: number): string {
-    return `whoToFollow:${userId}:${page}:${take}`;
-  }
-
   async getRecommendedPosts(
     userId: number,
     page = 1,
     take = 10,
   ): Promise<IAppResponse<IPaginatedData<IRecommendedPost>>> {
-    const cacheKey = this.recommendationsCacheKey(userId, page, take);
+    const cacheKey = RedisFormatter.postRecommendation(userId, page, take);
     const fromCache = await this.cacheService.get<IPaginatedData<IRecommendedPost>>(cacheKey);
 
     if (fromCache) {
@@ -67,7 +60,7 @@ export class RecommendationsService {
     page = 1,
     take = 10,
   ): Promise<IAppResponse<IPaginatedData<IWhoToFollowUser>>> {
-    const cacheKey = this.whoToFollowCacheKey(userId, page, take);
+    const cacheKey = RedisFormatter.userRecommendation(userId, page, take);
     const fromCache = await this.cacheService.get<IPaginatedData<IWhoToFollowUser>>(cacheKey);
 
     if (fromCache) {

@@ -12,6 +12,7 @@ import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-
 import { EventBusClient } from '@app/shared/nats/event-bus-client.service';
 
 import { CACHE_TTL_IN_SECONDS } from '../app.constant';
+import { RedisFormatter } from '../redis-formatter';
 
 @Injectable()
 export class UsersService {
@@ -21,10 +22,6 @@ export class UsersService {
     private readonly cacheService: CacheService,
     private readonly eventBusClient: EventBusClient,
   ) {}
-
-  private createUserCountsCacheKey(userId: number): string {
-    return `user_counts:${userId}`;
-  }
 
   async follow(
     followerId: number,
@@ -55,20 +52,24 @@ export class UsersService {
     }
 
     const data = followResult.data;
-    const targetCacheKey = this.createUserCountsCacheKey(followingId);
-    const followerCacheKey = this.createUserCountsCacheKey(followerId);
+    const targetCacheKey = RedisFormatter.userCounts(followingId);
+    const followerCacheKey = RedisFormatter.userCounts(followerId);
 
     await this.cacheService.set(targetCacheKey, data, CACHE_TTL_IN_SECONDS);
     await this.cacheService.del(followerCacheKey);
 
-    await this.eventBusClient.emit(
-      new UserFollowedEvent({
-        followerId,
-        followingId,
-        createdAt: new Date(),
-      }),
-      this.constructor.name,
-    );
+    await Promise.all([
+      this.eventBusClient.emit(
+        new UserFollowedEvent({
+          followerId,
+          followingId,
+          createdAt: new Date(),
+        }),
+        this.constructor.name,
+      ),
+      this.cacheService.delAll(RedisFormatter.postRecommendationPattern(followerId)),
+      this.cacheService.delAll(RedisFormatter.userRecommendationPattern(followerId)),
+    ]);
 
     return new AppResponse({
       code: AppCodes.OPERATION_SUCCESS,
@@ -100,20 +101,24 @@ export class UsersService {
     }
 
     const data = unfollowResult.data;
-    const targetCacheKey = this.createUserCountsCacheKey(followingId);
-    const followerCacheKey = this.createUserCountsCacheKey(followerId);
+    const targetCacheKey = RedisFormatter.userCounts(followingId);
+    const followerCacheKey = RedisFormatter.userCounts(followerId);
 
     await this.cacheService.set(targetCacheKey, data, CACHE_TTL_IN_SECONDS);
     await this.cacheService.del(followerCacheKey);
 
-    await this.eventBusClient.emit(
-      new UserUnfollowedEvent({
-        followerId,
-        followingId,
-        createdAt: new Date(),
-      }),
-      this.constructor.name,
-    );
+    await Promise.all([
+      this.eventBusClient.emit(
+        new UserUnfollowedEvent({
+          followerId,
+          followingId,
+          createdAt: new Date(),
+        }),
+        this.constructor.name,
+      ),
+      this.cacheService.delAll(RedisFormatter.postRecommendationPattern(followerId)),
+      this.cacheService.delAll(RedisFormatter.userRecommendationPattern(followerId)),
+    ]);
 
     return new AppResponse({
       code: AppCodes.OPERATION_SUCCESS,
@@ -121,7 +126,7 @@ export class UsersService {
   }
 
   async userCounts(userId: number): Promise<IAppResponse<IFollowerFollowingCount>> {
-    const cacheKey = this.createUserCountsCacheKey(userId);
+    const cacheKey = RedisFormatter.userCounts(userId);
     const fromCache = await this.cacheService.get<IFollowerFollowingCount>(cacheKey);
 
     if (fromCache) {

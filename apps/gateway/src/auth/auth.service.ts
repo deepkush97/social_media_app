@@ -18,6 +18,7 @@ import {
 import { EventBusClient } from '@app/shared/nats/event-bus-client.service';
 
 import { CACHE_TTL_IN_SECONDS } from '../app.constant';
+import { RedisFormatter } from '../redis-formatter';
 
 @Injectable()
 export class AuthService {
@@ -27,10 +28,6 @@ export class AuthService {
     private readonly cacheService: CacheService,
     private readonly eventBusClient: EventBusClient,
   ) {}
-
-  private createSessionCacheKey(sessionId: string): string {
-    return `session:${sessionId}`;
-  }
 
   async signup(input: INewUser): Promise<AppResponse<IAuthProfileToken>> {
     const createUserResult = await this.routerComposite.createUser(input, {
@@ -64,7 +61,7 @@ export class AuthService {
     const profile = this.prepareProfilePayload(session.guid, user);
 
     await this.cacheService.set(
-      this.createSessionCacheKey(session.guid),
+      RedisFormatter.session(session.guid),
       profile,
       CACHE_TTL_IN_SECONDS,
     );
@@ -121,7 +118,7 @@ export class AuthService {
     const profile = this.prepareProfilePayload(session.guid, user);
 
     await this.cacheService.set(
-      this.createSessionCacheKey(session.guid),
+      RedisFormatter.session(session.guid),
       profile,
       CACHE_TTL_IN_SECONDS,
     );
@@ -147,7 +144,7 @@ export class AuthService {
   }
 
   public async getAuthSession(sessionId: string): Promise<IAppResponse<ICurrentUser>> {
-    const sessionCacheKey = this.createSessionCacheKey(sessionId);
+    const sessionCacheKey = RedisFormatter.session(sessionId);
 
     const data = await this.cacheService.get<ICurrentUser>(sessionCacheKey);
 
