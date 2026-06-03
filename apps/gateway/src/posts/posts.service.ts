@@ -70,6 +70,19 @@ export class PostsService {
   }
 
   async archivePost(userId: number, id: number): Promise<IAppResponse<boolean>> {
+    const postResult = await this.findPostById(id);
+    if (postResult.code !== AppCodes.OPERATION_SUCCESS) {
+      return new AppResponse({
+        code: postResult.code,
+      });
+    }
+
+    if (postResult.data.userId !== userId) {
+      return new AppResponse({
+        code: AppCodes.BAD_REQUEST,
+      });
+    }
+
     const createPostResult = await this.routerComposite.archivePost(id, {
       code: 1,
       data: 1,
