@@ -25,6 +25,7 @@ export class GraphqlRouterService {
             'x-request-id': data?.requestId ?? 'null',
           },
           body: JSON.stringify(operation),
+          signal: AbortSignal.timeout(10_000),
         });
 
         const text = await response.text();
