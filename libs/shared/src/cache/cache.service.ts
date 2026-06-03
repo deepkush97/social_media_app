@@ -46,7 +46,7 @@ export class CacheService implements OnModuleInit {
     await this.redisClient.del(key);
   }
 
-  async delAll(pattern: string, batchSize = 1): Promise<void> {
+  async delAll(pattern: string, batchSize = 10): Promise<void> {
     this.logger.info(`delAll: pattern ${pattern} batchSize ${batchSize}`, {
       context: CacheService.name,
     });

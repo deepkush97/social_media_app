@@ -134,6 +134,7 @@ export class AuthService {
 
   async logout(sessionId: string): Promise<boolean> {
     await this.routerComposite.closeSessionBySessionId(sessionId, { code: 1 });
+    await this.cacheService.del(RedisFormatter.session(sessionId));
 
     return true;
   }

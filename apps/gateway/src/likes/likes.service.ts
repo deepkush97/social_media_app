@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
+import { AppLoggerService } from '@app/shared/app-logger/app-logger.service';
 import { AppResponse } from '@app/shared/app-response.dto';
 import { CacheService } from '@app/shared/cache/cache.service';
 import { AppCodes } from '@app/shared/enums/app-codes.enum';
@@ -18,6 +19,7 @@ export class LikesService {
     private readonly cacheService: CacheService,
     private readonly eventBusClient: EventBusClient,
     private readonly postService: PostsService,
+    private readonly logger: AppLoggerService,
   ) {}
 
   async likePost(
@@ -51,8 +53,18 @@ export class LikesService {
         }),
         this.constructor.name,
       ),
-      this.cacheService.delAll(RedisFormatter.postRecommendationPattern(userId)),
-      this.cacheService.delAll(RedisFormatter.userRecommendationPattern(userId)),
+      this.cacheService.delAll(RedisFormatter.postRecommendationPattern(userId)).catch((error) =>
+        this.logger.error('Error while removing post recommendation', {
+          error,
+          context: this.constructor.name,
+        }),
+      ),
+      this.cacheService.delAll(RedisFormatter.userRecommendationPattern(userId)).catch((error) =>
+        this.logger.error('Error while removing user recommendation', {
+          error,
+          context: this.constructor.name,
+        }),
+      ),
     ]);
 
     return new AppResponse({ code: AppCodes.OK_CREATED, data: result.data });
@@ -83,8 +95,18 @@ export class LikesService {
         }),
         this.constructor.name,
       ),
-      this.cacheService.delAll(RedisFormatter.postRecommendationPattern(userId)),
-      this.cacheService.delAll(RedisFormatter.userRecommendationPattern(userId)),
+      this.cacheService.delAll(RedisFormatter.postRecommendationPattern(userId)).catch((error) =>
+        this.logger.error('Error while removing post recommendation', {
+          error,
+          context: this.constructor.name,
+        }),
+      ),
+      this.cacheService.delAll(RedisFormatter.userRecommendationPattern(userId)).catch((error) =>
+        this.logger.error('Error while removing user recommendation', {
+          error,
+          context: this.constructor.name,
+        }),
+      ),
     ]);
 
     return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data: result.data ?? true });

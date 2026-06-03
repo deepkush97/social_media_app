@@ -49,7 +49,7 @@ export class PostsService {
     };
 
     await this.cacheService.set(RedisFormatter.post(postData.id), postData, CACHE_TTL_IN_SECONDS);
-    await this.cacheService.delAll(RedisFormatter.postListPattern(userId), 3);
+    await this.cacheService.delAll(RedisFormatter.postListPattern(userId));
 
     await this.eventBusClient.emit(
       new PostCreatedEvent({
@@ -80,7 +80,7 @@ export class PostsService {
     }
 
     await this.cacheService.del(RedisFormatter.post(id));
-    await this.cacheService.delAll(RedisFormatter.postListPattern(userId), 3);
+    await this.cacheService.delAll(RedisFormatter.postListPattern(userId));
 
     return new AppResponse({
       code: AppCodes.OPERATION_SUCCESS,
