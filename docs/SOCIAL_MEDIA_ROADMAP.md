@@ -38,6 +38,31 @@
 
 - [ ] **Schema generation initializes all modules** — `GENERATE_SCHEMA=true` still boots TypeORM (connects to MySQL), NATS, etc., printing connection logs and failing if infra isn't running. Fix: create a lightweight schema module per service that only imports resolvers + `GraphQLModule.forRoot()` — no TypeORM, NATS, Neo4j, or Redis. Register it conditionally when `GENERATE_SCHEMA=true`, or write a standalone script using `@nestjs/graphql`'s `GraphQLSchemaBuilder` directly without booting the full app.
 - [x] **Page index unification** — `PaginationInput.page` default changed from `0` to `1` (1-indexed) across `PaginationInput`, `PostsPaginationInput`, and `RecommendedPostsInput`. All consumers now consistently use `(page - 1) * take` for offset computation. Gateway no longer converts between 1-indexed and 0-indexed on input or output.
+- [ ] **Migrate from Docker Compose to Kubernetes** — currently all services and infrastructure run via `docker-compose.yml` on a single host. For production readiness, scalability, and self-healing, migrate to a Kubernetes cluster. This involves:
+
+  **Namespace breakdown:**
+
+  | Namespace     | Components                                                                 | Purpose                                              |
+  |---------------|---------------------------------------------------------------------------|------------------------------------------------------|
+  | `infra`       | Redis, MySQL 8.0, Neo4j (Community + GDS), NATS JetStream, Elasticsearch  | Stateful data stores; persistent volumes + PVCs      |
+  | `app`         | auth, posts, social, search, gateway (NestJS microservices), Apollo Router| Stateless application services; HPA for scaling      |
+  | `monitoring`  | Jaeger (all-in-one), Prometheus, Grafana                                  | Observability stack with configured datasources      |
+
+  **What each namespace needs:**
+
+  - **`infra`** — StatefulSets for MySQL, Neo4j, Redis, NATS (JetStream), Elasticsearch. Each with PersistentVolumeClaims, headless services, config maps for init scripts and health checks. MySQL needs `init-db` scripts from `./init-db` mounted via ConfigMap. Neo4j needs GDS plugin and auth config. NATS needs JetStream storage directory and monitoring port (8222). Elasticsearch needs single-node discovery config and heap limits (`ES_JAVA_OPTS`).
+
+  - **`app`** — Deployments for each NestJS service: `gateway` (REST, port 3000), `auth`, `posts`, `social`, `search` (each serving GraphQL federation on port 3001-3004). The Apollo Router as a Deployment on port 4000. All services read env vars from a shared ConfigMap + Secrets (JWT secret, DB passwords). HorizontalPodAutoscaler based on CPU/memory for gateway and Apollo Router. Init containers or sidecars for OTel SDK initialization. Liveness/readiness probes on health endpoints.
+
+  - **`monitoring`** — Jaeger all-in-one Deployment with OTLP gRPC port 4317. Prometheus Deployment scraping `/metrics` from all app pods (via pod annotations or a ServiceMonitor). Grafana Deployment with pre-provisioned datasources (Prometheus + Jaeger) and dashboards (from `./grafana/` directory) mounted via ConfigMap.
+
+  **Deployment strategy:**
+  - Migrate `.env.*` files to Kubernetes `Secrets` (DB passwords, JWT secret) and `ConfigMap` (non-sensitive env vars)
+  - Replace `docker-compose.yml` service dependencies with `DNS` resolution via K8s Services (e.g., `mysql.infra.svc.cluster.local`)
+  - Use an Ingress controller (e.g., nginx-ingress or Traefik) to expose the gateway (REST) and potentially the Apollo Router
+  - CI/CD pipeline (GitHub Actions or ArgoCD) to build Docker images for each NestJS service and deploy via Helm or kustomize
+  - Cluster management: `kubectl` context per environment (dev/staging/prod), with `kustomize` overlays for environment-specific config
+  - Load testing with `k6` can be run as a K8s Job against the cluster
 
 ---
 
