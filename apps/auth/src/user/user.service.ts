@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { FindOptionsSelect, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import { User } from './entities/user.entity';
 
@@ -25,8 +25,15 @@ export class UsersService {
     return this.userRepository.findOne({ where: { id } });
   }
 
-  async findByEmail(email: string, select?: FindOptionsSelect<User>): Promise<User | null> {
-    return this.userRepository.findOne({ where: { email }, select });
+  async findByEmail(email: string): Promise<User | null> {
+    return this.userRepository.findOne({ where: { email } });
+  }
+
+  async findOneByEmailWithPassword(email: string): Promise<User | null> {
+    return this.userRepository.findOne({
+      where: { email },
+      select: ['id', 'name', 'email', 'password', 'createdAt', 'updatedAt'],
+    });
   }
 
   async update(id: number, updateData: Partial<User>): Promise<User> {

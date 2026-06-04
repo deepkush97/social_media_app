@@ -20,18 +20,4 @@ export class AppConfigService {
   get logLevel(): AppLogLevel {
     return this.configService.get<AppLogLevel>('app.logLevel');
   }
-  get jwtSecret(): string {
-    return this.configService.get<string>('app.jwtSecret');
-  }
-  get jwtExpirationTimeInSeconds(): number {
-    return this.configService.get<number>('app.jwtExpirationTimeInSeconds');
-  }
-
-  get graphqlRouterUrl(): string {
-    return this.configService.get<string>('app.graphqlRouterUrl');
-  }
-
-  get isSwaggerEnabled(): string {
-    return this.configService.get<string>('app.isSwaggerEnabled');
-  }
 }

@@ -45,14 +45,7 @@ export class AppService {
   }
 
   async loginUser({ email, password }: ILoginUser): Promise<IAppResponse<Omit<IUser, 'password'>>> {
-    const existingPlayer = await this.userService.findByEmail(email, {
-      createdAt: true,
-      email: true,
-      id: true,
-      name: true,
-      password: true,
-      updatedAt: true,
-    });
+    const existingPlayer = await this.userService.findOneByEmailWithPassword(email);
     if (!existingPlayer) {
       return new AppResponse({ code: AppCodes.INVALID_CREDENTIALS });
     }

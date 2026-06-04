@@ -9,6 +9,8 @@ import { AppLoggerService } from '@app/shared/app-logger/app-logger.service';
 
 import { version } from '../../../package.json';
 
+import { appGenerateSchema } from './app-generate-schema';
+
 const handleUnhandledError =
   (type: string) =>
   (err: unknown, origin?: unknown): void => {
@@ -25,11 +27,9 @@ export const appBootstrap = async (module: Type<unknown>): Promise<void> => {
   const serviceName = process.env.SERVICE;
 
   if (isGeneratingSchema) {
-    const app = await NestFactory.create(module, { logger: false });
-    await app.init();
+    await appGenerateSchema(module);
     // eslint-disable-next-line no-console
     console.log(`Successfully generated schema for ${serviceName}`);
-    await app.close();
     process.exit(0);
   }
 
@@ -42,7 +42,7 @@ export const appBootstrap = async (module: Type<unknown>): Promise<void> => {
 
   const port = appConfigService.port;
 
-  const isSwaggerEnabled = appConfigService.isSwaggerEnabled;
+  const isSwaggerEnabled = process.env.IS_SWAGGER_ENABLED === 'true';
   if (isSwaggerEnabled) {
     const config = new DocumentBuilder()
       .setTitle('Social media app')

@@ -11,7 +11,6 @@ import { AppConfigService } from '@app/shared/app-config/app-config.service';
 import { AppLoggerModule } from '@app/shared/app-logger/app-logger.module';
 import { BcryptModule } from '@app/shared/bcrypt/bcrypt.module';
 import { DatabaseModule } from '@app/shared/database/database.module';
-import { GraphqlRouterModule } from '@app/shared/graphql/graphql-router.module';
 import { AsyncStorageMiddleware } from '@app/shared/middlewares/async-storage.middleware';
 import { GraphqlRequestValidationPipe } from '@app/shared/pipes/graphql-request-validation.pipe';
 
@@ -44,14 +43,6 @@ import { AppService } from './app.service';
       },
     }),
     SessionModule,
-    GraphqlRouterModule.registerAsync({
-      inject: [AppConfigService],
-      useFactory: (configService: AppConfigService) => {
-        return {
-          url: configService.graphqlRouterUrl,
-        };
-      },
-    }),
   ],
 
   providers: [
