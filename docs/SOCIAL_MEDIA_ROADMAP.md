@@ -27,16 +27,16 @@
 
 - [ ] **Replace hardcoded `JWT_SECRET`** — `this_is_a_newbie` in all env files → move to env var with a strong generated default for dev.
 - [ ] **Set `DB_SYNCHRONIZE=false` for production** — or gate it behind `NODE_ENV=development`.
-- [ ] **Password exposure in `findByEmail`** — `app.service.ts` explicitly selects `password` with `.addSelect('password')`. Consider a separate method or lean projection for auth flows.
+- [x] **Password exposure in `findByEmail`** — `app.service.ts` explicitly selects `password` with `.addSelect('password')`. Consider a separate method or lean projection for auth flows.
 
 ### Consistency
 
-- [ ] **Pagination off-by-one** — GraphQL resolvers (`findPostsByUserId`) use `page: 0` (0-indexed) while REST endpoints default `page: 1` (1-indexed). Pick one convention and align everywhere.
-- [ ] **Check like existence before insert** — `likePost` should verify the user hasn't already liked the post (currently relies on the DB unique constraint, which throws a 500 instead of a 409).
+- [x] **Pagination off-by-one** — GraphQL resolvers (`findPostsByUserId`) use `page: 0` (0-indexed) while REST endpoints default `page: 1` (1-indexed). Pick one convention and align everywhere.
+- [x] **Check like existence before insert** — `likePost` should verify the user hasn't already liked the post (currently relies on the DB unique constraint, which throws a 500 instead of a 409).
 
 ### Tech Debt
 
-- [ ] **Schema generation initializes all modules** — `GENERATE_SCHEMA=true` still boots TypeORM (connects to MySQL), NATS, etc., printing connection logs and failing if infra isn't running. Fix: create a lightweight schema module per service that only imports resolvers + `GraphQLModule.forRoot()` — no TypeORM, NATS, Neo4j, or Redis. Register it conditionally when `GENERATE_SCHEMA=true`, or write a standalone script using `@nestjs/graphql`'s `GraphQLSchemaBuilder` directly without booting the full app.
+- [x] **Schema generation initializes all modules** — `GENERATE_SCHEMA=true` still boots TypeORM (connects to MySQL), NATS, etc., printing connection logs and failing if infra isn't running. Fix: create a lightweight schema module per service that only imports resolvers + `GraphQLModule.forRoot()` — no TypeORM, NATS, Neo4j, or Redis. Register it conditionally when `GENERATE_SCHEMA=true`, or write a standalone script using `@nestjs/graphql`'s `GraphQLSchemaBuilder` directly without booting the full app.
 - [x] **Page index unification** — `PaginationInput.page` default changed from `0` to `1` (1-indexed) across `PaginationInput`, `PostsPaginationInput`, and `RecommendedPostsInput`. All consumers now consistently use `(page - 1) * take` for offset computation. Gateway no longer converts between 1-indexed and 0-indexed on input or output.
 - [ ] **Migrate from Docker Compose to Kubernetes** — currently all services and infrastructure run via `docker-compose.yml` on a single host. For production readiness, scalability, and self-healing, migrate to a Kubernetes cluster. This involves:
 
