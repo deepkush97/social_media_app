@@ -99,7 +99,15 @@ export class AuthService {
     }
     const user = loginUserResult.data;
 
-    await this.routerComposite.closeAllOpenSessionByUserId(user.id, { code: 1 });
+    const closeOpenSessionResult = await this.routerComposite.closeAllOpenSessionByUserId(user.id, {
+      code: 1,
+    });
+
+    if (closeOpenSessionResult.code !== AppCodes.OPERATION_SUCCESS) {
+      return new AppResponse({
+        code: AppCodes[closeOpenSessionResult.code ?? AppCodes.INTERNAL_ERROR],
+      });
+    }
 
     const newSessionResult = await this.routerComposite.createNewSession(user.id, {
       code: 1,
