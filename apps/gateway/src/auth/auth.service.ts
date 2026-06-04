@@ -40,8 +40,8 @@ export class AuthService {
       },
     });
 
-    if (createUserResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[createUserResult.code] });
+    if (createUserResult.code !== AppCodes.OPERATION_SUCCESS || !createUserResult.data) {
+      return new AppResponse({ code: AppCodes[createUserResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
     const { data: user } = createUserResult;
     const newSessionResult = await this.routerComposite.createNewSession(user.id, {
@@ -94,8 +94,8 @@ export class AuthService {
         name: 1,
       },
     });
-    if (loginUserResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[loginUserResult.code] });
+    if (loginUserResult.code !== AppCodes.OPERATION_SUCCESS || !loginUserResult.data) {
+      return new AppResponse({ code: AppCodes[loginUserResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
     const user = loginUserResult.data;
 
@@ -108,8 +108,8 @@ export class AuthService {
       },
     });
 
-    if (newSessionResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[newSessionResult.code] });
+    if (newSessionResult.code !== AppCodes.OPERATION_SUCCESS || !newSessionResult.data) {
+      return new AppResponse({ code: AppCodes[newSessionResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
     const { data: session } = newSessionResult;
@@ -163,8 +163,8 @@ export class AuthService {
       },
     });
 
-    if (findSessionResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[findSessionResult.code] });
+    if (findSessionResult.code !== AppCodes.OPERATION_SUCCESS || !findSessionResult.data) {
+      return new AppResponse({ code: AppCodes[findSessionResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
     const { userId } = findSessionResult.data;
@@ -179,8 +179,8 @@ export class AuthService {
       },
     });
 
-    if (userResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[userResult.code] });
+    if (userResult.code !== AppCodes.OPERATION_SUCCESS || !userResult.data) {
+      return new AppResponse({ code: AppCodes[userResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
     const profile = this.prepareProfilePayload(sessionId, userResult.data);

@@ -39,8 +39,8 @@ export class PostsService {
         },
       },
     );
-    if (createPostResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[createPostResult.code] });
+    if (createPostResult.code !== AppCodes.OPERATION_SUCCESS || !createPostResult.data) {
+      return new AppResponse({ code: AppCodes[createPostResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
     const postData: IPost = {
@@ -123,8 +123,8 @@ export class PostsService {
         updatedAt: 1,
       },
     });
-    if (postResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[postResult.code] });
+    if (postResult.code !== AppCodes.OPERATION_SUCCESS || !postResult.data) {
+      return new AppResponse({ code: AppCodes[postResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
     const postData: IPost = {
@@ -181,8 +181,8 @@ export class PostsService {
         },
       },
     );
-    if (postResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[postResult.code] });
+    if (postResult.code !== AppCodes.OPERATION_SUCCESS || !postResult.data) {
+      return new AppResponse({ code: AppCodes[postResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
     const items: IPost[] = postResult.data.items.map((p) => ({

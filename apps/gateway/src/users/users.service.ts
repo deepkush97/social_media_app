@@ -47,8 +47,8 @@ export class UsersService {
         },
       },
     );
-    if (followResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[followResult.code] });
+    if (followResult.code !== AppCodes.OPERATION_SUCCESS || !followResult.data) {
+      return new AppResponse({ code: AppCodes[followResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
     const data = followResult.data;
