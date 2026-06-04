@@ -25,7 +25,19 @@ export class CacheService implements OnModuleInit {
       return null;
     }
     this.logger.info(`get: cache success ${key}`, { context: CacheService.name });
-    return JSON.parse(value) as T;
+    try {
+      return JSON.parse(value) as T;
+    } catch {
+      this.logger.error(`get: failed to parse cached value for key "${key}"`, {
+        context: CacheService.name,
+      });
+      await this.redisClient.del(key).catch(() =>
+        this.logger.warn(`get: failed to delete corrupted data for "${key}"`, {
+          context: CacheService.name,
+        }),
+      );
+      return null;
+    }
   }
 
   async set(key: string, value: unknown, ttl?: number): Promise<void> {
