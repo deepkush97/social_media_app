@@ -8,8 +8,10 @@ import { NEO4J_DRIVER } from '../providers.constant';
 import { neo4jConfigLoader } from './configurations/loader';
 import { Neo4jConfigService } from './configurations/neo4j-config.service';
 
+import { Neo4jService } from './neo4j.service';
+
 @Module({
-  imports: [Neo4jModule, ConfigModule.forFeature(neo4jConfigLoader)],
+  imports: [ConfigModule.forFeature(neo4jConfigLoader)],
   providers: [Neo4jConfigService],
   exports: [Neo4jConfigService],
 })
@@ -34,8 +36,9 @@ export class Neo4jModule {
             );
           },
         },
+        Neo4jService,
       ],
-      exports: [NEO4J_DRIVER],
+      exports: [Neo4jService],
     };
   }
 }
