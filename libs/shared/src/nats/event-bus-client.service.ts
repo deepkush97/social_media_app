@@ -220,18 +220,17 @@ export class EventBusClient implements OnModuleInit, OnApplicationBootstrap, OnM
   }
 
   async emit({ data, event }: BaseEvent, context: string): Promise<void> {
-    await this.js
-      .publish(event, this.jc.encode(data))
-      .then(() => {
-        this.logger.info(`Emitted ${event}`, { context: EventBusClient.name });
-      })
-      .catch((error) => {
-        this.logger.error(`Error while emitting the event: ${event}`, {
-          error,
-          data,
-          context,
-        });
+    try {
+      await this.js.publish(event, this.jc.encode(data));
+      this.logger.info(`Emitted ${event}`, { context: EventBusClient.name });
+    } catch (error) {
+      this.logger.error(`Error while emitting the event: ${event}`, {
+        error,
+        data,
+        context,
       });
+      throw error;
+    }
   }
 
   async onModuleDestroy(): Promise<void> {
