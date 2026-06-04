@@ -8,9 +8,9 @@ export type Scalars = {
     String: string,
     Int: number,
     DateTime: any,
+    Float: number,
     join__FieldSet: any,
     link__Import: any,
-    Float: number,
 }
 
 export type AppCodes = 'OPERATION_SUCCESS' | 'INVALID_CREDENTIALS' | 'INVALID_EMAIL' | 'INTERNAL_ERROR' | 'UNAUTHORIZED' | 'FORBIDDEN' | 'USER_CREATED' | 'OK_CREATED' | 'BAD_REQUEST' | 'URL_CREATED' | 'URL_NOT_FOUND' | 'NOT_FOUND'
@@ -21,6 +21,19 @@ export interface BooleanOutputDto {
     data: (Scalars['Boolean'] | null)
     code: AppCodes
     __typename: 'BooleanOutputDto'
+}
+
+export interface DecayResultDto {
+    edgesDecayed: Scalars['Float']
+    before: WeightSnapshotDto
+    after: WeightSnapshotDto
+    __typename: 'DecayResultDto'
+}
+
+export interface DecayResultOutputDto {
+    data: (DecayResultDto | null)
+    code: AppCodes
+    __typename: 'DecayResultOutputDto'
 }
 
 export interface FollowerFollowingCountDto {
@@ -62,6 +75,7 @@ export interface Mutation {
     unfollow: UserCountsDto
     likePost: LikeOutputDto
     unlikePost: BooleanOutputDto
+    triggerWeightDecay: DecayResultOutputDto
     __typename: 'Mutation'
 }
 
@@ -264,6 +278,13 @@ export interface UserRecommendationOutputDto {
     __typename: 'UserRecommendationOutputDto'
 }
 
+export interface WeightSnapshotDto {
+    min: Scalars['Float']
+    max: Scalars['Float']
+    mean: Scalars['Float']
+    __typename: 'WeightSnapshotDto'
+}
+
 export interface BooleanOutputDtoGenqlSelection{
     data?: boolean | number
     code?: boolean | number
@@ -274,6 +295,21 @@ export interface BooleanOutputDtoGenqlSelection{
 export interface CreatePostInput {title: Scalars['String'],content: Scalars['String'],image?: (Scalars['String'] | null),userId: Scalars['Int']}
 
 export interface CreateUserInput {name: Scalars['String'],email: Scalars['String'],password: Scalars['String']}
+
+export interface DecayResultDtoGenqlSelection{
+    edgesDecayed?: boolean | number
+    before?: WeightSnapshotDtoGenqlSelection
+    after?: WeightSnapshotDtoGenqlSelection
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface DecayResultOutputDtoGenqlSelection{
+    data?: DecayResultDtoGenqlSelection
+    code?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
 
 export interface FollowerFollowingCountDtoGenqlSelection{
     followers?: boolean | number
@@ -317,6 +353,7 @@ export interface MutationGenqlSelection{
     unfollow?: (UserCountsDtoGenqlSelection & { __args: {input: FollowUnfollowInput} })
     likePost?: (LikeOutputDtoGenqlSelection & { __args: {input: LikeInput} })
     unlikePost?: (BooleanOutputDtoGenqlSelection & { __args: {input: LikeInput} })
+    triggerWeightDecay?: (DecayResultOutputDtoGenqlSelection & { __args?: {dryRun?: (Scalars['Boolean'] | null)} })
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -553,11 +590,35 @@ export interface UserRecommendationOutputDtoGenqlSelection{
     __scalar?: boolean | number
 }
 
+export interface WeightSnapshotDtoGenqlSelection{
+    min?: boolean | number
+    max?: boolean | number
+    mean?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
 
     const BooleanOutputDto_possibleTypes: string[] = ['BooleanOutputDto']
     export const isBooleanOutputDto = (obj?: { __typename?: any } | null): obj is BooleanOutputDto => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isBooleanOutputDto"')
       return BooleanOutputDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const DecayResultDto_possibleTypes: string[] = ['DecayResultDto']
+    export const isDecayResultDto = (obj?: { __typename?: any } | null): obj is DecayResultDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isDecayResultDto"')
+      return DecayResultDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const DecayResultOutputDto_possibleTypes: string[] = ['DecayResultOutputDto']
+    export const isDecayResultOutputDto = (obj?: { __typename?: any } | null): obj is DecayResultOutputDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isDecayResultOutputDto"')
+      return DecayResultOutputDto_possibleTypes.includes(obj.__typename)
     }
     
 
@@ -806,6 +867,14 @@ export interface UserRecommendationOutputDtoGenqlSelection{
     export const isUserRecommendationOutputDto = (obj?: { __typename?: any } | null): obj is UserRecommendationOutputDto => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isUserRecommendationOutputDto"')
       return UserRecommendationOutputDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const WeightSnapshotDto_possibleTypes: string[] = ['WeightSnapshotDto']
+    export const isWeightSnapshotDto = (obj?: { __typename?: any } | null): obj is WeightSnapshotDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isWeightSnapshotDto"')
+      return WeightSnapshotDto_possibleTypes.includes(obj.__typename)
     }
     
 

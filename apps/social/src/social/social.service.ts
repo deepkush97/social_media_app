@@ -86,7 +86,8 @@ export class SocialService implements OnModuleInit {
         `
         MATCH (u1:User {id: $followerId})-[r:FOLLOWS]->(u2:User {id: $followingId})
         SET r.interactions = COALESCE(r.interactions, 0) + 1,
-            r.weight = COALESCE(r.weight, 1.0) + $weightIncrement
+            r.weight = COALESCE(r.weight, 1.0) + $weightIncrement,
+            r.lastInteractionAt = datetime()
         `,
         { followerId, followingId, weightIncrement },
       );
@@ -341,5 +342,50 @@ export class SocialService implements OnModuleInit {
   async hasLiked(userId: number, postId: number): Promise<boolean> {
     const count = await this.likeRepository.count({ where: { userId, postId } });
     return count > 0;
+  }
+
+  async removeLikeEdge(userId: number, postId: number): Promise<void> {
+    await this.neo4jService.executeWrite(async (tx) => {
+      await tx.run(
+        `
+        MATCH (u:User {id: $userId})-[r:LIKED]->(p:Post {id: $postId})
+        DELETE r
+        `,
+        { userId, postId },
+      );
+    }, SocialService.name);
+  }
+
+  async createFollowEdge(followerId: number, followingId: number, source?: string): Promise<void> {
+    if (followerId === followingId) return;
+
+    await this.neo4jService.executeWrite(async (tx) => {
+      await tx.run(
+        `
+        MERGE (u1:User {id: $followerId})
+        MERGE (u2:User {id: $followingId})
+        MERGE (u1)-[r:FOLLOWS]->(u2)
+        ON CREATE SET r.weight = 1.0,
+          r.createdAt = datetime(),
+          r.source = $source,
+          r.interactions = 0
+        `,
+        { followerId, followingId, source: source ?? 'feed' },
+      );
+    }, SocialService.name);
+  }
+
+  async removeFollowEdge(followerId: number, followingId: number): Promise<void> {
+    if (followerId === followingId) return;
+
+    await this.neo4jService.executeWrite(async (tx) => {
+      await tx.run(
+        `
+        MATCH (u1:User {id: $followerId})-[r:FOLLOWS]->(u2:User {id: $followingId})
+        DELETE r
+        `,
+        { followerId, followingId },
+      );
+    }, SocialService.name);
   }
 }

@@ -4,6 +4,7 @@ import { postData, uniqueUser } from './helpers/data.js';
 import { request } from './helpers/request.js';
 
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:3000';
+const SKIP_UNFOLLOW = __ENV.SKIP_UNFOLLOW === 'true';
 
 export const options = {
   stages: [
@@ -239,35 +240,47 @@ export default function () {
   // ──────────────────────────────────────────────
   // 9. Social — follow / unfollow (cross-VU)
   // ──────────────────────────────────────────────
-  if (__VU > 1) {
+  if (__VU > 1 && userId != null) {
     group('9. Social — follow & unfollow', () => {
       const targetUserId = userId - 1;
 
-      request('POST', `${BASE_URL}/users/follow/${targetUserId}`, {
+      const followRes = request('POST', `${BASE_URL}/users/follow/${targetUserId}`, {
         token,
         label: 'follow_user',
         checks: ok,
       });
 
-      request('GET', `${BASE_URL}/users/counts`, {
-        token,
-        label: 'counts_after_follow',
-        checks: (r, data, code) =>
-          r.status === 200 && code === 'OPERATION_SUCCESS' && data.followings >= 1,
-      });
+      const followedOk =
+        followRes.status === 200 && followRes.json('code') === 'OPERATION_SUCCESS';
 
-      request('POST', `${BASE_URL}/users/unfollow/${targetUserId}`, {
-        token,
-        label: 'unfollow_user',
-        checks: ok,
-      });
+      if (followedOk) {
+        request('GET', `${BASE_URL}/users/counts`, {
+          token,
+          label: 'counts_after_follow',
+          checks: (r, data, code) =>
+            r.status === 200 && code === 'OPERATION_SUCCESS' && data.followings >= 1,
+        });
+      }
 
-      request('GET', `${BASE_URL}/users/counts`, {
-        token,
-        label: 'counts_after_unfollow',
-        checks: (r, data, code) =>
-          r.status === 200 && code === 'OPERATION_SUCCESS' && data.followings === 0,
-      });
+      if (!SKIP_UNFOLLOW) {
+        const unfollowRes = request('POST', `${BASE_URL}/users/unfollow/${targetUserId}`, {
+          token,
+          label: 'unfollow_user',
+          checks: ok,
+        });
+
+        const unfollowedOk =
+          unfollowRes.status === 200 && unfollowRes.json('code') === 'OPERATION_SUCCESS';
+
+        if (unfollowedOk) {
+          request('GET', `${BASE_URL}/users/counts`, {
+            token,
+            label: 'counts_after_unfollow',
+            checks: (r, data, code) =>
+              r.status === 200 && code === 'OPERATION_SUCCESS' && data.followings === 0,
+          });
+        }
+      }
     });
   }
 

@@ -6,6 +6,7 @@ import { AppCodes } from '@app/shared/enums/app-codes.enum';
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
 import { ILike } from '@app/shared/interfaces/like/like.interface';
 import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface';
+import { IDecayResult } from '@app/shared/interfaces/social/decay-result.interface';
 import { IFollowUnfollow } from '@app/shared/interfaces/social/follow-unfollow.interface';
 import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-following-count.interface';
 import { IPostRecommendationItem } from '@app/shared/interfaces/social/post-recommendation.interface';
@@ -14,12 +15,14 @@ import { createPaginatedResponse } from '@app/shared/utils/create-paginated-resp
 
 import { LikeInput } from './social/like.input';
 import { SocialService } from './social/social.service';
+import { WeightDecayService } from './weight-decay/weight-decay.service';
 
 @Injectable()
 export class AppService {
   constructor(
     private readonly logger: AppLoggerService,
     private readonly socialService: SocialService,
+    private readonly weightDecayService: WeightDecayService,
   ) {}
 
   async follow(input: IFollowUnfollow): Promise<IAppResponse<IFollowerFollowingCount>> {
@@ -179,5 +182,15 @@ export class AppService {
         code: AppCodes.INTERNAL_ERROR,
       });
     }
+  }
+
+  async triggerWeightDecay(dryRun?: boolean): Promise<IAppResponse<IDecayResult>> {
+    if (dryRun) {
+      return new AppResponse({ code: AppCodes.OPERATION_SUCCESS });
+    }
+
+    const data = await this.weightDecayService.decayFollowWeights();
+
+    return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data });
   }
 }

@@ -1,3 +1,7 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
 type BooleanOutputDto {
   data: Boolean
   code: AppCodes!
@@ -20,6 +24,23 @@ enum AppCodes {
 
 type NumberOutputDto {
   data: Int
+  code: AppCodes!
+}
+
+type WeightSnapshotDto {
+  min: Float!
+  max: Float!
+  mean: Float!
+}
+
+type DecayResultDto {
+  edgesDecayed: Float!
+  before: WeightSnapshotDto!
+  after: WeightSnapshotDto!
+}
+
+type DecayResultOutputDto {
+  data: DecayResultDto
   code: AppCodes!
 }
 
@@ -115,6 +136,7 @@ type Mutation {
   unfollow(input: FollowUnfollowInput!): UserCountsDto!
   likePost(input: LikeInput!): LikeOutputDto!
   unlikePost(input: LikeInput!): BooleanOutputDto!
+  triggerWeightDecay(dryRun: Boolean): DecayResultOutputDto!
 }
 
 input FollowUnfollowInput {
