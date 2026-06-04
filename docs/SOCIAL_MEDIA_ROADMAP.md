@@ -42,14 +42,13 @@
 
   **Namespace breakdown:**
 
-  | Namespace     | Components                                                                 | Purpose                                              |
-  |---------------|---------------------------------------------------------------------------|------------------------------------------------------|
-  | `infra`       | Redis, MySQL 8.0, Neo4j (Community + GDS), NATS JetStream, Elasticsearch  | Stateful data stores; persistent volumes + PVCs      |
-  | `app`         | auth, posts, social, search, gateway (NestJS microservices), Apollo Router| Stateless application services; HPA for scaling      |
-  | `monitoring`  | Jaeger (all-in-one), Prometheus, Grafana                                  | Observability stack with configured datasources      |
+  | Namespace    | Components                                                                 | Purpose                                         |
+  | ------------ | -------------------------------------------------------------------------- | ----------------------------------------------- |
+  | `infra`      | Redis, MySQL 8.0, Neo4j (Community + GDS), NATS JetStream, Elasticsearch   | Stateful data stores; persistent volumes + PVCs |
+  | `app`        | auth, posts, social, search, gateway (NestJS microservices), Apollo Router | Stateless application services; HPA for scaling |
+  | `monitoring` | Jaeger (all-in-one), Prometheus, Grafana                                   | Observability stack with configured datasources |
 
   **What each namespace needs:**
-
   - **`infra`** — StatefulSets for MySQL, Neo4j, Redis, NATS (JetStream), Elasticsearch. Each with PersistentVolumeClaims, headless services, config maps for init scripts and health checks. MySQL needs `init-db` scripts from `./init-db` mounted via ConfigMap. Neo4j needs GDS plugin and auth config. NATS needs JetStream storage directory and monitoring port (8222). Elasticsearch needs single-node discovery config and heap limits (`ES_JAVA_OPTS`).
 
   - **`app`** — Deployments for each NestJS service: `gateway` (REST, port 3000), `auth`, `posts`, `social`, `search` (each serving GraphQL federation on port 3001-3004). The Apollo Router as a Deployment on port 4000. All services read env vars from a shared ConfigMap + Secrets (JWT secret, DB passwords). HorizontalPodAutoscaler based on CPU/memory for gateway and Apollo Router. Init containers or sidecars for OTel SDK initialization. Liveness/readiness probes on health endpoints.
@@ -215,7 +214,7 @@ Add the Cypher queries that power recommendations to `SocialService`. No endpoin
   SKIP $offset LIMIT $limit
   ```
 
-- [x] **Add `whoToFollow(userId, limit, offset)`** — Cypher query:
+- [x] **Add `userRecommendation(userId, limit, offset)`** — Cypher query:
   1. Friend-of-friend (users followed by people you follow), ordered by common followers count
   2. Users whose posts you've liked (exclude already-followed + self)
   3. Combined score = commonFollowers + likedPostsScore
@@ -237,7 +236,7 @@ Wire the queries through GraphQL (social subgraph) → Apollo Router → gateway
 - [x] **Regenerate schema** — updated `social.graphql`, composed supergraph, generated genql client.
 - [x] **Add gateway REST endpoint** — `GET /recommendations/posts` (authenticated, uses JWT userId).
 - [x] **Add Redis caching** — cache per-user results with 60s TTL.
-- [x] **Add gateway REST endpoint** — `GET /recommendations/users` for `whoToFollow`.
+- [x] **Add gateway REST endpoint** — `GET /recommendations/users` for `userRecommendation`.
 
 **Verify:** Hit `GET /recommendations/posts?userId=1` → get back scored post list. Hit `GET /recommendations/users?userId=1` → get back suggested users.
 
@@ -300,7 +299,7 @@ A script or dedicated seeder module that populates the system with realistic tes
 
 - [ ] **Create `scripts/seed.ts`** (or `apps/seeder`) that:
   - Creates N users (e.g. 100) with random names via `POST /auth/register`
-   - Creates M posts per user (e.g. 5-10) with `#hashtags` randomly sprinkled into content
+  - Creates M posts per user (e.g. 5-10) with `#hashtags` randomly sprinkled into content
   - Creates follow relationships (random, ~30% probability between any two users)
   - Creates likes (random, ~20% probability user likes a post)
   - Results in a realistic Neo4j graph: `User → Post`, `User → Tag`, `User → User` relationships with weights

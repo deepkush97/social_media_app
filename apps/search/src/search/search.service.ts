@@ -154,6 +154,7 @@ export class SearchService implements OnModuleInit {
         context: 'SearchService',
         error: err,
       });
+      throw err;
     }
   }
 
@@ -169,6 +170,7 @@ export class SearchService implements OnModuleInit {
         context: 'SearchService',
         error: err,
       });
+      throw err;
     }
   }
 
@@ -181,6 +183,7 @@ export class SearchService implements OnModuleInit {
       });
     } catch (err) {
       this.logger.error(`Failed to index tag ${name}`, { context: 'SearchService', error: err });
+      throw err;
     }
   }
 
@@ -196,6 +199,7 @@ export class SearchService implements OnModuleInit {
       });
     } catch (err) {
       this.logger.error('Failed to bulk index tags', { context: 'SearchService', error: err });
+      throw err;
     }
   }
 

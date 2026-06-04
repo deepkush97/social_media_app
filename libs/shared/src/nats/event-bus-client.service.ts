@@ -156,8 +156,13 @@ export class EventBusClient implements OnModuleInit, OnApplicationBootstrap, OnM
       this.logger.info(`Created pull consumer ${consumerName} on ${sName} for ${filterSubject}`, {
         context: EventBusClient.name,
       });
-    } catch {
-      // consumer already exists
+    } catch (error: unknown) {
+      if (
+        !(error instanceof Error) ||
+        !error.message?.toLowerCase().includes('consumer already exists')
+      ) {
+        throw error;
+      }
     }
   }
 
@@ -167,8 +172,12 @@ export class EventBusClient implements OnModuleInit, OnApplicationBootstrap, OnM
     event: NatsEvents,
     eventHandlers: HandlerEntry[],
   ): void {
-    const poll = async (): Promise<void> => {
+    const poll = async (backoffMs = 0): Promise<void> => {
       if (!this.active) return;
+
+      if (backoffMs > 0) {
+        await new Promise((resolve) => setTimeout(resolve, backoffMs));
+      }
 
       try {
         const c = await this.js.consumers.get(sName, consumerName);
@@ -191,31 +200,37 @@ export class EventBusClient implements OnModuleInit, OnApplicationBootstrap, OnM
             msg.nak();
           }
         }
-      } catch {
-        // fetch timeout or no messages — poll again
-      }
 
-      if (this.active) {
-        void poll();
+        if (this.active) {
+          void poll(0);
+        }
+      } catch {
+        const nextBackoff = backoffMs === 0 ? 1_000 : Math.min(backoffMs * 2, 30_000);
+        this.logger.error(`NATS poll failed for ${event}, retrying in ${nextBackoff}ms`, {
+          context: EventBusClient.name,
+        });
+
+        if (this.active) {
+          void poll(nextBackoff);
+        }
       }
     };
 
-    void poll();
+    void poll(0);
   }
 
   async emit({ data, event }: BaseEvent, context: string): Promise<void> {
-    await this.js
-      .publish(event, this.jc.encode(data))
-      .then(() => {
-        this.logger.info(`Emitted ${event}`, { context: EventBusClient.name });
-      })
-      .catch((error) => {
-        this.logger.error(`Error while emitting the event: ${event}`, {
-          error,
-          data,
-          context,
-        });
+    try {
+      await this.js.publish(event, this.jc.encode(data));
+      this.logger.info(`Emitted ${event}`, { context: EventBusClient.name });
+    } catch (error) {
+      this.logger.error(`Error while emitting the event: ${event}`, {
+        error,
+        data,
+        context,
       });
+      throw error;
+    }
   }
 
   async onModuleDestroy(): Promise<void> {

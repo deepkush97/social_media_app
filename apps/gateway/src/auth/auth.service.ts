@@ -18,6 +18,7 @@ import {
 import { EventBusClient } from '@app/shared/nats/event-bus-client.service';
 
 import { CACHE_TTL_IN_SECONDS } from '../app.constant';
+import { RedisFormatter } from '../redis-formatter';
 
 @Injectable()
 export class AuthService {
@@ -27,10 +28,6 @@ export class AuthService {
     private readonly cacheService: CacheService,
     private readonly eventBusClient: EventBusClient,
   ) {}
-
-  private createSessionCacheKey(sessionId: string): string {
-    return `session:${sessionId}`;
-  }
 
   async signup(input: INewUser): Promise<AppResponse<IAuthProfileToken>> {
     const createUserResult = await this.routerComposite.createUser(input, {
@@ -43,8 +40,8 @@ export class AuthService {
       },
     });
 
-    if (createUserResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[createUserResult.code] });
+    if (createUserResult.code !== AppCodes.OPERATION_SUCCESS || !createUserResult.data) {
+      return new AppResponse({ code: AppCodes[createUserResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
     const { data: user } = createUserResult;
     const newSessionResult = await this.routerComposite.createNewSession(user.id, {
@@ -54,8 +51,8 @@ export class AuthService {
       },
     });
 
-    if (newSessionResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[newSessionResult.code] });
+    if (newSessionResult.code !== AppCodes.OPERATION_SUCCESS || !newSessionResult.data) {
+      return new AppResponse({ code: AppCodes[newSessionResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
     const { data: session } = newSessionResult;
@@ -64,7 +61,7 @@ export class AuthService {
     const profile = this.prepareProfilePayload(session.guid, user);
 
     await this.cacheService.set(
-      this.createSessionCacheKey(session.guid),
+      RedisFormatter.session(session.guid),
       profile,
       CACHE_TTL_IN_SECONDS,
     );
@@ -97,12 +94,20 @@ export class AuthService {
         name: 1,
       },
     });
-    if (loginUserResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[loginUserResult.code] });
+    if (loginUserResult.code !== AppCodes.OPERATION_SUCCESS || !loginUserResult.data) {
+      return new AppResponse({ code: AppCodes[loginUserResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
     const user = loginUserResult.data;
 
-    await this.routerComposite.closeAllOpenSessionByUserId(user.id, { code: 1 });
+    const closeOpenSessionResult = await this.routerComposite.closeAllOpenSessionByUserId(user.id, {
+      code: 1,
+    });
+
+    if (closeOpenSessionResult.code !== AppCodes.OPERATION_SUCCESS) {
+      return new AppResponse({
+        code: AppCodes[closeOpenSessionResult.code ?? AppCodes.INTERNAL_ERROR],
+      });
+    }
 
     const newSessionResult = await this.routerComposite.createNewSession(user.id, {
       code: 1,
@@ -111,8 +116,8 @@ export class AuthService {
       },
     });
 
-    if (newSessionResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[newSessionResult.code] });
+    if (newSessionResult.code !== AppCodes.OPERATION_SUCCESS || !newSessionResult.data) {
+      return new AppResponse({ code: AppCodes[newSessionResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
     const { data: session } = newSessionResult;
@@ -121,7 +126,7 @@ export class AuthService {
     const profile = this.prepareProfilePayload(session.guid, user);
 
     await this.cacheService.set(
-      this.createSessionCacheKey(session.guid),
+      RedisFormatter.session(session.guid),
       profile,
       CACHE_TTL_IN_SECONDS,
     );
@@ -137,6 +142,7 @@ export class AuthService {
 
   async logout(sessionId: string): Promise<boolean> {
     await this.routerComposite.closeSessionBySessionId(sessionId, { code: 1 });
+    await this.cacheService.del(RedisFormatter.session(sessionId));
 
     return true;
   }
@@ -147,7 +153,7 @@ export class AuthService {
   }
 
   public async getAuthSession(sessionId: string): Promise<IAppResponse<ICurrentUser>> {
-    const sessionCacheKey = this.createSessionCacheKey(sessionId);
+    const sessionCacheKey = RedisFormatter.session(sessionId);
 
     const data = await this.cacheService.get<ICurrentUser>(sessionCacheKey);
 
@@ -165,8 +171,8 @@ export class AuthService {
       },
     });
 
-    if (findSessionResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[findSessionResult.code] });
+    if (findSessionResult.code !== AppCodes.OPERATION_SUCCESS || !findSessionResult.data) {
+      return new AppResponse({ code: AppCodes[findSessionResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
     const { userId } = findSessionResult.data;
@@ -181,8 +187,8 @@ export class AuthService {
       },
     });
 
-    if (userResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[userResult.code] });
+    if (userResult.code !== AppCodes.OPERATION_SUCCESS || !userResult.data) {
+      return new AppResponse({ code: AppCodes[userResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
     const profile = this.prepareProfilePayload(sessionId, userResult.data);

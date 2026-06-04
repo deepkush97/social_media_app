@@ -1,10 +1,10 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
 
 import { AppPaginatedDataGraphqlResponse } from '@app/shared/app-paginated-data-graphql-response.dto';
-import { IWhoToFollowUser } from '@app/shared/interfaces/social/who-to-follow-user.interface';
+import { IUserRecommendationItem } from '@app/shared/interfaces/social/user-recommendation.interface';
 
 @ObjectType()
-export class WhoToFollowUserDto implements IWhoToFollowUser {
+export class UserRecommendationItemDto implements IUserRecommendationItem {
   @Field(() => Int)
   userId: number;
 
@@ -19,4 +19,6 @@ export class WhoToFollowUserDto implements IWhoToFollowUser {
 }
 
 @ObjectType()
-export class WhoToFollowOutputDto extends AppPaginatedDataGraphqlResponse(WhoToFollowUserDto) {}
+export class UserRecommendationOutputDto extends AppPaginatedDataGraphqlResponse(
+  UserRecommendationItemDto,
+) {}

@@ -41,7 +41,7 @@ describe('PostsService', () => {
 
       const result = await service.createNewPost(input);
 
-      expect(mockRepo.create).toHaveBeenCalledWith(input);
+      expect(mockRepo.create).toHaveBeenCalledWith({ ...input, tags: [] });
       expect(mockRepo.save).toHaveBeenCalledWith(created);
       expect(result).toBe(created);
     });

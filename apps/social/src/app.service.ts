@@ -8,8 +8,8 @@ import { ILike } from '@app/shared/interfaces/like/like.interface';
 import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface';
 import { IFollowUnfollow } from '@app/shared/interfaces/social/follow-unfollow.interface';
 import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-following-count.interface';
-import { IRecommendedPost } from '@app/shared/interfaces/social/recommended-post.interface';
-import { IWhoToFollowUser } from '@app/shared/interfaces/social/who-to-follow-user.interface';
+import { IPostRecommendationItem } from '@app/shared/interfaces/social/post-recommendation.interface';
+import { IUserRecommendationItem } from '@app/shared/interfaces/social/user-recommendation.interface';
 import { createPaginatedResponse } from '@app/shared/utils/create-paginated-response';
 
 import { LikeInput } from './social/like.input';
@@ -78,41 +78,73 @@ export class AppService {
   }
 
   async likePost(input: LikeInput): Promise<IAppResponse<ILike>> {
-    const data = await this.socialService.like(input);
-    return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data });
+    try {
+      const data = await this.socialService.like(input);
+      return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data });
+    } catch (error) {
+      this.logger.error('Error while likePost operation', {
+        context: this.constructor.name,
+        error,
+      });
+      return new AppResponse({ code: AppCodes.INTERNAL_ERROR });
+    }
   }
 
   async unlikePost(input: LikeInput): Promise<IAppResponse<boolean>> {
-    const data = await this.socialService.unlike(input);
-    return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data });
+    try {
+      const data = await this.socialService.unlike(input);
+      return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data });
+    } catch (error) {
+      this.logger.error('Error while unlikePost operation', {
+        context: this.constructor.name,
+        error,
+      });
+      return new AppResponse({ code: AppCodes.INTERNAL_ERROR });
+    }
   }
 
   async postLikeCount(postId: number): Promise<IAppResponse<number>> {
-    const data = await this.socialService.likeCount(postId);
-    return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data });
+    try {
+      const data = await this.socialService.likeCount(postId);
+      return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data });
+    } catch (error) {
+      this.logger.error('Error while postLikeCount operation', {
+        context: this.constructor.name,
+        error,
+      });
+      return new AppResponse({ code: AppCodes.INTERNAL_ERROR });
+    }
   }
 
   async hasUserLikedPost(userId: number, postId: number): Promise<IAppResponse<boolean>> {
-    const liked = await this.socialService.hasLiked(userId, postId);
-    return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data: liked });
+    try {
+      const liked = await this.socialService.hasLiked(userId, postId);
+      return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data: liked });
+    } catch (error) {
+      this.logger.error('Error while hasUserLikedPost operation', {
+        context: this.constructor.name,
+        error,
+      });
+      return new AppResponse({ code: AppCodes.INTERNAL_ERROR });
+    }
   }
 
-  async recommendedPosts(
+  async postRecommendation(
     userId: number,
     page = 1,
     take = 10,
-  ): Promise<IAppResponse<IPaginatedData<IRecommendedPost>>> {
+  ): Promise<IAppResponse<IPaginatedData<IPostRecommendationItem>>> {
     try {
       const limit = take;
       const offset = (page - 1) * take;
-      const { items, total } = await this.socialService.recommendedPosts(userId, limit, offset);
+      const { items, total } = await this.socialService.postRecommendation(userId, limit, offset);
 
       return new AppResponse({
         code: AppCodes.OPERATION_SUCCESS,
         data: createPaginatedResponse(items, total, page, take),
       });
     } catch (error) {
-      this.logger.error('Error while recommendedPosts operation', {
+      this.logger.error('Error while postRecommendation operation', {
         context: this.constructor.name,
         error,
       });
@@ -123,22 +155,22 @@ export class AppService {
     }
   }
 
-  async whoToFollow(
+  async userRecommendation(
     userId: number,
     page = 1,
     take = 10,
-  ): Promise<IAppResponse<IPaginatedData<IWhoToFollowUser>>> {
+  ): Promise<IAppResponse<IPaginatedData<IUserRecommendationItem>>> {
     try {
       const limit = take;
       const offset = (page - 1) * take;
-      const { items, total } = await this.socialService.whoToFollow(userId, limit, offset);
+      const { items, total } = await this.socialService.userRecommendation(userId, limit, offset);
 
       return new AppResponse({
         code: AppCodes.OPERATION_SUCCESS,
         data: createPaginatedResponse(items, total, page, take),
       });
     } catch (error) {
-      this.logger.error('Error while whoToFollow operation', {
+      this.logger.error('Error while userRecommendation operation', {
         context: this.constructor.name,
         error,
       });

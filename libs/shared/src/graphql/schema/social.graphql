@@ -34,18 +34,18 @@ type PaginationMeta {
   take: Int!
 }
 
-type RecommendedPostDto {
+type PostRecommendationItemDto {
   postId: Int!
   score: Float!
 }
 
-type RecommendedPostOutputDto {
-  data: RecommendedPostDtoData
+type PostRecommendationOutputDto {
+  data: PostRecommendationItemDtoData
   code: AppCodes!
 }
 
-type RecommendedPostDtoData {
-  items: [RecommendedPostDto!]!
+type PostRecommendationItemDtoData {
+  items: [PostRecommendationItemDto!]!
   meta: PaginationMeta!
 }
 
@@ -59,20 +59,20 @@ type UserCountsDto {
   code: AppCodes!
 }
 
-type WhoToFollowUserDto {
+type UserRecommendationItemDto {
   userId: Int!
   commonFollowers: Int!
   likedPostsScore: Int!
   score: Float!
 }
 
-type WhoToFollowOutputDto {
-  data: WhoToFollowUserDtoData
+type UserRecommendationOutputDto {
+  data: UserRecommendationItemDtoData
   code: AppCodes!
 }
 
-type WhoToFollowUserDtoData {
-  items: [WhoToFollowUserDto!]!
+type UserRecommendationItemDtoData {
+  items: [UserRecommendationItemDto!]!
   meta: PaginationMeta!
 }
 
@@ -98,17 +98,17 @@ type Query {
   userCounts(id: Int!): UserCountsDto!
   postLikeCount(postId: Int!): NumberOutputDto!
   hasUserLikedPost(userId: Int!, postId: Int!): BooleanOutputDto!
-  recommendedPosts(input: RecommendedPostsInput!): RecommendedPostOutputDto!
-  whoToFollow(input: WhoToFollowInput!): WhoToFollowOutputDto!
+  postRecommendation(input: PostRecommendationInput!): PostRecommendationOutputDto!
+  userRecommendation(input: UserRecommendationInput!): UserRecommendationOutputDto!
 }
 
-input RecommendedPostsInput {
+input PostRecommendationInput {
   take: Int! = 10
   page: Int! = 1
   userId: Int!
 }
 
-input WhoToFollowInput {
+input UserRecommendationInput {
   take: Int! = 10
   page: Int! = 1
   userId: Int!

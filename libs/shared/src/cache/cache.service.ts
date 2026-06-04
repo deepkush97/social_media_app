@@ -25,7 +25,19 @@ export class CacheService implements OnModuleInit {
       return null;
     }
     this.logger.info(`get: cache success ${key}`, { context: CacheService.name });
-    return JSON.parse(value) as T;
+    try {
+      return JSON.parse(value) as T;
+    } catch {
+      this.logger.error(`get: failed to parse cached value for key "${key}"`, {
+        context: CacheService.name,
+      });
+      await this.redisClient.del(key).catch(() =>
+        this.logger.warn(`get: failed to delete corrupted data for "${key}"`, {
+          context: CacheService.name,
+        }),
+      );
+      return null;
+    }
   }
 
   async set(key: string, value: unknown, ttl?: number): Promise<void> {
@@ -46,7 +58,7 @@ export class CacheService implements OnModuleInit {
     await this.redisClient.del(key);
   }
 
-  async delAll(pattern: string, batchSize = 1): Promise<void> {
+  async delAll(pattern: string, batchSize = 10): Promise<void> {
     this.logger.info(`delAll: pattern ${pattern} batchSize ${batchSize}`, {
       context: CacheService.name,
     });
@@ -59,6 +71,7 @@ export class CacheService implements OnModuleInit {
 
       let pipeline = this.redisClient.pipeline();
       let localKeys: string[] = [];
+      let pipelineError: Error | null = null;
 
       stream.on('data', (resultKeys: string[]) => {
         this.logger.debug(`delAll: keys found ${resultKeys.length}`, {
@@ -70,14 +83,14 @@ export class CacheService implements OnModuleInit {
         }
 
         if (localKeys.length > batchSize) {
-          void pipeline.exec((error, result) => {
-            if (error)
+          void pipeline.exec((error) => {
+            if (error) {
               this.logger.error('error in executing pipeline', {
                 error,
                 context: CacheService.name,
               });
-            if (result)
-              this.logger.info('batch completed', { data: result, context: CacheService.name });
+              pipelineError = error;
+            }
           });
           localKeys = [];
           pipeline = this.redisClient.pipeline();
@@ -85,13 +98,13 @@ export class CacheService implements OnModuleInit {
       });
 
       stream.on('end', () => {
-        void pipeline.exec((error, result) => {
+        void pipeline.exec((error) => {
           if (error) {
             this.logger.error('error in executing pipeline', { error, context: CacheService.name });
             reject(error);
+          } else if (pipelineError) {
+            reject(pipelineError);
           } else {
-            if (result)
-              this.logger.info('batch completed', { data: result, context: CacheService.name });
             resolve();
           }
         });

@@ -29,12 +29,19 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
 
     this.redisClient = new Redis(options);
 
+    this.redisClient.on('error', (error) => {
+      this.logger.error('Redis connection error', {
+        context: RedisService.name,
+        error,
+      });
+    });
+
     this.logger.info(`Connected to Redis at ${host}:${port}`, { context: RedisService.name });
   }
 
-  onModuleDestroy(): void {
+  async onModuleDestroy(): Promise<void> {
     this.logger.info(`Bye bye, Redis is getting disconnect`, { context: RedisService.name });
-    void this.redisClient.quit();
+    await this.redisClient.quit();
   }
 
   public getClient(): Redis {

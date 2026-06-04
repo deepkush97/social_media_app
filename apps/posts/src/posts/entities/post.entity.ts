@@ -2,15 +2,22 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
+import { DatabaseIndexType } from '@app/shared/enums/database-index-type.enum';
 import { PostStatusEnum } from '@app/shared/enums/post-status.enum';
 import { TableNamesEnum } from '@app/shared/enums/table-names.enum';
 import { IPost } from '@app/shared/interfaces/post/post.interface';
 
 @Entity(TableNamesEnum.POSTS_POSTS)
+@Index(`${DatabaseIndexType.IDX}_${TableNamesEnum.POSTS_POSTS}_userId_status_createdAt`, [
+  'userId',
+  'status',
+  'createdAt',
+])
 export class Post implements IPost {
   @PrimaryGeneratedColumn()
   id: number;

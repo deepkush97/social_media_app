@@ -12,6 +12,7 @@ import { INewPost, IPost } from '@app/shared/interfaces/post/post.interface';
 import { EventBusClient } from '@app/shared/nats/event-bus-client.service';
 
 import { CACHE_TTL_IN_SECONDS } from '../app.constant';
+import { RedisFormatter } from '../redis-formatter';
 
 @Injectable()
 export class PostsService {
@@ -20,23 +21,6 @@ export class PostsService {
     private readonly cacheService: CacheService,
     private readonly eventBusClient: EventBusClient,
   ) {}
-
-  private createPostCacheKey(postId: number): string {
-    return `post:${postId}`;
-  }
-
-  private postListCacheKey(
-    userId: number,
-    take: number,
-    page: number,
-    status: PostStatusEnum,
-  ): string {
-    return `posts:${userId}:${take}:${page}:${status}`;
-  }
-
-  private deletePostListForUserKey(userId: number): string {
-    return `posts:${userId}:*`;
-  }
 
   async createPost(userId: number, input: INewPost): Promise<IAppResponse<IPost>> {
     const createPostResult = await this.routerComposite.createPost(
@@ -52,11 +36,12 @@ export class PostsService {
           tags: 1,
           title: 1,
           updatedAt: 1,
+          userId: 1,
         },
       },
     );
-    if (createPostResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[createPostResult.code] });
+    if (createPostResult.code !== AppCodes.OPERATION_SUCCESS || !createPostResult.data) {
+      return new AppResponse({ code: AppCodes[createPostResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
     const postData: IPost = {
@@ -64,12 +49,8 @@ export class PostsService {
       status: PostStatusEnum[createPostResult.data.status],
     };
 
-    await this.cacheService.set(
-      this.createPostCacheKey(postData.id),
-      postData,
-      CACHE_TTL_IN_SECONDS,
-    );
-    await this.cacheService.delAll(this.deletePostListForUserKey(userId), 3);
+    await this.cacheService.set(RedisFormatter.post(postData.id), postData, CACHE_TTL_IN_SECONDS);
+    await this.cacheService.delAll(RedisFormatter.postListPattern(userId));
 
     await this.eventBusClient.emit(
       new PostCreatedEvent({
@@ -90,6 +71,19 @@ export class PostsService {
   }
 
   async archivePost(userId: number, id: number): Promise<IAppResponse<boolean>> {
+    const postResult = await this.findPostById(id);
+    if (postResult.code !== AppCodes.OPERATION_SUCCESS) {
+      return new AppResponse({
+        code: postResult.code,
+      });
+    }
+
+    if (postResult.data.userId !== userId) {
+      return new AppResponse({
+        code: AppCodes.BAD_REQUEST,
+      });
+    }
+
     const createPostResult = await this.routerComposite.archivePost(id, {
       code: 1,
       data: 1,
@@ -99,8 +93,8 @@ export class PostsService {
       return new AppResponse({ code: AppCodes[createPostResult.code] });
     }
 
-    await this.cacheService.del(this.createPostCacheKey(id));
-    await this.cacheService.delAll(this.deletePostListForUserKey(userId), 3);
+    await this.cacheService.del(RedisFormatter.post(id));
+    await this.cacheService.delAll(RedisFormatter.postListPattern(userId));
 
     return new AppResponse({
       code: AppCodes.OPERATION_SUCCESS,
@@ -108,7 +102,7 @@ export class PostsService {
   }
 
   async findPostById(id: number): Promise<IAppResponse<IPost>> {
-    const cacheKey = this.createPostCacheKey(id);
+    const cacheKey = RedisFormatter.post(id);
     const fromCache = await this.cacheService.get<IPost>(cacheKey);
 
     if (fromCache) {
@@ -128,10 +122,11 @@ export class PostsService {
         status: 1,
         title: 1,
         updatedAt: 1,
+        userId: 1,
       },
     });
-    if (postResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[postResult.code] });
+    if (postResult.code !== AppCodes.OPERATION_SUCCESS || !postResult.data) {
+      return new AppResponse({ code: AppCodes[postResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
     const postData: IPost = {
@@ -153,7 +148,7 @@ export class PostsService {
     page = 1,
     status = PostStatusEnum.ACTIVE,
   ): Promise<IAppResponse<IPaginatedData<IPost>>> {
-    const postsCacheKey = this.postListCacheKey(userId, take, page, status);
+    const postsCacheKey = RedisFormatter.postList(userId, take, page, status);
 
     const fromCache = await this.cacheService.get<IPaginatedData<IPost>>(postsCacheKey);
 
@@ -188,8 +183,8 @@ export class PostsService {
         },
       },
     );
-    if (postResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[postResult.code] });
+    if (postResult.code !== AppCodes.OPERATION_SUCCESS || !postResult.data) {
+      return new AppResponse({ code: AppCodes[postResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
     const items: IPost[] = postResult.data.items.map((p) => ({

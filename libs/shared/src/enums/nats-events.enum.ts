@@ -9,4 +9,5 @@ export enum NatsEvents {
   USER_UNFOLLOWED = 'user.unfollowed',
   IMPRESSION_CREATED = 'impression.created',
   SEARCH_INDEX_REQUESTED = 'search.index.requested',
+  SEARCH_INDEX_RETRY = 'search.index.retry',
 }

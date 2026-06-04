@@ -18,7 +18,11 @@ export class AppService {
     private readonly bcryptService: BcryptService,
   ) {}
 
-  async createUser({ name, email, password }: INewUser): Promise<IAppResponse<IUser>> {
+  async createUser({
+    name,
+    email,
+    password,
+  }: INewUser): Promise<IAppResponse<Omit<IUser, 'password'>>> {
     const isExists = await this.userService.findByEmail(email);
     if (isExists) {
       return new AppResponse({ code: AppCodes.INVALID_EMAIL });
@@ -32,13 +36,15 @@ export class AppService {
       email,
     });
 
+    const { password: _, ...data } = user;
+
     return new AppResponse({
       code: AppCodes.OPERATION_SUCCESS,
-      data: user,
+      data,
     });
   }
 
-  async loginUser({ email, password }: ILoginUser): Promise<IAppResponse<IUser>> {
+  async loginUser({ email, password }: ILoginUser): Promise<IAppResponse<Omit<IUser, 'password'>>> {
     const existingPlayer = await this.userService.findByEmail(email, {
       createdAt: true,
       email: true,
@@ -56,9 +62,11 @@ export class AppService {
       return new AppResponse({ code: AppCodes.INVALID_CREDENTIALS });
     }
 
+    const { password: _, ...data } = existingPlayer;
+
     return new AppResponse({
       code: AppCodes.OPERATION_SUCCESS,
-      data: existingPlayer,
+      data,
     });
   }
 

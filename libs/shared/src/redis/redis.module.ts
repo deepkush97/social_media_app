@@ -7,7 +7,7 @@ import { RedisConfigService } from './configurations/redis-config.service';
 import { RedisService } from './redis.service';
 
 @Module({
-  imports: [ConfigModule.forFeature(redisConfigLoader), RedisModule],
+  imports: [ConfigModule.forFeature(redisConfigLoader)],
   providers: [RedisService, RedisConfigService],
   exports: [RedisService, RedisConfigService],
 })

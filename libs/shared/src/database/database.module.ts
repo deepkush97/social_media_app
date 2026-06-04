@@ -1,17 +1,16 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { DatabaseLoggerService } from '@app/shared/app-logger/database-logger.service';
 
+import { DatabaseConfigModule } from './configurations/database-config.module';
 import { DatabaseConfigService } from './configurations/database-config.service';
-import { dbConfigLoader } from './configurations/loader';
 
 @Module({
   imports: [
-    ConfigModule.forFeature(dbConfigLoader),
+    DatabaseConfigModule,
     TypeOrmModule.forRootAsync({
-      imports: [DatabaseModule, ConfigModule.forFeature(dbConfigLoader)],
+      imports: [DatabaseConfigModule],
       inject: [DatabaseConfigService, DatabaseLoggerService],
       useFactory: (configService: DatabaseConfigService, logger: DatabaseLoggerService) => {
         const logging = configService.logging;
@@ -32,7 +31,5 @@ import { dbConfigLoader } from './configurations/loader';
       },
     }),
   ],
-  providers: [DatabaseConfigService],
-  exports: [DatabaseConfigService],
 })
 export class DatabaseModule {}

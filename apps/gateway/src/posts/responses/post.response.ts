@@ -43,6 +43,7 @@ export class PostItem implements IPost {
   status: PostStatusEnum;
 
   @ApiProperty({ description: 'Post tags', isArray: true })
+  @Expose()
   tags: string[];
 }
 
