@@ -9,6 +9,7 @@ import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-
 import { IPostRecommendationItem } from '@app/shared/interfaces/social/post-recommendation.interface';
 import { IUserRecommendationItem } from '@app/shared/interfaces/social/user-recommendation.interface';
 import { Neo4jService } from '@app/shared/neo4j/neo4j.service';
+import { toInt } from '@app/shared/utils/to-int';
 
 import { LikeEntity } from './like.entity';
 import { LikeInput } from './like.input';
@@ -104,9 +105,9 @@ export class SocialService implements OnModuleInit {
         MERGE (u:User {id: $userId})
         MERGE (t:Tag {name: tag})
         MERGE (u)-[r:INTERESTED_IN]->(t)
-        ON CREATE SET r.weight = toFloat($weightIncrement),
+        ON CREATE SET r.weight = $weightIncrement,
                       r.createdAt = datetime()
-        ON MATCH SET r.weight = toFloat(COALESCE(r.weight, 0)) + toFloat($weightIncrement)
+        ON MATCH SET r.weight = COALESCE(r.weight, 0) + $weightIncrement
         `,
         { userId, tags, weightIncrement },
       );
@@ -138,11 +139,11 @@ export class SocialService implements OnModuleInit {
     const baseQuery = `
       CALL {
         MATCH (me:User {id: $userId})-[:FOLLOWS]->(author:User)-[:CREATED]->(post:Post)
-        RETURN post.id AS postId, toFloat(1.0) AS score
+        RETURN post.id AS postId, 1.0 AS score
         UNION
         MATCH (me:User {id: $userId})-[interest:INTERESTED_IN]->(tag:Tag)<-[:TAGGED]-(post:Post)<-[:CREATED]-(author:User)
         WHERE NOT (me)-[:FOLLOWS]->(author)
-        RETURN post.id AS postId, toFloat(0.5 * interest.weight) AS score
+        RETURN post.id AS postId, 0.5 * interest.weight AS score
       }
       WITH postId, max(score) AS score
       ORDER BY score DESC
@@ -150,7 +151,7 @@ export class SocialService implements OnModuleInit {
 
     return this.neo4jService.executeRead(async (tx) => {
       const itemsResult = await tx.run(
-        `        ${baseQuery} RETURN postId, score SKIP toInteger($offset) LIMIT toInteger($limit)`,
+        `${baseQuery} RETURN postId, score SKIP toInteger($offset) LIMIT toInteger($limit)`,
         { userId, limit, offset },
       );
 
@@ -161,11 +162,11 @@ export class SocialService implements OnModuleInit {
       });
 
       const items = itemsResult.records.map((record) => ({
-        postId: record.get('postId').toNumber(),
-        score: record.get('score').toNumber(),
+        postId: toInt(record.get('postId')),
+        score: toInt(record.get('score')),
       }));
 
-      const total = countResult.records[0]?.get('total').toNumber() ?? 0;
+      const total = toInt(countResult.records[0]?.get('total')) ?? 0;
 
       return { items, total };
     }, SocialService.name);
@@ -208,13 +209,13 @@ export class SocialService implements OnModuleInit {
       });
 
       const items = itemsResult.records.map((record) => ({
-        userId: record.get('userId').toNumber(),
-        commonFollowers: record.get('commonFollowers').toNumber(),
-        likedPostsScore: record.get('likedPostsScore').toNumber(),
-        score: record.get('score').toNumber(),
+        userId: toInt(record.get('userId')),
+        commonFollowers: toInt(record.get('commonFollowers')),
+        likedPostsScore: toInt(record.get('likedPostsScore')),
+        score: toInt(record.get('score')),
       }));
 
-      const total = countResult.records[0]?.get('total').toNumber() ?? 0;
+      const total = toInt(countResult.records[0]?.get('total')) ?? 0;
 
       return { items, total };
     }, SocialService.name);
