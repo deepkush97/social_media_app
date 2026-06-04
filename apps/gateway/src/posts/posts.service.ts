@@ -36,6 +36,7 @@ export class PostsService {
           tags: 1,
           title: 1,
           updatedAt: 1,
+          userId: 1,
         },
       },
     );
@@ -121,6 +122,7 @@ export class PostsService {
         status: 1,
         title: 1,
         updatedAt: 1,
+        userId: 1,
       },
     });
     if (postResult.code !== AppCodes.OPERATION_SUCCESS || !postResult.data) {
