@@ -42,7 +42,7 @@ export const appBootstrap = async (module: Type<unknown>): Promise<void> => {
 
   const port = appConfigService.port;
 
-  const isSwaggerEnabled = appConfigService.isSwaggerEnabled;
+  const isSwaggerEnabled = process.env.IS_SWAGGER_ENABLED === 'true';
   if (isSwaggerEnabled) {
     const config = new DocumentBuilder()
       .setTitle('Social media app')

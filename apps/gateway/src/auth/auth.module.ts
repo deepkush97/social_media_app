@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
-import { AppConfigService } from '@app/shared/app-config/app-config.service';
 import { BcryptModule } from '@app/shared/bcrypt/bcrypt.module';
 import { CacheModule } from '@app/shared/cache/cache.module';
+
+import { GatewayConfigService } from '../config/gateway-config.service';
 
 import { JwtStrategy } from './strategies/jwt.strategy';
 
@@ -17,7 +18,7 @@ import { AuthService } from './auth.service';
     CacheModule,
     PassportModule,
     JwtModule.registerAsync({
-      useFactory: (configService: AppConfigService) => {
+      useFactory: (configService: GatewayConfigService) => {
         return {
           secret: configService.jwtSecret,
           signOptions: {
@@ -25,7 +26,7 @@ import { AuthService } from './auth.service';
           },
         };
       },
-      inject: [AppConfigService],
+      inject: [GatewayConfigService],
     }),
   ],
   controllers: [AuthController],
