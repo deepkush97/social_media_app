@@ -426,6 +426,15 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
   }
 
   async unlike({ userId, postId }: LikeInput): Promise<boolean> {
+    const like = await this.likeRepository.findOne({
+      where: { userId, postId },
+      select: { id: true, userId: true, postId: true },
+    });
+
+    if (!like) {
+      return true;
+    }
+
     await this.likeRepository.delete({ userId, postId });
 
     const session = this.neo4jDriver.session();
@@ -442,7 +451,8 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
       });
       return true;
     } catch (error) {
-      this.logger.error('Failed to sync unlike to Neo4j', {
+      await this.likeRepository.save(like);
+      this.logger.error('Failed to sync unlike to Neo4j, MySQL row restored', {
         error,
         context: SocialService.name,
       });
