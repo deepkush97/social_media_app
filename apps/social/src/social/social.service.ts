@@ -273,6 +273,14 @@ export class SocialService implements OnModuleInit {
   }
 
   async like({ userId, postId }: LikeInput): Promise<ILike> {
+    const existing = await this.likeRepository.findOne({
+      where: { userId, postId },
+      select: { id: true },
+    });
+    if (existing) {
+      return existing;
+    }
+
     const like = this.likeRepository.create({ userId, postId });
     const saved = await this.likeRepository.save(like);
 
