@@ -110,8 +110,8 @@ export class UsersService {
         },
       },
     );
-    if (unfollowResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[unfollowResult.code] });
+    if (unfollowResult.code !== AppCodes.OPERATION_SUCCESS || !unfollowResult.data) {
+      return new AppResponse({ code: AppCodes[unfollowResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
     const data = unfollowResult.data;
@@ -172,8 +172,8 @@ export class UsersService {
       },
     });
 
-    if (userCountsResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[userCountsResult.code] });
+    if (userCountsResult.code !== AppCodes.OPERATION_SUCCESS || !userCountsResult.data) {
+      return new AppResponse({ code: AppCodes[userCountsResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
     const data = userCountsResult.data;

@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Driver } from 'neo4j-driver';
 import { Repository } from 'typeorm';
 
+import { AppLoggerService } from '@app/shared/app-logger/app-logger.service';
 import { ILike } from '@app/shared/interfaces/like/like.interface';
 import { IFollowUnfollow } from '@app/shared/interfaces/social/follow-unfollow.interface';
 import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-following-count.interface';
@@ -21,6 +22,7 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
     private readonly neo4jDriver: Driver,
     @InjectRepository(LikeEntity)
     private readonly likeRepository: Repository<LikeEntity>,
+    private readonly logger: AppLoggerService,
   ) {}
 
   async onModuleInit(): Promise<void> {
@@ -41,6 +43,12 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
           CREATE CONSTRAINT IF NOT EXISTS FOR (t:Tag) REQUIRE t.name IS UNIQUE
         `),
       );
+    } catch (error) {
+      this.logger.error('Failed to initialize Neo4j constraints', {
+        error,
+        context: SocialService.name,
+      });
+      throw error;
     } finally {
       await session.close();
     }
@@ -57,40 +65,48 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
 
     const session = this.neo4jDriver.session();
 
-    const counts = await session.executeWrite(async (tx) => {
-      const result = await tx.run(
-        `
-        MERGE (u1:User {id: $followerId})
-        MERGE (u2:User {id: $followingId})
-        MERGE (u1)-[r:FOLLOWS]->(u2)
-        ON CREATE SET r.weight = 1.0,
-                      r.createdAt = datetime(),
-                      r.source = $source,
-                      r.interactions = 0
-        
-        WITH u2
-        RETURN 
-        COUNT { (u2)<-[:FOLLOWS]-() } AS followers,
-        COUNT { (u2)-[:FOLLOWS]->() } AS followings
-        `,
-        { followerId, followingId, source: source ?? 'profile' },
-      );
+    try {
+      const counts = await session.executeWrite(async (tx) => {
+        const result = await tx.run(
+          `
+          MERGE (u1:User {id: $followerId})
+          MERGE (u2:User {id: $followingId})
+          MERGE (u1)-[r:FOLLOWS]->(u2)
+          ON CREATE SET r.weight = 1.0,
+                        r.createdAt = datetime(),
+                        r.source = $source,
+                        r.interactions = 0
 
-      const record = result.records?.[0];
+          WITH u2
+          RETURN
+          COUNT { (u2)<-[:FOLLOWS]-() } AS followers,
+          COUNT { (u2)-[:FOLLOWS]->() } AS followings
+          `,
+          { followerId, followingId, source: source ?? 'profile' },
+        );
 
-      if (!record) {
-        throw new Error('Not a valid user');
-      }
+        const record = result.records?.[0];
 
-      return {
-        followers: record.get('followers').toNumber(),
-        followings: record.get('followings').toNumber(),
-      };
-    });
+        if (!record) {
+          throw new Error('Not a valid user');
+        }
 
-    await session.close();
+        return {
+          followers: record.get('followers').toNumber(),
+          followings: record.get('followings').toNumber(),
+        };
+      });
 
-    return counts;
+      return counts;
+    } catch (error) {
+      this.logger.error('Failed to follow user', {
+        error,
+        context: SocialService.name,
+      });
+      throw error;
+    } finally {
+      await session.close();
+    }
   }
 
   async boostFollowWeight(
@@ -111,6 +127,12 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
           { followerId, followingId, weightIncrement },
         );
       });
+    } catch (error) {
+      this.logger.error('Failed to boost follow weight', {
+        error,
+        context: SocialService.name,
+      });
+      throw error;
     } finally {
       await session.close();
     }
@@ -136,6 +158,12 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
           { userId, tags, weightIncrement },
         );
       });
+    } catch (error) {
+      this.logger.error('Failed to boost tag weight', {
+        error,
+        context: SocialService.name,
+      });
+      throw error;
     } finally {
       await session.close();
     }
@@ -159,6 +187,12 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
           { userId, postId, tags },
         );
       });
+    } catch (error) {
+      this.logger.error('Failed to track post creation', {
+        error,
+        context: SocialService.name,
+      });
+      throw error;
     } finally {
       await session.close();
     }
@@ -208,6 +242,12 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
       });
 
       return result;
+    } catch (error) {
+      this.logger.error('Failed to get post recommendations', {
+        error,
+        context: SocialService.name,
+      });
+      throw error;
     } finally {
       await session.close();
     }
@@ -262,6 +302,12 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
       });
 
       return result;
+    } catch (error) {
+      this.logger.error('Failed to get user recommendations', {
+        error,
+        context: SocialService.name,
+      });
+      throw error;
     } finally {
       await session.close();
     }
@@ -274,18 +320,58 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
 
     const session = this.neo4jDriver.session();
 
-    const counts = await session.executeWrite(async (tx) => {
-      const result = await tx.run(
-        `
-        MATCH (u1:User {id: $followerId})-[r:FOLLOWS]->(u2:User {id:$followingId})
-        DELETE r
-        
-        WITH u2
-        RETURN 
-        COUNT { (u2)<-[:FOLLOWS]-() } AS followers,
-        COUNT { (u2)-[:FOLLOWS]->() } AS followings
-        `,
-        { followerId, followingId },
+    try {
+      const counts = await session.executeWrite(async (tx) => {
+        const result = await tx.run(
+          `
+          MATCH (u1:User {id: $followerId})-[r:FOLLOWS]->(u2:User {id:$followingId})
+          DELETE r
+
+          WITH u2
+          RETURN
+          COUNT { (u2)<-[:FOLLOWS]-() } AS followers,
+          COUNT { (u2)-[:FOLLOWS]->() } AS followings
+          `,
+          { followerId, followingId },
+        );
+
+        const record = result.records?.[0];
+
+        if (!record) {
+          throw new Error('Not a valid user');
+        }
+
+        return {
+          followers: record.get('followers').toNumber(),
+          followings: record.get('followings').toNumber(),
+        };
+      });
+
+      return counts;
+    } catch (error) {
+      this.logger.error('Failed to unfollow user', {
+        error,
+        context: SocialService.name,
+      });
+      throw error;
+    } finally {
+      await session.close();
+    }
+  }
+
+  async userCounts(userId: number): Promise<IFollowerFollowingCount> {
+    const session = this.neo4jDriver.session();
+
+    try {
+      const result = await session.executeWrite((tx) =>
+        tx.run(
+          `MERGE (u:User {id: $userId})
+          RETURN
+            COUNT { (u)<-[:FOLLOWS]-() } AS followers,
+            COUNT { (u)-[:FOLLOWS]->() } AS followings
+          `,
+          { userId },
+        ),
       );
 
       const record = result.records?.[0];
@@ -298,38 +384,15 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
         followers: record.get('followers').toNumber(),
         followings: record.get('followings').toNumber(),
       };
-    });
-
-    await session.close();
-
-    return counts;
-  }
-
-  async userCounts(userId: number): Promise<IFollowerFollowingCount> {
-    const session = this.neo4jDriver.session();
-
-    const result = await session.executeWrite((tx) =>
-      tx.run(
-        `MERGE (u:User {id: $userId})
-        RETURN 
-          COUNT { (u)<-[:FOLLOWS]-() } AS followers,
-          COUNT { (u)-[:FOLLOWS]->() } AS followings
-        `,
-        { userId },
-      ),
-    );
-    await session.close();
-
-    const record = result.records?.[0];
-
-    if (!record) {
-      throw new Error('Not a valid user');
+    } catch (error) {
+      this.logger.error('Failed to get user counts', {
+        error,
+        context: SocialService.name,
+      });
+      throw error;
+    } finally {
+      await session.close();
     }
-
-    return {
-      followers: record.get('followers').toNumber(),
-      followings: record.get('followings').toNumber(),
-    };
   }
 
   async like({ userId, postId }: LikeInput): Promise<ILike> {
@@ -351,8 +414,9 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
           { userId, postId },
         );
       });
-    } catch {
+    } catch (error) {
       await this.likeRepository.delete(saved.id);
+      this.logger.error('Failed to sync like to Neo4j', { error, context: SocialService.name });
       throw new Error('Failed to sync like to Neo4j');
     } finally {
       await session.close();
@@ -366,18 +430,26 @@ export class SocialService implements OnModuleInit, OnModuleDestroy {
 
     const session = this.neo4jDriver.session();
 
-    await session.executeWrite(async (tx) => {
-      await tx.run(
-        `
-          MATCH (u:User {id: $userId})-[r:LIKED]->(p:Post {id: $postId})
-          DELETE r
-          `,
-        { userId, postId },
-      );
-    });
-
-    await session.close();
-    return true;
+    try {
+      await session.executeWrite(async (tx) => {
+        await tx.run(
+          `
+            MATCH (u:User {id: $userId})-[r:LIKED]->(p:Post {id: $postId})
+            DELETE r
+            `,
+          { userId, postId },
+        );
+      });
+      return true;
+    } catch (error) {
+      this.logger.error('Failed to sync unlike to Neo4j', {
+        error,
+        context: SocialService.name,
+      });
+      throw error;
+    } finally {
+      await session.close();
+    }
   }
 
   async likeCount(postId: number): Promise<number> {

@@ -51,8 +51,8 @@ export class AuthService {
       },
     });
 
-    if (newSessionResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: AppCodes[newSessionResult.code] });
+    if (newSessionResult.code !== AppCodes.OPERATION_SUCCESS || !newSessionResult.data) {
+      return new AppResponse({ code: AppCodes[newSessionResult.code ?? AppCodes.INTERNAL_ERROR] });
     }
 
     const { data: session } = newSessionResult;
