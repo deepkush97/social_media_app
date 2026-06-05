@@ -9,7 +9,7 @@ import { GraphqlRouterComposite } from '@app/shared/graphql/graphql-router.compo
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
 import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface';
 import { INewPost, IPost } from '@app/shared/interfaces/post/post.interface';
-import { EventBusClient } from '@app/shared/nats/event-bus-client.service';
+import { EventBusEmitter } from '@app/shared/nats/event-bus-emitter.service';
 
 import { CACHE_TTL_IN_SECONDS } from '../app.constant';
 import { RedisFormatter } from '../redis-formatter';
@@ -19,7 +19,7 @@ export class PostsService {
   constructor(
     private readonly routerComposite: GraphqlRouterComposite,
     private readonly cacheService: CacheService,
-    private readonly eventBusClient: EventBusClient,
+    private readonly eventBusEmitter: EventBusEmitter,
   ) {}
 
   async createPost(userId: number, input: INewPost): Promise<IAppResponse<IPost>> {
@@ -52,7 +52,7 @@ export class PostsService {
     await this.cacheService.set(RedisFormatter.post(postData.id), postData, CACHE_TTL_IN_SECONDS);
     await this.cacheService.delAll(RedisFormatter.postListPattern(userId));
 
-    await this.eventBusClient.emit(
+    await this.eventBusEmitter.emit(
       new PostCreatedEvent({
         content: postData.content,
         id: postData.id,
