@@ -15,6 +15,7 @@ import { NatsModule } from '@app/shared/nats/nats.module';
 import { GraphqlRequestValidationPipe } from '@app/shared/pipes/graphql-request-validation.pipe';
 
 import { SocialModule } from './social/social.module';
+import { WeightDecayModule } from './weight-decay/weight-decay.module';
 
 import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
@@ -41,6 +42,7 @@ import { AppService } from './app.service';
     }),
     NatsModule.forRoot(),
     SocialModule,
+    WeightDecayModule,
   ],
   providers: [
     AppService,

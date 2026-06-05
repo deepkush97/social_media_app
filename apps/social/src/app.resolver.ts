@@ -6,6 +6,7 @@ import { NumberOutputDto } from '@app/shared/number.output';
 import { FollowUnfollowInput } from './inputs/follow-unfollow.input';
 import { PostRecommendationInput } from './inputs/post-recommendation.input';
 import { UserRecommendationInput } from './inputs/user-recommendation.input';
+import { DecayResultOutputDto } from './outputs/delay-result.output';
 import { PostRecommendationOutputDto } from './outputs/post-recommendation.output';
 import { UserCountsDto } from './outputs/user-counts.output';
 import { UserRecommendationOutputDto } from './outputs/user-recommendation.output';
@@ -70,5 +71,12 @@ export class AppResolver {
     @Args('input') input: UserRecommendationInput,
   ): Promise<UserRecommendationOutputDto> {
     return this.appService.userRecommendation(input.userId, input.page, input.take);
+  }
+
+  @Mutation(() => DecayResultOutputDto)
+  async triggerWeightDecay(
+    @Args('dryRun', { type: () => Boolean, nullable: true }) dryRun?: boolean,
+  ): Promise<DecayResultOutputDto> {
+    return await this.appService.triggerWeightDecay(dryRun);
   }
 }

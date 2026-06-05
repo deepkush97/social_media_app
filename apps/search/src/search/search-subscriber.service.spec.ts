@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppLoggerService } from '@app/shared/app-logger/app-logger.service';
 import { PostCreatedEventPayload } from '@app/shared/events/post-created.event';
 import { UserCreateEventPayload } from '@app/shared/events/user-created.event';
-import { EventBusClient } from '@app/shared/nats/event-bus-client.service';
+import { EventBusEmitter } from '@app/shared/nats/event-bus-emitter.service';
 import { createMockLogger, MockLogger } from '@app/shared/test-utils/logger.mock';
 import {
   createMockSearchService,
@@ -41,7 +41,7 @@ describe('SearchSubscriberService', () => {
     mockEventBus = createMockEventBus();
     service = new SearchSubscriberService(
       mockSearch as unknown as SearchService,
-      mockEventBus as unknown as EventBusClient,
+      mockEventBus as unknown as EventBusEmitter,
       mockLogger as unknown as AppLoggerService,
     );
   });

@@ -9,6 +9,7 @@ import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-
 import { IPostRecommendationItem } from '@app/shared/interfaces/social/post-recommendation.interface';
 import { IUserRecommendationItem } from '@app/shared/interfaces/social/user-recommendation.interface';
 import { Neo4jService } from '@app/shared/neo4j/neo4j.service';
+import { toInt } from '@app/shared/utils/to-int';
 
 import { LikeEntity } from './like.entity';
 import { LikeInput } from './like.input';
@@ -86,7 +87,8 @@ export class SocialService implements OnModuleInit {
         `
         MATCH (u1:User {id: $followerId})-[r:FOLLOWS]->(u2:User {id: $followingId})
         SET r.interactions = COALESCE(r.interactions, 0) + 1,
-            r.weight = COALESCE(r.weight, 1.0) + $weightIncrement
+            r.weight = COALESCE(r.weight, 1.0) + $weightIncrement,
+            r.lastInteractionAt = datetime()
         `,
         { followerId, followingId, weightIncrement },
       );
@@ -149,7 +151,7 @@ export class SocialService implements OnModuleInit {
 
     return this.neo4jService.executeRead(async (tx) => {
       const itemsResult = await tx.run(
-        `${baseQuery} RETURN postId, score SKIP $offset LIMIT $limit`,
+        `${baseQuery} RETURN postId, score SKIP toInteger($offset) LIMIT toInteger($limit)`,
         { userId, limit, offset },
       );
 
@@ -160,11 +162,11 @@ export class SocialService implements OnModuleInit {
       });
 
       const items = itemsResult.records.map((record) => ({
-        postId: record.get('postId').toNumber(),
-        score: record.get('score').toNumber(),
+        postId: toInt(record.get('postId')),
+        score: toInt(record.get('score')),
       }));
 
-      const total = countResult.records[0]?.get('total').toNumber() ?? 0;
+      const total = toInt(countResult.records[0]?.get('total')) ?? 0;
 
       return { items, total };
     }, SocialService.name);
@@ -191,11 +193,14 @@ export class SocialService implements OnModuleInit {
     `;
 
     return this.neo4jService.executeRead(async (tx) => {
-      const itemsResult = await tx.run(`${baseQuery} SKIP $offset LIMIT $limit`, {
-        userId,
-        limit,
-        offset,
-      });
+      const itemsResult = await tx.run(
+        `${baseQuery} SKIP toInteger($offset) LIMIT toInteger($limit)`,
+        {
+          userId,
+          limit,
+          offset,
+        },
+      );
 
       const countResult = await tx.run(`${baseQuery} RETURN count(userId) AS total`, {
         userId,
@@ -204,13 +209,13 @@ export class SocialService implements OnModuleInit {
       });
 
       const items = itemsResult.records.map((record) => ({
-        userId: record.get('userId').toNumber(),
-        commonFollowers: record.get('commonFollowers').toNumber(),
-        likedPostsScore: record.get('likedPostsScore').toNumber(),
-        score: record.get('score').toNumber(),
+        userId: toInt(record.get('userId')),
+        commonFollowers: toInt(record.get('commonFollowers')),
+        likedPostsScore: toInt(record.get('likedPostsScore')),
+        score: toInt(record.get('score')),
       }));
 
-      const total = countResult.records[0]?.get('total').toNumber() ?? 0;
+      const total = toInt(countResult.records[0]?.get('total')) ?? 0;
 
       return { items, total };
     }, SocialService.name);
@@ -341,5 +346,50 @@ export class SocialService implements OnModuleInit {
   async hasLiked(userId: number, postId: number): Promise<boolean> {
     const count = await this.likeRepository.count({ where: { userId, postId } });
     return count > 0;
+  }
+
+  async removeLikeEdge(userId: number, postId: number): Promise<void> {
+    await this.neo4jService.executeWrite(async (tx) => {
+      await tx.run(
+        `
+        MATCH (u:User {id: $userId})-[r:LIKED]->(p:Post {id: $postId})
+        DELETE r
+        `,
+        { userId, postId },
+      );
+    }, SocialService.name);
+  }
+
+  async createFollowEdge(followerId: number, followingId: number, source?: string): Promise<void> {
+    if (followerId === followingId) return;
+
+    await this.neo4jService.executeWrite(async (tx) => {
+      await tx.run(
+        `
+        MERGE (u1:User {id: $followerId})
+        MERGE (u2:User {id: $followingId})
+        MERGE (u1)-[r:FOLLOWS]->(u2)
+        ON CREATE SET r.weight = 1.0,
+          r.createdAt = datetime(),
+          r.source = $source,
+          r.interactions = 0
+        `,
+        { followerId, followingId, source: source ?? 'feed' },
+      );
+    }, SocialService.name);
+  }
+
+  async removeFollowEdge(followerId: number, followingId: number): Promise<void> {
+    if (followerId === followingId) return;
+
+    await this.neo4jService.executeWrite(async (tx) => {
+      await tx.run(
+        `
+        MATCH (u1:User {id: $followerId})-[r:FOLLOWS]->(u2:User {id: $followingId})
+        DELETE r
+        `,
+        { followerId, followingId },
+      );
+    }, SocialService.name);
   }
 }

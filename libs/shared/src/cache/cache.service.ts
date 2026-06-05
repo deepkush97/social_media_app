@@ -18,13 +18,13 @@ export class CacheService implements OnModuleInit {
   }
 
   async get<T>(key: string): Promise<T | null> {
-    this.logger.info(`get: key ${key}`, { context: CacheService.name });
+    this.logger.debug(`get: key ${key}`, { context: CacheService.name });
     const value = await this.redisClient.get(key);
     if (!value) {
-      this.logger.info(`get: cache missed ${key}`, { context: CacheService.name });
+      this.logger.debug(`get: cache missed ${key}`, { context: CacheService.name });
       return null;
     }
-    this.logger.info(`get: cache success ${key}`, { context: CacheService.name });
+    this.logger.debug(`get: cache success ${key}`, { context: CacheService.name });
     try {
       return JSON.parse(value) as T;
     } catch {
@@ -41,25 +41,25 @@ export class CacheService implements OnModuleInit {
   }
 
   async set(key: string, value: unknown, ttl?: number): Promise<void> {
-    this.logger.info(`set: key ${key} ttl ${ttl}`, { context: CacheService.name });
+    this.logger.debug(`set: key ${key} ttl ${ttl}`, { context: CacheService.name });
 
     if (ttl) {
-      this.logger.info(`set: cache set ${key} with ttl ${ttl}`, { context: CacheService.name });
+      this.logger.debug(`set: cache set ${key} with ttl ${ttl}`, { context: CacheService.name });
       await this.redisClient.set(key, JSON.stringify(value), 'EX', ttl);
     } else {
-      this.logger.info(`set: cache set ${key}`, { context: CacheService.name });
+      this.logger.debug(`set: cache set ${key}`, { context: CacheService.name });
       await this.redisClient.set(key, JSON.stringify(value));
     }
   }
 
   async del(key: string): Promise<void> {
-    this.logger.info(`del: key ${key}`, { context: CacheService.name });
+    this.logger.debug(`del: key ${key}`, { context: CacheService.name });
 
     await this.redisClient.del(key);
   }
 
   async delAll(pattern: string, batchSize = 10): Promise<void> {
-    this.logger.info(`delAll: pattern ${pattern} batchSize ${batchSize}`, {
+    this.logger.debug(`delAll: pattern ${pattern} batchSize ${batchSize}`, {
       context: CacheService.name,
     });
 

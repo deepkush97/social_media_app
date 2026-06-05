@@ -8,7 +8,7 @@ import {
   SearchRetryType,
 } from '@app/shared/events/search-index-retry.event';
 import { UserCreateEventPayload } from '@app/shared/events/user-created.event';
-import { EventBusClient } from '@app/shared/nats/event-bus-client.service';
+import { EventBusEmitter } from '@app/shared/nats/event-bus-emitter.service';
 import { EventHandler } from '@app/shared/nats/event-handler.decorator';
 
 import { SearchService } from './search.service';
@@ -19,7 +19,7 @@ const MAX_RETRY_COUNT = 10;
 export class SearchSubscriberService {
   constructor(
     private readonly searchService: SearchService,
-    private readonly eventBusClient: EventBusClient,
+    private readonly eventBusEmitter: EventBusEmitter,
     private readonly logger: AppLoggerService,
   ) {}
 
@@ -123,7 +123,7 @@ export class SearchSubscriberService {
     payload: Record<string, unknown>,
     retryCount: number,
   ): Promise<void> {
-    await this.eventBusClient.emit(
+    await this.eventBusEmitter.emit(
       new SearchIndexRetryEvent({ retryType, payload, retryCount }),
       this.constructor.name,
     );

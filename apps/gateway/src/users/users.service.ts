@@ -9,7 +9,7 @@ import { UserFollowedEvent, UserUnfollowedEvent } from '@app/shared/events/user-
 import { GraphqlRouterComposite } from '@app/shared/graphql/graphql-router.composite';
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
 import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-following-count.interface';
-import { EventBusClient } from '@app/shared/nats/event-bus-client.service';
+import { EventBusEmitter } from '@app/shared/nats/event-bus-emitter.service';
 
 import { CACHE_TTL_IN_SECONDS } from '../app.constant';
 import { RedisFormatter } from '../redis-formatter';
@@ -20,7 +20,7 @@ export class UsersService {
     private readonly logger: AppLoggerService,
     private readonly routerComposite: GraphqlRouterComposite,
     private readonly cacheService: CacheService,
-    private readonly eventBusClient: EventBusClient,
+    private readonly eventBusEmitter: EventBusEmitter,
   ) {}
 
   async follow(
@@ -59,7 +59,7 @@ export class UsersService {
     await this.cacheService.del(followerCacheKey);
 
     await Promise.all([
-      this.eventBusClient.emit(
+      this.eventBusEmitter.emit(
         new UserFollowedEvent({
           followerId,
           followingId,
@@ -122,7 +122,7 @@ export class UsersService {
     await this.cacheService.del(followerCacheKey);
 
     await Promise.all([
-      this.eventBusClient.emit(
+      this.eventBusEmitter.emit(
         new UserUnfollowedEvent({
           followerId,
           followingId,

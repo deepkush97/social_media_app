@@ -7,7 +7,9 @@ import { AppConfigModule } from '../app-config/app-config.module';
 import { natsConfigLoader } from './configurations/loader';
 import { NatsConfigService } from './configurations/nats-config.service';
 
-import { EventBusClient } from './event-bus-client.service';
+import { EventBusEmitter } from './event-bus-emitter.service';
+import { EventBusSubscriber } from './event-bus-subscriber.service';
+import { NatsConnectionService } from './nats-connection.service';
 
 @Module({})
 export class NatsModule {
@@ -15,8 +17,8 @@ export class NatsModule {
     return {
       module: NatsModule,
       imports: [ConfigModule.forFeature(natsConfigLoader), DiscoveryModule, AppConfigModule],
-      providers: [NatsConfigService, EventBusClient],
-      exports: [EventBusClient],
+      providers: [NatsConfigService, NatsConnectionService, EventBusEmitter, EventBusSubscriber],
+      exports: [EventBusEmitter, NatsConnectionService],
       global: true,
     };
   }

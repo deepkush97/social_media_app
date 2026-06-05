@@ -55,6 +55,17 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type DecayResultDto {
+  edgesDecayed: Float!
+  before: WeightSnapshotDto!
+  after: WeightSnapshotDto!
+}
+
+type DecayResultOutputDto {
+  data: DecayResultDto
+  code: AppCodes!
+}
+
 type FollowerFollowingCountDto {
   followers: Int!
   followings: Int!
@@ -131,6 +142,7 @@ type Mutation {
   unfollow(input: FollowUnfollowInput!): UserCountsDto!
   likePost(input: LikeInput!): LikeOutputDto!
   unlikePost(input: LikeInput!): BooleanOutputDto!
+  triggerWeightDecay(dryRun: Boolean): DecayResultOutputDto!
 }
 
 type NumberOutputDto {
@@ -331,4 +343,10 @@ type UserRecommendationItemDtoData {
 type UserRecommendationOutputDto {
   data: UserRecommendationItemDtoData
   code: AppCodes!
+}
+
+type WeightSnapshotDto {
+  min: Float!
+  max: Float!
+  mean: Float!
 }

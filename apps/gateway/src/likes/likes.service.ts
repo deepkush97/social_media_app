@@ -7,7 +7,7 @@ import { AppCodes } from '@app/shared/enums/app-codes.enum';
 import { PostLikedEvent, PostUnlikedEvent } from '@app/shared/events/post-liked.event';
 import { GraphqlRouterComposite } from '@app/shared/graphql/graphql-router.composite';
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
-import { EventBusClient } from '@app/shared/nats/event-bus-client.service';
+import { EventBusEmitter } from '@app/shared/nats/event-bus-emitter.service';
 
 import { PostsService } from '../posts/posts.service';
 import { RedisFormatter } from '../redis-formatter';
@@ -17,7 +17,7 @@ export class LikesService {
   constructor(
     private readonly routerComposite: GraphqlRouterComposite,
     private readonly cacheService: CacheService,
-    private readonly eventBusClient: EventBusClient,
+    private readonly eventBusEmitter: EventBusEmitter,
     private readonly postService: PostsService,
     private readonly logger: AppLoggerService,
   ) {}
@@ -45,7 +45,7 @@ export class LikesService {
     const post = postResult.data;
 
     await Promise.all([
-      this.eventBusClient.emit(
+      this.eventBusEmitter.emit(
         new PostLikedEvent({
           userId,
           postOwnerId: post.userId,
@@ -87,7 +87,7 @@ export class LikesService {
     const post = postResult.data;
 
     await Promise.all([
-      this.eventBusClient.emit(
+      this.eventBusEmitter.emit(
         new PostUnlikedEvent({
           userId,
           postOwnerId: post.userId,

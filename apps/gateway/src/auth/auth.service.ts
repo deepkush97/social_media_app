@@ -15,7 +15,7 @@ import {
   INewUser,
   IUser,
 } from '@app/shared/interfaces/user/users.interface';
-import { EventBusClient } from '@app/shared/nats/event-bus-client.service';
+import { EventBusEmitter } from '@app/shared/nats/event-bus-emitter.service';
 
 import { CACHE_TTL_IN_SECONDS } from '../app.constant';
 import { RedisFormatter } from '../redis-formatter';
@@ -26,7 +26,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly routerComposite: GraphqlRouterComposite,
     private readonly cacheService: CacheService,
-    private readonly eventBusClient: EventBusClient,
+    private readonly eventBusEmitter: EventBusEmitter,
   ) {}
 
   async signup(input: INewUser): Promise<AppResponse<IAuthProfileToken>> {
@@ -66,7 +66,7 @@ export class AuthService {
       CACHE_TTL_IN_SECONDS,
     );
 
-    await this.eventBusClient.emit(
+    await this.eventBusEmitter.emit(
       new UserCreatedEvent({
         id: user.id,
         email: user.email,
