@@ -182,7 +182,7 @@ export default function () {
     const commentContent = `Test comment from VU ${__VU}`;
 
     // 8a. Create comment on post2Id
-    const createRes = request('POST', `${BASE_URL}/comments/${post2Id}/comments`, {
+    const createRes = request('POST', `${BASE_URL}/posts/${post2Id}/comments`, {
       body: { content: commentContent },
       token,
       label: 'create_comment',
@@ -200,7 +200,7 @@ export default function () {
     const commentId = createRes.json('data.id');
 
     // 8b. List comments — expect 1
-    request('GET', `${BASE_URL}/comments/${post2Id}/comments?page=1&take=10`, {
+    request('GET', `${BASE_URL}/posts/${post2Id}/comments?page=1&take=10`, {
       token,
       label: 'list_comments',
       expect: expect({
@@ -212,7 +212,7 @@ export default function () {
 
     // 8c. Create reply with parentId
     const replyContent = `Reply from VU ${__VU}`;
-    const replyRes = request('POST', `${BASE_URL}/comments/${post2Id}/comments`, {
+    const replyRes = request('POST', `${BASE_URL}/posts/${post2Id}/comments`, {
       body: { content: replyContent, parentId: commentId },
       token,
       label: 'create_reply',
@@ -225,7 +225,7 @@ export default function () {
     const replyId = replyRes.json('data.id');
 
     // 8d. List comments — expect 2
-    request('GET', `${BASE_URL}/comments/${post2Id}/comments?page=1&take=10`, {
+    request('GET', `${BASE_URL}/posts/${post2Id}/comments?page=1&take=10`, {
       token,
       label: 'list_comments_after_reply',
       expect: expect({
@@ -236,7 +236,7 @@ export default function () {
     });
 
     // 8e. Archive the reply
-    request('POST', `${BASE_URL}/comments/${post2Id}/comments/archive/${replyId}`, {
+    request('POST', `${BASE_URL}/posts/${post2Id}/comments/archive/${replyId}`, {
       token,
       label: 'archive_reply',
       expect: expect(),
@@ -244,7 +244,7 @@ export default function () {
 
     // 8f. List comments — expect 1 ACTIVE (the parent, reply is archived)
     // Default list returns only ACTIVE comments
-    request('GET', `${BASE_URL}/comments/${post2Id}/comments?page=1&take=10`, {
+    request('GET', `${BASE_URL}/posts/${post2Id}/comments?page=1&take=10`, {
       token,
       label: 'list_comments_after_archive',
       expect: expect({

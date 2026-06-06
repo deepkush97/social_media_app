@@ -13,7 +13,6 @@ import { NatsModule } from '@app/shared/nats/nats.module';
 import { GatewayRequestValidationPipe } from '@app/shared/pipes/gateway-request-validation.pipe';
 
 import { AuthModule } from './auth/auth.module';
-import { CommentsModule } from './comments/comments.module';
 import { GatewayConfigModule } from './config/gateway-config.module';
 import { GlobalInterceptor } from './interceptors/global.interceptor';
 import { LikesModule } from './likes/likes.module';
@@ -43,7 +42,6 @@ import { AppController } from './app.controller';
         };
       },
     }),
-    CommentsModule,
     PostsModule,
     RecommendationsModule,
     UsersModule,
