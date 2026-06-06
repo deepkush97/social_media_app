@@ -1,10 +1,10 @@
 import { Repository } from 'typeorm';
-import { beforeEach, describe, expect, it } from 'vitest';
 
-import { PostStatusEnum } from '@app/shared/enums/post-status.enum';
+import { ContentStatusEnum } from '@app/shared/enums/content-status.enum';
 import { INewPostWithUserId } from '@app/shared/interfaces/post/post.interface';
 import { createMockRepo, MockRepository } from '@app/shared/test-utils/repository.mock';
 
+import { Comment } from './entities/comment.entity';
 import { Post } from './entities/post.entity';
 
 import { PostsService } from './posts.service';
@@ -15,7 +15,7 @@ function stubPost(overrides: Partial<Post> = {}): Post {
     title: '',
     content: '',
     userId: 0,
-    status: PostStatusEnum.ACTIVE,
+    status: ContentStatusEnum.ACTIVE,
     createdAt: new Date(),
     updatedAt: new Date(),
     image: undefined,
@@ -29,7 +29,10 @@ describe('PostsService', () => {
 
   beforeEach(() => {
     mockRepo = createMockRepo();
-    service = new PostsService(mockRepo as unknown as Repository<Post>);
+    service = new PostsService(
+      mockRepo as unknown as Repository<Post>,
+      createMockRepo() as unknown as Repository<Comment>,
+    );
   });
 
   describe('createNewPost', () => {
@@ -73,10 +76,10 @@ describe('PostsService', () => {
     it('returns paginated posts for a user', async () => {
       mockRepo.findAndCount.mockResolvedValue([posts, 5]);
 
-      const result = await service.findPostsByUserId(1, PostStatusEnum.ACTIVE, 1, 10);
+      const result = await service.findPostsByUserId(1, ContentStatusEnum.ACTIVE, 1, 10);
 
       expect(mockRepo.findAndCount).toHaveBeenCalledWith({
-        where: { userId: 1, status: PostStatusEnum.ACTIVE },
+        where: { userId: 1, status: ContentStatusEnum.ACTIVE },
         skip: 0,
         take: 10,
         order: { createdAt: 'DESC' },
@@ -87,7 +90,7 @@ describe('PostsService', () => {
     it('calculates skip correctly for page 2', async () => {
       mockRepo.findAndCount.mockResolvedValue([posts, 20]);
 
-      await service.findPostsByUserId(1, PostStatusEnum.ACTIVE, 2, 10);
+      await service.findPostsByUserId(1, ContentStatusEnum.ACTIVE, 2, 10);
 
       expect(mockRepo.findAndCount).toHaveBeenCalledWith(expect.objectContaining({ skip: 10 }));
     });
@@ -95,7 +98,7 @@ describe('PostsService', () => {
     it('returns empty result when no posts', async () => {
       mockRepo.findAndCount.mockResolvedValue([[], 0]);
 
-      const result = await service.findPostsByUserId(1, PostStatusEnum.ACTIVE, 1, 10);
+      const result = await service.findPostsByUserId(1, ContentStatusEnum.ACTIVE, 1, 10);
 
       expect(result.items).toEqual([]);
       expect(result.meta.total).toBe(0);
@@ -106,7 +109,10 @@ describe('PostsService', () => {
     it('updates post status to ARCHIVED and returns true', async () => {
       const result = await service.archivePost(1);
 
-      expect(mockRepo.update).toHaveBeenCalledWith({ id: 1 }, { status: PostStatusEnum.ARCHIVED });
+      expect(mockRepo.update).toHaveBeenCalledWith(
+        { id: 1 },
+        { status: ContentStatusEnum.ARCHIVED },
+      );
       expect(result).toBe(true);
     });
   });

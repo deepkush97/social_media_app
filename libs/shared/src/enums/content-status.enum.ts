@@ -1,10 +1,10 @@
 import { registerEnumType } from '@nestjs/graphql';
 
-export enum PostStatusEnum {
+export enum ContentStatusEnum {
   ACTIVE = 'ACTIVE',
   ARCHIVED = 'ARCHIVED',
 }
 
-registerEnumType(PostStatusEnum, {
-  name: 'PostStatusEnum',
+registerEnumType(ContentStatusEnum, {
+  name: 'ContentStatusEnum',
 });

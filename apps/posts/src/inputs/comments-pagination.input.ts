@@ -6,14 +6,14 @@ import { ContentStatusEnum } from '@app/shared/enums/content-status.enum';
 import { PaginationInput } from '@app/shared/inputs/pagination.input';
 
 @InputType()
-export class PostsPaginationInput extends PaginationInput {
+export class CommentsPaginationInput extends PaginationInput {
   @Field(() => Int)
   @IsNumber()
   @IsPositive()
-  userId: number;
+  postId: number;
 
   @Field(() => ContentStatusEnum, { defaultValue: ContentStatusEnum.ACTIVE })
   @IsEnum(ContentStatusEnum)
   @IsOptional()
-  status?: ContentStatusEnum;
+  status?: ContentStatusEnum = ContentStatusEnum.ACTIVE;
 }

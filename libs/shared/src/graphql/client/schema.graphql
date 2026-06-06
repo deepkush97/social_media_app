@@ -37,6 +37,51 @@ type BooleanOutputDto {
   code: AppCodes!
 }
 
+type CommentListOutputDto {
+  data: CommentOutputData
+  code: AppCodes!
+}
+
+type CommentOutput {
+  id: Int!
+  postId: Int!
+  userId: Int!
+  parentId: Int
+  content: String!
+  status: ContentStatusEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CommentOutputData {
+  items: [CommentOutput!]!
+  meta: PaginationMeta!
+}
+
+type CommentOutputDto {
+  data: CommentOutput
+  code: AppCodes!
+}
+
+input CommentsPaginationInput {
+  take: Int! = 10
+  page: Int! = 1
+  postId: Int!
+  status: ContentStatusEnum! = ACTIVE
+}
+
+enum ContentStatusEnum {
+  ACTIVE
+  ARCHIVED
+}
+
+input CreateCommentInput {
+  postId: Int!
+  content: String!
+  parentId: Int = null
+  userId: Int!
+}
+
 input CreatePostInput {
   title: String!
   content: String!
@@ -138,6 +183,8 @@ type Mutation {
   closeSessionBySessionId(guid: String!): BooleanOutputDto!
   createPost(input: CreatePostInput!): PostOutputDto!
   archivePost(id: Int!): BooleanOutputDto!
+  createComment(input: CreateCommentInput!): CommentOutputDto!
+  archiveComment(id: Int!): BooleanOutputDto!
   follow(input: FollowUnfollowInput!): UserCountsDto!
   unfollow(input: FollowUnfollowInput!): UserCountsDto!
   likePost(input: LikeInput!): LikeOutputDto!
@@ -169,7 +216,7 @@ type PostOutput {
   image: String
   tags: [String!]!
   userId: Int!
-  status: PostStatusEnum!
+  status: ContentStatusEnum!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -209,12 +256,7 @@ input PostsPaginationInput {
   take: Int! = 10
   page: Int! = 1
   userId: Int!
-  status: PostStatusEnum! = ACTIVE
-}
-
-enum PostStatusEnum {
-  ACTIVE
-  ARCHIVED
+  status: ContentStatusEnum! = ACTIVE
 }
 
 type Query {
@@ -222,6 +264,8 @@ type Query {
   findOpenSessionByGuid(id: String!): SessionOutputDto!
   findPostById(id: Int!): PostOutputDto!
   findPostsByUserId(input: PostsPaginationInput!): PostListOutputDto!
+  findCommentById(id: Int!): CommentOutputDto!
+  findCommentsByPostId(input: CommentsPaginationInput!): CommentListOutputDto!
   searchPosts(input: SearchInput!): SearchPostOutputDto!
   searchUsers(input: SearchInput!): SearchUserOutputDto!
   searchTags(input: SearchInput!): SearchTagOutputDto!

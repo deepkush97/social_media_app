@@ -1,7 +1,3 @@
-# ------------------------------------------------------
-# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
-# ------------------------------------------------------
-
 type BooleanOutputDto {
   data: Boolean
   code: AppCodes!
@@ -29,19 +25,18 @@ type PaginationMeta {
   take: Int!
 }
 
-type PostOutput {
+type CommentOutput {
   id: Int!
-  title: String!
-  content: String!
-  image: String
-  tags: [String!]!
+  postId: Int!
   userId: Int!
-  status: PostStatusEnum!
+  parentId: Int
+  content: String!
+  status: ContentStatusEnum!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
-enum PostStatusEnum {
+enum ContentStatusEnum {
   ACTIVE
   ARCHIVED
 }
@@ -50,6 +45,33 @@ enum PostStatusEnum {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type CommentOutputDto {
+  data: CommentOutput
+  code: AppCodes!
+}
+
+type CommentListOutputDto {
+  data: CommentOutputData
+  code: AppCodes!
+}
+
+type CommentOutputData {
+  items: [CommentOutput!]!
+  meta: PaginationMeta!
+}
+
+type PostOutput {
+  id: Int!
+  title: String!
+  content: String!
+  image: String
+  tags: [String!]!
+  userId: Int!
+  status: ContentStatusEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
 
 type PostOutputDto {
   data: PostOutput
@@ -69,23 +91,41 @@ type PostOutputData {
 type Query {
   findPostById(id: Int!): PostOutputDto!
   findPostsByUserId(input: PostsPaginationInput!): PostListOutputDto!
+  findCommentById(id: Int!): CommentOutputDto!
+  findCommentsByPostId(input: CommentsPaginationInput!): CommentListOutputDto!
 }
 
 input PostsPaginationInput {
   take: Int! = 10
   page: Int! = 1
   userId: Int!
-  status: PostStatusEnum! = ACTIVE
+  status: ContentStatusEnum! = ACTIVE
+}
+
+input CommentsPaginationInput {
+  take: Int! = 10
+  page: Int! = 1
+  postId: Int!
+  status: ContentStatusEnum! = ACTIVE
 }
 
 type Mutation {
   createPost(input: CreatePostInput!): PostOutputDto!
   archivePost(id: Int!): BooleanOutputDto!
+  createComment(input: CreateCommentInput!): CommentOutputDto!
+  archiveComment(id: Int!): BooleanOutputDto!
 }
 
 input CreatePostInput {
   title: String!
   content: String!
   image: String
+  userId: Int!
+}
+
+input CreateCommentInput {
+  postId: Int!
+  content: String!
+  parentId: Int = null
   userId: Int!
 }

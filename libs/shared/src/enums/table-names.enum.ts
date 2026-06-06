@@ -3,4 +3,5 @@ export enum TableNamesEnum {
   AUTH_USERS = 'users',
   POSTS_POSTS = 'posts',
   SOCIAL_LIKES = 'likes',
+  POSTS_COMMENTS = 'comments',
 }

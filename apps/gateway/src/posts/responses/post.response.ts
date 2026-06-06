@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { Exclude, Expose } from 'class-transformer';
 
-import { PostStatusEnum } from '@app/shared/enums/post-status.enum';
+import { ContentStatusEnum } from '@app/shared/enums/content-status.enum';
 import { IPost } from '@app/shared/interfaces/post/post.interface';
 
 import { ApiResponse } from '../../responses/app-combined.response';
@@ -38,9 +38,9 @@ export class PostItem implements IPost {
   @Expose()
   updatedAt: Date;
 
-  @ApiProperty({ description: 'Post status', enum: PostStatusEnum })
+  @ApiProperty({ description: 'Post status', enum: ContentStatusEnum })
   @Expose()
-  status: PostStatusEnum;
+  status: ContentStatusEnum;
 
   @ApiProperty({ description: 'Post tags', isArray: true })
   @Expose()

@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { AppResponse } from '@app/shared/app-response.dto';
 import { CacheService } from '@app/shared/cache/cache.service';
 import { AppCodes } from '@app/shared/enums/app-codes.enum';
-import { PostStatusEnum } from '@app/shared/enums/post-status.enum';
+import { ContentStatusEnum } from '@app/shared/enums/content-status.enum';
 import { PostCreatedEvent } from '@app/shared/events/post-created.event';
 import { GraphqlRouterComposite } from '@app/shared/graphql/graphql-router.composite';
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
@@ -46,7 +46,7 @@ export class PostsService {
 
     const postData: IPost = {
       ...createPostResult.data,
-      status: PostStatusEnum[createPostResult.data.status],
+      status: ContentStatusEnum[createPostResult.data.status],
     };
 
     await this.cacheService.set(RedisFormatter.post(postData.id), postData, CACHE_TTL_IN_SECONDS);
@@ -131,7 +131,7 @@ export class PostsService {
 
     const postData: IPost = {
       ...postResult.data,
-      status: PostStatusEnum[postResult.data.status],
+      status: ContentStatusEnum[postResult.data.status],
     };
 
     await this.cacheService.set(cacheKey, postData, CACHE_TTL_IN_SECONDS);
@@ -146,7 +146,7 @@ export class PostsService {
     userId: number,
     take = 10,
     page = 1,
-    status = PostStatusEnum.ACTIVE,
+    status = ContentStatusEnum.ACTIVE,
   ): Promise<IAppResponse<IPaginatedData<IPost>>> {
     const postsCacheKey = RedisFormatter.postList(userId, take, page, status);
 
@@ -189,7 +189,7 @@ export class PostsService {
 
     const items: IPost[] = postResult.data.items.map((p) => ({
       ...p,
-      status: PostStatusEnum[p.status],
+      status: ContentStatusEnum[p.status],
     }));
 
     const data = { items, meta: postResult.data.meta };

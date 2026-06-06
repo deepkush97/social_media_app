@@ -3,27 +3,24 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { AppGraphqlResponse } from '@app/shared/app-graphql-response.dto';
 import { AppPaginatedDataGraphqlResponse } from '@app/shared/app-paginated-data-graphql-response.dto';
 import { ContentStatusEnum } from '@app/shared/enums/content-status.enum';
-import { IPost } from '@app/shared/interfaces/post/post.interface';
+import { IComment } from '@app/shared/interfaces/comment/comment.interface';
 
 @ObjectType()
-export class PostOutput implements IPost {
+export class CommentOutput implements IComment {
   @Field(() => Int)
   id: number;
 
-  @Field()
-  title: string;
-
-  @Field()
-  content: string;
-
-  @Field({ nullable: true })
-  image?: string;
-
-  @Field(() => [String])
-  tags: string[];
+  @Field(() => Int)
+  postId: number;
 
   @Field(() => Int)
   userId: number;
+
+  @Field(() => Int, { nullable: true })
+  parentId?: number;
+
+  @Field()
+  content: string;
 
   @Field(() => ContentStatusEnum)
   status: ContentStatusEnum;
@@ -36,7 +33,7 @@ export class PostOutput implements IPost {
 }
 
 @ObjectType()
-export class PostOutputDto extends AppGraphqlResponse(PostOutput) {}
+export class CommentOutputDto extends AppGraphqlResponse(CommentOutput) {}
 
 @ObjectType()
-export class PostListOutputDto extends AppPaginatedDataGraphqlResponse(PostOutput) {}
+export class CommentListOutputDto extends AppPaginatedDataGraphqlResponse(CommentOutput) {}
