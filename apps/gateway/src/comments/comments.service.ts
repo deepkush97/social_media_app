@@ -151,7 +151,7 @@ export class CommentsService {
 
     const comment = commentResult.data as { id: number; userId: number; postId: number };
 
-    if (comment.userId !== userId || post.userId !== userId) {
+    if (comment.userId !== userId && post.userId !== userId) {
       return new AppResponse({ code: AppCodes.BAD_REQUEST });
     }
 
