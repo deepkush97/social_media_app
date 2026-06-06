@@ -70,21 +70,14 @@ export class PostsService {
     });
   }
 
-  async archivePost(userId: number, id: number): Promise<IAppResponse<boolean>> {
-    const postResult = await this.findPostById(id);
-    if (postResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({
-        code: postResult.code,
-      });
-    }
-
-    if (postResult.data.userId !== userId) {
+  async archivePost(userId: number, post: IPost): Promise<IAppResponse<boolean>> {
+    if (post.userId !== userId) {
       return new AppResponse({
         code: AppCodes.BAD_REQUEST,
       });
     }
 
-    const createPostResult = await this.routerComposite.archivePost(id, {
+    const createPostResult = await this.routerComposite.archivePost(post.id, {
       code: 1,
       data: 1,
     });
@@ -93,7 +86,7 @@ export class PostsService {
       return new AppResponse({ code: AppCodes[createPostResult.code] });
     }
 
-    await this.cacheService.del(RedisFormatter.post(id));
+    await this.cacheService.del(RedisFormatter.post(post.id));
     await this.cacheService.delAll(RedisFormatter.postListPattern(userId));
 
     return new AppResponse({
@@ -123,6 +116,7 @@ export class PostsService {
         title: 1,
         updatedAt: 1,
         userId: 1,
+        tags: 1,
       },
     });
     if (postResult.code !== AppCodes.OPERATION_SUCCESS || !postResult.data) {
@@ -173,6 +167,7 @@ export class PostsService {
             userId: 1,
             title: 1,
             updatedAt: 1,
+            tags: 1,
           },
           meta: {
             lastPage: 1,

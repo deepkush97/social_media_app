@@ -9,6 +9,7 @@ import { GraphqlRouterComposite } from '@app/shared/graphql/graphql-router.compo
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
 import { IComment, INewCommentWithUserId } from '@app/shared/interfaces/comment/comment.interface';
 import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface';
+import { IPost } from '@app/shared/interfaces/post/post.interface';
 import { EventBusEmitter } from '@app/shared/nats/event-bus-emitter.service';
 
 import { CACHE_TTL_IN_SECONDS } from '../app.constant';
@@ -24,18 +25,10 @@ export class CommentsService {
     private readonly postService: PostsService,
   ) {}
 
-  async createComment({
-    content,
-    postId,
-    userId,
-    parentId,
-  }: INewCommentWithUserId): Promise<IAppResponse<IComment>> {
-    const postResult = await this.postService.findPostById(postId);
-    if (postResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: postResult.code });
-    }
-    const post = postResult.data;
-
+  async createComment(
+    { content, postId, userId, parentId }: INewCommentWithUserId,
+    post: IPost,
+  ): Promise<IAppResponse<IComment>> {
     const result = await this.routerComposite.createComment(
       { userId, postId, content, parentId },
       {
@@ -139,7 +132,11 @@ export class CommentsService {
     });
   }
 
-  async archiveComment(userId: number, commentId: number): Promise<IAppResponse<boolean>> {
+  async archiveComment(
+    userId: number,
+    post: IPost,
+    commentId: number,
+  ): Promise<IAppResponse<boolean>> {
     const commentResult = await this.routerComposite.findCommentById(commentId, {
       code: 1,
       data: {
@@ -154,11 +151,8 @@ export class CommentsService {
 
     const comment = commentResult.data as { id: number; userId: number; postId: number };
 
-    if (comment.userId !== userId) {
-      const postResult = await this.postService.findPostById(comment.postId);
-      if (postResult.code !== AppCodes.OPERATION_SUCCESS || postResult.data?.userId !== userId) {
-        return new AppResponse({ code: AppCodes.BAD_REQUEST });
-      }
+    if (comment.userId !== userId || post.userId !== userId) {
+      return new AppResponse({ code: AppCodes.BAD_REQUEST });
     }
 
     const deleteResult = await this.routerComposite.archiveComment(commentId, {

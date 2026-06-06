@@ -1,4 +1,4 @@
-import { Body, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
+import { Body, Get, Post, Query } from '@nestjs/common';
 import {
   ApiBody,
   ApiCreatedResponse,
@@ -12,7 +12,11 @@ import { Authenticated, CurrentUser } from 'apps/gateway/src/guards/jwt.guard';
 
 import { AppResponse } from '@app/shared/app-response.dto';
 import { ApiController } from '@app/shared/decorators/api-controller.decorator';
+import { AppCodes } from '@app/shared/enums/app-codes.enum';
+import { IPost } from '@app/shared/interfaces/post/post.interface';
 import { ICurrentUser } from '@app/shared/interfaces/user/users.interface';
+
+import { CurrentPost, PostExists } from '../guards/post-exists.guard';
 
 import { CreatePostRequest } from './requests/create-post.request';
 import { FindPostsRequest } from './requests/find-posts.request';
@@ -57,26 +61,29 @@ export class PostsController {
   }
 
   @Authenticated()
-  @Get(':id')
+  @PostExists()
+  @Get(':postId')
   @ApiOperation({ summary: 'use to get post' })
   @ApiParam({
-    name: 'id',
+    name: 'postId',
     type: Number,
     description: 'id of post',
     example: '1',
   })
   @ApiOkResponse({ type: PostItemApiResponse })
-  async getPost(
-    @Param('id', new ParseIntPipe({ optional: true })) id: number,
-  ): Promise<PostItemApiResponse> {
-    return await this.postService.findPostById(id);
+  async getPost(@CurrentPost() data: IPost): Promise<PostItemApiResponse> {
+    return new AppResponse({
+      code: AppCodes.OPERATION_SUCCESS,
+      data,
+    });
   }
 
   @Authenticated()
-  @Post('archive/:id')
+  @PostExists()
+  @Post('archive/:postId')
   @ApiOperation({ summary: 'use to archive the post' })
   @ApiParam({
-    name: 'id',
+    name: 'postId',
     type: Number,
     description: 'id of post',
     example: '1',
@@ -84,8 +91,8 @@ export class PostsController {
   @ApiOkResponse({ type: Boolean })
   async handleArchivePost(
     @CurrentUser() user: ICurrentUser,
-    @Param('id', new ParseIntPipe()) id: number,
+    @CurrentPost() post: IPost,
   ): Promise<AppResponse<boolean>> {
-    return await this.postService.archivePost(user.id, id);
+    return await this.postService.archivePost(user.id, post);
   }
 }

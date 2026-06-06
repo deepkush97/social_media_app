@@ -9,9 +9,11 @@ import {
 } from '@nestjs/swagger';
 
 import { Authenticated, CurrentUser } from 'apps/gateway/src/guards/jwt.guard';
+import { CurrentPost, PostExists } from 'apps/gateway/src/guards/post-exists.guard';
 
 import { AppResponse } from '@app/shared/app-response.dto';
 import { ApiController } from '@app/shared/decorators/api-controller.decorator';
+import { IPost } from '@app/shared/interfaces/post/post.interface';
 import { ICurrentUser } from '@app/shared/interfaces/user/users.interface';
 
 import { CreateCommentRequest } from './requests/create-comment.request';
@@ -25,6 +27,7 @@ export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @Authenticated()
+  @PostExists()
   @Post(':postId/comments')
   @ApiOperation({ summary: 'use to create a comment on a post' })
   @ApiParam({ name: 'postId', type: Number, description: 'id of post', example: '1' })
@@ -32,13 +35,14 @@ export class CommentsController {
   @ApiCreatedResponse({ type: CommentItemApiResponse })
   async handleCreateComment(
     @CurrentUser() { id: userId }: ICurrentUser,
-    @Param('postId', new ParseIntPipe()) postId: number,
+    @CurrentPost() post: IPost,
     @Body() { content, parentId }: CreateCommentRequest,
   ): Promise<CommentItemApiResponse> {
-    return this.commentsService.createComment({ content, postId, userId, parentId });
+    return this.commentsService.createComment({ content, postId: post.id, userId, parentId }, post);
   }
 
   @Authenticated()
+  @PostExists()
   @Get(':postId/comments')
   @ApiOperation({ summary: 'use to get comments for a post' })
   @ApiParam({ name: 'postId', type: Number, description: 'id of post', example: '1' })
@@ -52,14 +56,16 @@ export class CommentsController {
   }
 
   @Authenticated()
+  @PostExists()
   @Post(':postId/comments/archive/:id')
   @ApiOperation({ summary: 'use to archive a comment' })
   @ApiParam({ name: 'id', type: Number, description: 'id of comment', example: '1' })
   @ApiOkResponse()
   async handleArchiveComment(
     @CurrentUser() user: ICurrentUser,
+    @CurrentPost() post: IPost,
     @Param('id', new ParseIntPipe()) id: number,
   ): Promise<AppResponse<boolean>> {
-    return this.commentsService.archiveComment(user.id, id);
+    return this.commentsService.archiveComment(user.id, post, id);
   }
 }

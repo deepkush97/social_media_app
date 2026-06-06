@@ -178,32 +178,32 @@ export default function () {
   // 7. Likes
   // ──────────────────────────────────────────────
   group('7. Likes', () => {
-    request('POST', `${BASE_URL}/likes/like/${post1Id}`, {
+    request('POST', `${BASE_URL}/likes/${post1Id}/like`, {
       token,
       label: 'like_post',
       checks: (r, data, code) =>
         r.status === 201 && code === 'OK_CREATED' && data.id > 0 && data.postId === post1Id,
     });
 
-    request('GET', `${BASE_URL}/likes/check/${post1Id}`, {
+    request('GET', `${BASE_URL}/likes/${post1Id}/check`, {
       token,
       label: 'check_like',
       checks: (r, data, code) => r.status === 200 && code === 'OPERATION_SUCCESS' && data === true,
     });
 
-    request('GET', `${BASE_URL}/likes/count/${post1Id}`, {
+    request('GET', `${BASE_URL}/likes/${post1Id}/count`, {
       token,
       label: 'like_count',
       checks: (r, data, code) => r.status === 200 && code === 'OPERATION_SUCCESS' && data >= 1,
     });
 
-    request('POST', `${BASE_URL}/likes/unlike/${post1Id}`, {
+    request('POST', `${BASE_URL}/likes/${post1Id}/unlike`, {
       token,
       label: 'unlike_post',
       checks: (r, data, code) => r.status === 200 && code === 'OPERATION_SUCCESS',
     });
 
-    request('GET', `${BASE_URL}/likes/count/${post1Id}`, {
+    request('GET', `${BASE_URL}/likes/${post1Id}/count`, {
       token,
       label: 'like_count_after_unlike',
       checks: (r, data, code) => r.status === 200 && code === 'OPERATION_SUCCESS' && data === 0,
@@ -250,8 +250,7 @@ export default function () {
         checks: ok,
       });
 
-      const followedOk =
-        followRes.status === 200 && followRes.json('code') === 'OPERATION_SUCCESS';
+      const followedOk = followRes.status === 200 && followRes.json('code') === 'OPERATION_SUCCESS';
 
       if (followedOk) {
         request('GET', `${BASE_URL}/users/counts`, {
