@@ -188,13 +188,11 @@ export class SocialService implements OnModuleInit {
         RETURN author.id AS userId, 0 AS commonFollowers, count(DISTINCT post) AS likedPostsScore
       }
       WITH userId, sum(commonFollowers) AS commonFollowers, sum(likedPostsScore) AS likedPostsScore
-      RETURN userId, commonFollowers, likedPostsScore, (commonFollowers + likedPostsScore) AS score
-      ORDER BY score DESC
     `;
 
     return this.neo4jService.executeRead(async (tx) => {
       const itemsResult = await tx.run(
-        `${baseQuery} SKIP toInteger($offset) LIMIT toInteger($limit)`,
+        `${baseQuery} RETURN userId, commonFollowers, likedPostsScore, (commonFollowers + likedPostsScore) AS score ORDER BY score DESC SKIP toInteger($offset) LIMIT toInteger($limit)`,
         {
           userId,
           limit,
