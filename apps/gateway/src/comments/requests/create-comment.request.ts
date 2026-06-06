@@ -14,5 +14,5 @@ export class CreateCommentRequest implements INewComment {
   @IsNumber()
   @IsPositive()
   @ApiProperty({ description: 'Parent comment id', required: false })
-  parentId: number | null = null;
+  parentId?: number | null = null;
 }

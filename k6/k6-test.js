@@ -29,7 +29,7 @@ const matchesFields = (expected) => (actual) => {
 
 export default function () {
   const user = uniqueUser(__VU, __ITER);
-  let token, userId, post1Id, searchKeyword;
+  let token, userId, post1Id, post2Id, searchKeyword;
 
   // 1. Health
   group('1. Health', () => {
@@ -85,7 +85,7 @@ export default function () {
     });
     post1Id = res1.json('data.id');
 
-    request('POST', `${BASE_URL}/posts`, {
+    const res2 = request('POST', `${BASE_URL}/posts`, {
       body: { title: p2.title, content: p2.content },
       token,
       label: 'create_post_2',
@@ -95,6 +95,7 @@ export default function () {
         data: matchesFields({ status: 'ACTIVE', title: p2.title, content: p2.content }),
       }),
     });
+    post2Id = res2.json('data.id');
   });
 
   // 6. Posts — list & get & archive
@@ -176,8 +177,86 @@ export default function () {
     });
   });
 
-  // 8. Search
-  group('8. Search', () => {
+  // 8. Comments — create, list, reply, archive
+  group('8. Comments — create, list, reply, archive', () => {
+    const commentContent = `Test comment from VU ${__VU}`;
+
+    // 8a. Create comment on post2Id
+    const createRes = request('POST', `${BASE_URL}/comments/${post2Id}/comments`, {
+      body: { content: commentContent },
+      token,
+      label: 'create_comment',
+      expect: expect({
+        status: 201,
+        code: 'OK_CREATED',
+        data: matchesFields({
+          content: commentContent,
+          status: 'ACTIVE',
+          parentId: null,
+          postId: post2Id,
+        }),
+      }),
+    });
+    const commentId = createRes.json('data.id');
+
+    // 8b. List comments — expect 1
+    request('GET', `${BASE_URL}/comments/${post2Id}/comments?page=1&take=10`, {
+      token,
+      label: 'list_comments',
+      expect: expect({
+        data: matchesFields({
+          items: (items) => items.length === 1 && items[0].content === commentContent,
+        }),
+      }),
+    });
+
+    // 8c. Create reply with parentId
+    const replyContent = `Reply from VU ${__VU}`;
+    const replyRes = request('POST', `${BASE_URL}/comments/${post2Id}/comments`, {
+      body: { content: replyContent, parentId: commentId },
+      token,
+      label: 'create_reply',
+      expect: expect({
+        status: 201,
+        code: 'OK_CREATED',
+        data: matchesFields({ content: replyContent, parentId: commentId }),
+      }),
+    });
+    const replyId = replyRes.json('data.id');
+
+    // 8d. List comments — expect 2
+    request('GET', `${BASE_URL}/comments/${post2Id}/comments?page=1&take=10`, {
+      token,
+      label: 'list_comments_after_reply',
+      expect: expect({
+        data: matchesFields({
+          items: (items) => items.length === 2,
+        }),
+      }),
+    });
+
+    // 8e. Archive the reply
+    request('POST', `${BASE_URL}/comments/${post2Id}/comments/archive/${replyId}`, {
+      token,
+      label: 'archive_reply',
+      expect: expect(),
+    });
+
+    // 8f. List comments — expect 1 ACTIVE (the parent, reply is archived)
+    // Default list returns only ACTIVE comments
+    request('GET', `${BASE_URL}/comments/${post2Id}/comments?page=1&take=10`, {
+      token,
+      label: 'list_comments_after_archive',
+      expect: expect({
+        data: matchesFields({
+          items: (items) => items.length === 1 && items[0].id === commentId,
+        }),
+      }),
+    });
+  });
+
+  // 9. Search
+  group('9. Search', () => {
     const searchEndpoints = [
       { path: `posts?q=${encodeURIComponent(searchKeyword)}`, label: 'search_posts' },
       { path: `users?q=${encodeURIComponent(user.name)}`, label: 'search_users' },
@@ -193,9 +272,9 @@ export default function () {
     });
   });
 
-  // 9. Social — follow / unfollow (cross-VU)
+  // 10. Social — follow / unfollow (cross-VU)
   if (__VU > 1 && userId != null) {
-    group('9. Social — follow & unfollow', () => {
+    group('10. Social — follow & unfollow', () => {
       const targetUserId = userId - 1;
       if (targetUserId < 1) return;
 
@@ -228,8 +307,8 @@ export default function () {
     });
   }
 
-  // 10. Auth — logout
-  group('10. Auth — logout', () => {
+  // 11. Auth — logout
+  group('11. Auth — logout', () => {
     request('POST', `${BASE_URL}/auth/logout`, { token, label: 'logout', expect: expect() });
   });
 }

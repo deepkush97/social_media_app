@@ -24,7 +24,7 @@ export class CommentItem implements IComment {
 
   @ApiProperty({ description: 'Parent comment id', required: false })
   @Expose()
-  parentId: number | null;
+  parentId?: number;
 
   @ApiProperty({ description: 'Comment content' })
   @Expose()
