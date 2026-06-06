@@ -10,32 +10,30 @@ import {
 import { ContentStatusEnum } from '@app/shared/enums/content-status.enum';
 import { DatabaseIndexType } from '@app/shared/enums/database-index-type.enum';
 import { TableNamesEnum } from '@app/shared/enums/table-names.enum';
-import { IPost } from '@app/shared/interfaces/post/post.interface';
+import { IComment } from '@app/shared/interfaces/comment/comment.interface';
 
-@Entity(TableNamesEnum.POSTS_POSTS)
-@Index(`${DatabaseIndexType.IDX}_${TableNamesEnum.POSTS_POSTS}_userId_status_createdAt`, [
-  'userId',
+@Entity(TableNamesEnum.POSTS_COMMENTS)
+@Index(`${DatabaseIndexType.IDX}_${TableNamesEnum.POSTS_COMMENTS}_postId_status_createdAt`, [
+  'postId',
   'status',
   'createdAt',
 ])
-export class Post implements IPost {
+@Index(`${DatabaseIndexType.IDX}_${TableNamesEnum.POSTS_COMMENTS}_userId`, ['userId'])
+export class Comment implements IComment {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 100 })
-  title: string;
-
-  @Column({ length: 140 })
-  content: string;
-
-  @Column('json')
-  tags: string[];
-
-  @Column({ nullable: true, type: 'varchar', length: 255 })
-  image?: string;
+  @Column({ type: 'int' })
+  postId: number;
 
   @Column({ type: 'int' })
   userId: number;
+
+  @Column({ nullable: true, type: 'int' })
+  parentId: number | null;
+
+  @Column({ length: 1000 })
+  content: string;
 
   @Column({ enum: ContentStatusEnum, type: 'enum', default: ContentStatusEnum.ACTIVE })
   status: ContentStatusEnum;

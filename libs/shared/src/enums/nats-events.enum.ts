@@ -7,6 +7,7 @@ export enum NatsEvents {
   POST_UNLIKED = 'post.unliked',
   USER_FOLLOWED = 'user.followed',
   USER_UNFOLLOWED = 'user.unfollowed',
+  COMMENT_CREATED = 'comment.created',
   IMPRESSION_CREATED = 'impression.created',
   SEARCH_INDEX_REQUESTED = 'search.index.requested',
   SEARCH_INDEX_RETRY = 'search.index.retry',

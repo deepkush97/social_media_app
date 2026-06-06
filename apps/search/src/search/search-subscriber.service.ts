@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { AppLoggerService } from '@app/shared/app-logger/app-logger.service';
 import { NatsEvents } from '@app/shared/enums/nats-events.enum';
+import { CommentCreatedEventPayload } from '@app/shared/events/comment-created.event';
 import { PostCreatedEventPayload } from '@app/shared/events/post-created.event';
 import {
   SearchIndexRetryEvent,
@@ -54,6 +55,26 @@ export class SearchSubscriberService {
     });
   }
 
+  @EventHandler(NatsEvents.COMMENT_CREATED)
+  async handleCommentCreated(data: CommentCreatedEventPayload): Promise<void> {
+    try {
+      await this.searchService.indexComment(data);
+      this.logger.info(`Indexed comment ${data.id}`, {
+        context: SearchSubscriberService.name,
+      });
+    } catch (error) {
+      this.logger.warn(`ES index failed for comment ${data.id}, queuing retry`, {
+        context: SearchSubscriberService.name,
+        error: error instanceof Error ? error.message : error,
+      });
+      await this.emitRetry(
+        SearchRetryType.INDEX_COMMENT,
+        data as unknown as Record<string, unknown>,
+        0,
+      );
+    }
+  }
+
   @EventHandler(NatsEvents.USER_CREATED)
   async handleUserCreated(data: UserCreateEventPayload): Promise<void> {
     try {
@@ -90,6 +111,9 @@ export class SearchSubscriberService {
           break;
         case SearchRetryType.INDEX_BULK_TAGS:
           await this.searchService.bulkIndexTags((payload as { tags: string[] }).tags);
+          break;
+        case SearchRetryType.INDEX_COMMENT:
+          await this.searchService.indexComment(payload as CommentCreatedEventPayload);
           break;
       }
 

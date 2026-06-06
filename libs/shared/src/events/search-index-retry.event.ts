@@ -6,6 +6,7 @@ export enum SearchRetryType {
   INDEX_POST = 'INDEX_POST',
   INDEX_BULK_TAGS = 'INDEX_BULK_TAGS',
   INDEX_USER = 'INDEX_USER',
+  INDEX_COMMENT = 'INDEX_COMMENT',
 }
 
 export interface SearchIndexRetryPayload {

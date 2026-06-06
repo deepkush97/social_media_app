@@ -5,8 +5,8 @@
 
 export type Scalars = {
     Boolean: boolean,
-    String: string,
     Int: number,
+    String: string,
     DateTime: any,
     Float: number,
     join__FieldSet: any,
@@ -22,6 +22,38 @@ export interface BooleanOutputDto {
     code: AppCodes
     __typename: 'BooleanOutputDto'
 }
+
+export interface CommentListOutputDto {
+    data: (CommentOutputData | null)
+    code: AppCodes
+    __typename: 'CommentListOutputDto'
+}
+
+export interface CommentOutput {
+    id: Scalars['Int']
+    postId: Scalars['Int']
+    userId: Scalars['Int']
+    parentId: (Scalars['Int'] | null)
+    content: Scalars['String']
+    status: ContentStatusEnum
+    createdAt: Scalars['DateTime']
+    updatedAt: Scalars['DateTime']
+    __typename: 'CommentOutput'
+}
+
+export interface CommentOutputData {
+    items: CommentOutput[]
+    meta: PaginationMeta
+    __typename: 'CommentOutputData'
+}
+
+export interface CommentOutputDto {
+    data: (CommentOutput | null)
+    code: AppCodes
+    __typename: 'CommentOutputDto'
+}
+
+export type ContentStatusEnum = 'ACTIVE' | 'ARCHIVED'
 
 export interface DecayResultDto {
     edgesDecayed: Scalars['Float']
@@ -71,6 +103,8 @@ export interface Mutation {
     closeSessionBySessionId: BooleanOutputDto
     createPost: PostOutputDto
     archivePost: BooleanOutputDto
+    createComment: CommentOutputDto
+    archiveComment: BooleanOutputDto
     follow: UserCountsDto
     unfollow: UserCountsDto
     likePost: LikeOutputDto
@@ -106,7 +140,7 @@ export interface PostOutput {
     image: (Scalars['String'] | null)
     tags: Scalars['String'][]
     userId: Scalars['Int']
-    status: PostStatusEnum
+    status: ContentStatusEnum
     createdAt: Scalars['DateTime']
     updatedAt: Scalars['DateTime']
     __typename: 'PostOutput'
@@ -142,13 +176,13 @@ export interface PostRecommendationOutputDto {
     __typename: 'PostRecommendationOutputDto'
 }
 
-export type PostStatusEnum = 'ACTIVE' | 'ARCHIVED'
-
 export interface Query {
     findUserById: UserOutputDto
     findOpenSessionByGuid: SessionOutputDto
     findPostById: PostOutputDto
     findPostsByUserId: PostListOutputDto
+    findCommentById: CommentOutputDto
+    findCommentsByPostId: CommentListOutputDto
     searchPosts: SearchPostOutputDto
     searchUsers: SearchUserOutputDto
     searchTags: SearchTagOutputDto
@@ -292,6 +326,44 @@ export interface BooleanOutputDtoGenqlSelection{
     __scalar?: boolean | number
 }
 
+export interface CommentListOutputDtoGenqlSelection{
+    data?: CommentOutputDataGenqlSelection
+    code?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface CommentOutputGenqlSelection{
+    id?: boolean | number
+    postId?: boolean | number
+    userId?: boolean | number
+    parentId?: boolean | number
+    content?: boolean | number
+    status?: boolean | number
+    createdAt?: boolean | number
+    updatedAt?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface CommentOutputDataGenqlSelection{
+    items?: CommentOutputGenqlSelection
+    meta?: PaginationMetaGenqlSelection
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface CommentOutputDtoGenqlSelection{
+    data?: CommentOutputGenqlSelection
+    code?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface CommentsPaginationInput {take?: Scalars['Int'],page?: Scalars['Int'],postId: Scalars['Int'],status?: ContentStatusEnum}
+
+export interface CreateCommentInput {postId: Scalars['Int'],content: Scalars['String'],parentId?: (Scalars['Int'] | null),userId: Scalars['Int']}
+
 export interface CreatePostInput {title: Scalars['String'],content: Scalars['String'],image?: (Scalars['String'] | null),userId: Scalars['Int']}
 
 export interface CreateUserInput {name: Scalars['String'],email: Scalars['String'],password: Scalars['String']}
@@ -349,6 +421,8 @@ export interface MutationGenqlSelection{
     closeSessionBySessionId?: (BooleanOutputDtoGenqlSelection & { __args: {guid: Scalars['String']} })
     createPost?: (PostOutputDtoGenqlSelection & { __args: {input: CreatePostInput} })
     archivePost?: (BooleanOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
+    createComment?: (CommentOutputDtoGenqlSelection & { __args: {input: CreateCommentInput} })
+    archiveComment?: (BooleanOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     follow?: (UserCountsDtoGenqlSelection & { __args: {input: FollowUnfollowInput} })
     unfollow?: (UserCountsDtoGenqlSelection & { __args: {input: FollowUnfollowInput} })
     likePost?: (LikeOutputDtoGenqlSelection & { __args: {input: LikeInput} })
@@ -432,13 +506,15 @@ export interface PostRecommendationOutputDtoGenqlSelection{
     __scalar?: boolean | number
 }
 
-export interface PostsPaginationInput {take?: Scalars['Int'],page?: Scalars['Int'],userId: Scalars['Int'],status?: PostStatusEnum}
+export interface PostsPaginationInput {take?: Scalars['Int'],page?: Scalars['Int'],userId: Scalars['Int'],status?: ContentStatusEnum}
 
 export interface QueryGenqlSelection{
     findUserById?: (UserOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     findOpenSessionByGuid?: (SessionOutputDtoGenqlSelection & { __args: {id: Scalars['String']} })
     findPostById?: (PostOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     findPostsByUserId?: (PostListOutputDtoGenqlSelection & { __args: {input: PostsPaginationInput} })
+    findCommentById?: (CommentOutputDtoGenqlSelection & { __args: {id: Scalars['Int']} })
+    findCommentsByPostId?: (CommentListOutputDtoGenqlSelection & { __args: {input: CommentsPaginationInput} })
     searchPosts?: (SearchPostOutputDtoGenqlSelection & { __args: {input: SearchInput} })
     searchUsers?: (SearchUserOutputDtoGenqlSelection & { __args: {input: SearchInput} })
     searchTags?: (SearchTagOutputDtoGenqlSelection & { __args: {input: SearchInput} })
@@ -603,6 +679,38 @@ export interface WeightSnapshotDtoGenqlSelection{
     export const isBooleanOutputDto = (obj?: { __typename?: any } | null): obj is BooleanOutputDto => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isBooleanOutputDto"')
       return BooleanOutputDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const CommentListOutputDto_possibleTypes: string[] = ['CommentListOutputDto']
+    export const isCommentListOutputDto = (obj?: { __typename?: any } | null): obj is CommentListOutputDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isCommentListOutputDto"')
+      return CommentListOutputDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const CommentOutput_possibleTypes: string[] = ['CommentOutput']
+    export const isCommentOutput = (obj?: { __typename?: any } | null): obj is CommentOutput => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isCommentOutput"')
+      return CommentOutput_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const CommentOutputData_possibleTypes: string[] = ['CommentOutputData']
+    export const isCommentOutputData = (obj?: { __typename?: any } | null): obj is CommentOutputData => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isCommentOutputData"')
+      return CommentOutputData_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const CommentOutputDto_possibleTypes: string[] = ['CommentOutputDto']
+    export const isCommentOutputDto = (obj?: { __typename?: any } | null): obj is CommentOutputDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isCommentOutputDto"')
+      return CommentOutputDto_possibleTypes.includes(obj.__typename)
     }
     
 
@@ -898,6 +1006,11 @@ export const enumAuthSessionEnum = {
    CLOSED: 'CLOSED' as const
 }
 
+export const enumContentStatusEnum = {
+   ACTIVE: 'ACTIVE' as const,
+   ARCHIVED: 'ARCHIVED' as const
+}
+
 export const enumFollowSource = {
    search: 'search' as const,
    suggested: 'suggested' as const,
@@ -915,9 +1028,4 @@ export const enumJoinGraph = {
 export const enumLinkPurpose = {
    SECURITY: 'SECURITY' as const,
    EXECUTION: 'EXECUTION' as const
-}
-
-export const enumPostStatusEnum = {
-   ACTIVE: 'ACTIVE' as const,
-   ARCHIVED: 'ARCHIVED' as const
 }

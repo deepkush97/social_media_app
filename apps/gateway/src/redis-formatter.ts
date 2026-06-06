@@ -1,4 +1,4 @@
-import { PostStatusEnum } from '@app/shared/enums/post-status.enum';
+import { ContentStatusEnum } from '@app/shared/enums/content-status.enum';
 
 export class RedisFormatter {
   static session(sessionId: string): string {
@@ -9,7 +9,7 @@ export class RedisFormatter {
     return `post:${postId}`;
   }
 
-  static postList(userId: number, take: number, page: number, status: PostStatusEnum): string {
+  static postList(userId: number, take: number, page: number, status: ContentStatusEnum): string {
     return `posts:${userId}:${take}:${page}:${status}`;
   }
 
@@ -19,6 +19,18 @@ export class RedisFormatter {
 
   static userCounts(userId: number): string {
     return `user_counts:${userId}`;
+  }
+
+  static comment(commentId: number): string {
+    return `comment:${commentId}`;
+  }
+
+  static commentList(postId: number, take: number, page: number): string {
+    return `comments:${postId}:${take}:${page}`;
+  }
+
+  static commentListPattern(postId: number): string {
+    return `comments:${postId}:*`;
   }
 
   static postRecommendation(userId: number, page: number, take: number): string {

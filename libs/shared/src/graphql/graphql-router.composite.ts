@@ -3,6 +3,12 @@ import { Injectable } from '@nestjs/common';
 import {
   BooleanOutputDto,
   BooleanOutputDtoGenqlSelection,
+  CommentListOutputDto,
+  CommentListOutputDtoGenqlSelection,
+  CommentOutputDto,
+  CommentOutputDtoGenqlSelection,
+  CommentsPaginationInput,
+  CreateCommentInput,
   CreatePostInput,
   CreateUserInput,
   FollowUnfollowInput,
@@ -332,6 +338,58 @@ export class GraphqlRouterComposite {
     });
 
     return result.searchTags;
+  }
+
+  public async createComment(
+    input: CreateCommentInput,
+    projection: CommentOutputDtoGenqlSelection,
+  ): Promise<CommentOutputDto> {
+    const result = await this.routerService.client.mutation({
+      createComment: {
+        __args: { input },
+        ...projection,
+      },
+    });
+    return result.createComment as CommentOutputDto;
+  }
+
+  public async findCommentById(
+    id: number,
+    projection: CommentOutputDtoGenqlSelection,
+  ): Promise<CommentOutputDto> {
+    const result = await this.routerService.client.query({
+      findCommentById: {
+        __args: { id },
+        ...projection,
+      },
+    });
+    return result.findCommentById as CommentOutputDto;
+  }
+
+  public async findCommentsByPostId(
+    input: CommentsPaginationInput,
+    projection: CommentListOutputDtoGenqlSelection,
+  ): Promise<CommentListOutputDto> {
+    const result = await this.routerService.client.query({
+      findCommentsByPostId: {
+        __args: { input },
+        ...projection,
+      },
+    });
+    return result.findCommentsByPostId as CommentListOutputDto;
+  }
+
+  public async archiveComment(
+    id: number,
+    projection: BooleanOutputDtoGenqlSelection,
+  ): Promise<BooleanOutputDto> {
+    const result = await this.routerService.client.mutation({
+      archiveComment: {
+        __args: { id },
+        ...projection,
+      },
+    });
+    return result.archiveComment as BooleanOutputDto;
   }
 
   public async postRecommendation(

@@ -2,6 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 
 import { AppLoggerService } from '@app/shared/app-logger/app-logger.service';
+import { CommentCreatedEventPayload } from '@app/shared/events/comment-created.event';
 import { PostCreatedEventPayload } from '@app/shared/events/post-created.event';
 import { UserCreateEventPayload } from '@app/shared/events/user-created.event';
 import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface';
@@ -89,6 +90,39 @@ export class SearchService implements OnModuleInit {
       },
     });
 
+    await this.ensureIndex('comments', {
+      settings: {
+        analysis: {
+          filter: {
+            synonyms_filter: {
+              type: 'synonym',
+              synonyms: [
+                'js, javascript, typescript',
+                'react, reactjs, react.js',
+                'node, nodejs, node.js',
+                'ts, typescript',
+              ],
+            },
+          },
+          analyzer: {
+            synonym_analyzer: {
+              tokenizer: 'standard',
+              filter: ['lowercase', 'synonyms_filter'],
+            },
+          },
+        },
+      },
+      mappings: {
+        properties: {
+          id: { type: 'integer' },
+          postId: { type: 'integer' },
+          userId: { type: 'integer' },
+          content: { type: 'text', analyzer: 'synonym_analyzer' },
+          createdAt: { type: 'date' },
+        },
+      },
+    });
+
     await this.ensureIndex('tags', {
       settings: {
         analysis: {
@@ -130,7 +164,10 @@ export class SearchService implements OnModuleInit {
         await this.esService.indices.create({ index: name, ...spec });
       }
     } catch (err) {
-      this.logger.error(`Failed to ensure index ${name}`, { context: 'SearchService', error: err });
+      this.logger.error(`Failed to ensure index ${name}`, {
+        context: this.constructor.name,
+        error: err,
+      });
       throw err;
     }
   }
@@ -151,7 +188,29 @@ export class SearchService implements OnModuleInit {
       });
     } catch (err) {
       this.logger.error(`Failed to index post ${post.id}`, {
-        context: 'SearchService',
+        context: this.constructor.name,
+        error: err,
+      });
+      throw err;
+    }
+  }
+
+  async indexComment(comment: CommentCreatedEventPayload): Promise<void> {
+    try {
+      await this.esService.index({
+        index: 'comments',
+        id: String(comment.id),
+        document: {
+          id: comment.id,
+          postId: comment.postId,
+          userId: comment.userId,
+          content: comment.content,
+          createdAt: comment.createdAt ?? new Date().toISOString(),
+        },
+      });
+    } catch (err) {
+      this.logger.error(`Failed to index comment ${comment.id}`, {
+        context: this.constructor.name,
         error: err,
       });
       throw err;
@@ -167,7 +226,7 @@ export class SearchService implements OnModuleInit {
       });
     } catch (err) {
       this.logger.error(`Failed to index user ${document.id}`, {
-        context: 'SearchService',
+        context: this.constructor.name,
         error: err,
       });
       throw err;
@@ -182,7 +241,10 @@ export class SearchService implements OnModuleInit {
         document: { name },
       });
     } catch (err) {
-      this.logger.error(`Failed to index tag ${name}`, { context: 'SearchService', error: err });
+      this.logger.error(`Failed to index tag ${name}`, {
+        context: this.constructor.name,
+        error: err,
+      });
       throw err;
     }
   }
@@ -198,7 +260,10 @@ export class SearchService implements OnModuleInit {
         ]),
       });
     } catch (err) {
-      this.logger.error('Failed to bulk index tags', { context: 'SearchService', error: err });
+      this.logger.error('Failed to bulk index tags', {
+        context: this.constructor.name,
+        error: err,
+      });
       throw err;
     }
   }
@@ -243,7 +308,7 @@ export class SearchService implements OnModuleInit {
       };
     } catch (err) {
       this.logger.error('searchPosts failed', {
-        context: 'SearchService',
+        context: this.constructor.name,
         error: err,
         data: { query, page, take },
       });
@@ -291,7 +356,7 @@ export class SearchService implements OnModuleInit {
       };
     } catch (err) {
       this.logger.error('searchUsers failed', {
-        context: 'SearchService',
+        context: this.constructor.name,
         error: err,
         data: { query, page, take },
       });
@@ -332,7 +397,7 @@ export class SearchService implements OnModuleInit {
       };
     } catch (err) {
       this.logger.error('searchTags failed', {
-        context: 'SearchService',
+        context: this.constructor.name,
         error: err,
         data: { query, page, take },
       });

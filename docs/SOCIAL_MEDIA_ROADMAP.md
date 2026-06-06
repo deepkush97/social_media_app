@@ -133,13 +133,13 @@ The follow relationship should carry metadata that feeds into recommendation and
   }]->(:User)
   ```
 - [x] **Update follow resolver** — `FollowUnfollowInput` now accepts optional `source` param (`search`/`suggested`/`profile`/`feed`); Cypher query uses `ON CREATE SET` to populate `weight`, `createdAt`, `source`, `interactions` on new edges.
-- [ ] **Weight decay cron** — periodically reduce weight of stale follows (no interaction in N days).
+- [x] **Weight decay cron** — periodically reduce weight of stale follows (no interaction in N days).
 - [x] **Weight boost on interaction** — `SocialService.boostFollowWeight()` increments `interactions` + `weight` on the `[:FOLLOWS]` edge. Called from `SocialSubscriberService.onPostLiked()` (boosts by 0.5 per like).
 
 ### Tag Interest (Impression Seeds)
 
 - [x] **`INTERESTED_IN` edge from User to Tag** — `SocialService.boostTagWeight()` creates/updates `(User)-[:INTERESTED_IN {weight}]->(Tag {name})` in Neo4j. Accepts an array of tags, uses `UNWIND` for a single batch query.
-- [x] **Boosted on post creation** — `SocialSubscriberService.onPostCreated()` consumes `POST_CREATED` event with pre-extracted tags, calls `boostTagWeight(userId, tags, 1.0)`.
+- [x] **Boosted on post creation** — `SocialSubscriberService.onPostCreated()` consumes `POST_CREATED` event with pre-extracted tags, calls `boostTagWeight(userId, tags, 0.5)`. Lowered from 1.0 to prevent creator-side accumulation from outpacing consumer-side interest.
 - [x] **Boosted on post like** — `SocialSubscriberService.onPostLiked()` receives pre-stored tags in event payload, calls `boostTagWeight(userId, tags, 1.0)` in a single batch call.
 
 ---
@@ -223,7 +223,7 @@ Add the Cypher queries that power recommendations to `SocialService`. No endpoin
 
 - [x] **Debug / inspect** — run queries directly against Neo4j (via Neo4j Browser at `http://localhost:7474`) with manual parameters to verify results.
 
-- [ ] **Unit test queries** — write a test that seeds 3 users, 2 posts, 1 follow, 1 like, and asserts `recommendedPosts` returns the expected post with the right score.
+- [x] **Unit test queries** — write a test that seeds 3 users, 2 posts, 1 follow, 1 like, and asserts `recommendedPosts` returns the expected post with the right score.
 
 **Verify:** Call `socialService.recommendedPosts(1, 10, 0)` from a test or controller → get back a sorted list of post IDs. Run the same Cypher in Neo4j Browser to confirm.
 

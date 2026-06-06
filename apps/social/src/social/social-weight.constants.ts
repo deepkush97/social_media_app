@@ -1,0 +1,4 @@
+export const WEIGHT_INTEREST_COMMENT = 0.3;
+export const WEIGHT_INTEREST_FOLLOW = 0.5;
+export const WEIGHT_INTEREST_LIKE = 1.0;
+export const WEIGHT_INTEREST_POST_CREATE = 0.5;

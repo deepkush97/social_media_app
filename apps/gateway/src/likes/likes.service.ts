@@ -7,9 +7,9 @@ import { AppCodes } from '@app/shared/enums/app-codes.enum';
 import { PostLikedEvent, PostUnlikedEvent } from '@app/shared/events/post-liked.event';
 import { GraphqlRouterComposite } from '@app/shared/graphql/graphql-router.composite';
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
+import { IPost } from '@app/shared/interfaces/post/post.interface';
 import { EventBusEmitter } from '@app/shared/nats/event-bus-emitter.service';
 
-import { PostsService } from '../posts/posts.service';
 import { RedisFormatter } from '../redis-formatter';
 
 @Injectable()
@@ -18,21 +18,15 @@ export class LikesService {
     private readonly routerComposite: GraphqlRouterComposite,
     private readonly cacheService: CacheService,
     private readonly eventBusEmitter: EventBusEmitter,
-    private readonly postService: PostsService,
     private readonly logger: AppLoggerService,
   ) {}
 
   async likePost(
     userId: number,
-    postId: number,
+    post: IPost,
   ): Promise<IAppResponse<{ id: number; userId: number; postId: number; createdAt: Date }>> {
-    const postResult = await this.postService.findPostById(postId);
-    if (postResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: postResult.code });
-    }
-
     const result = await this.routerComposite.likePost(
-      { userId, postId },
+      { userId, postId: post.id },
       {
         data: { id: true, userId: true, postId: true, createdAt: true },
         code: true,
@@ -41,8 +35,6 @@ export class LikesService {
     if (result.code !== AppCodes.OPERATION_SUCCESS || !result.data) {
       return new AppResponse({ code: AppCodes[result.code ?? AppCodes.INTERNAL_ERROR] });
     }
-
-    const post = postResult.data;
 
     await Promise.all([
       this.eventBusEmitter.emit(
@@ -70,21 +62,14 @@ export class LikesService {
     return new AppResponse({ code: AppCodes.OK_CREATED, data: result.data });
   }
 
-  async unlikePost(userId: number, postId: number): Promise<IAppResponse<boolean>> {
-    const postResult = await this.postService.findPostById(postId);
-    if (postResult.code !== AppCodes.OPERATION_SUCCESS) {
-      return new AppResponse({ code: postResult.code });
-    }
-
+  async unlikePost(userId: number, post: IPost): Promise<IAppResponse<boolean>> {
     const result = await this.routerComposite.unlikePost(
-      { userId, postId },
+      { userId, postId: post.id },
       { data: true, code: true },
     );
     if (result.code !== AppCodes.OPERATION_SUCCESS) {
       return new AppResponse({ code: AppCodes[result.code] });
     }
-
-    const post = postResult.data;
 
     await Promise.all([
       this.eventBusEmitter.emit(

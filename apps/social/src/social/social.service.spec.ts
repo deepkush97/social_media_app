@@ -9,6 +9,7 @@ import { createMockLogger } from '@app/shared/test-utils/logger.mock';
 
 import { LikeEntity } from './like.entity';
 import { SocialService } from './social.service';
+import { WEIGHT_INTEREST_FOLLOW } from './social-weight.constants';
 
 const IMAGE = 'neo4j:community';
 const CONTAINER_NAME = 'social-test-neo4j';
@@ -446,7 +447,7 @@ describe('SocialService', () => {
     it('increments weight on an existing FOLLOWS edge', async () => {
       await service.follow({ followerId: 3, followingId: 4 });
 
-      await service.boostFollowWeight(3, 4, 0.5);
+      await service.boostFollowWeight(3, 4, WEIGHT_INTEREST_FOLLOW);
 
       const { records } = await runQuery(
         driver,

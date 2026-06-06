@@ -6,7 +6,7 @@ import { ContentStatusEnum } from '@app/shared/enums/content-status.enum';
 
 import { PaginationRequest } from '../../requests/pagination.request';
 
-export class FindPostsRequest extends PaginationRequest {
+export class FindCommentsRequest extends PaginationRequest {
   @ApiProperty({ description: 'status', enum: ContentStatusEnum, required: false })
   @IsOptional()
   @IsEnum(ContentStatusEnum)
