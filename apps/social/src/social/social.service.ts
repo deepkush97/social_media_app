@@ -390,4 +390,11 @@ export class SocialService implements OnModuleInit {
       );
     }, SocialService.name);
   }
+
+  async ensureUserNode(userId: number): Promise<void> {
+    await this.neo4jService.executeWrite(
+      (tx) => tx.run('MERGE (u:User {id: $userId})', { userId }),
+      SocialService.name,
+    );
+  }
 }
