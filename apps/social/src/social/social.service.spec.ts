@@ -134,47 +134,71 @@ async function runQuery(
   }
 }
 
+interface PostSeed {
+  userId: number;
+  postId: number;
+  tags: string[];
+}
+
+interface FollowSeed {
+  followerId: number;
+  followingId: number;
+}
+
+interface LikeSeed {
+  userId: number;
+  postId: number;
+}
+
+const USER_IDS = [1, 2, 3, 4, 5];
+
+const POST_SEEDS: PostSeed[] = [
+  { userId: 2, postId: 101, tags: ['graphql', 'typescript'] },
+  { userId: 2, postId: 102, tags: ['node'] },
+  { userId: 3, postId: 103, tags: ['graphql'] },
+  { userId: 4, postId: 104, tags: ['node', 'typescript'] },
+  { userId: 5, postId: 105, tags: ['typescript'] },
+];
+
+const FOLLOW_SEEDS: FollowSeed[] = [
+  { followerId: 1, followingId: 2 },
+  { followerId: 1, followingId: 5 },
+  { followerId: 2, followingId: 3 },
+  { followerId: 2, followingId: 4 },
+];
+
+const LIKE_SEEDS: LikeSeed[] = [
+  { userId: 1, postId: 103 },
+  { userId: 1, postId: 104 },
+];
+
 /**
- * Baseline graph — built using actual SocialService methods wherever
- * possible so tests exercise the same code paths as production:
+ * Baseline graph — all entities created through SocialService methods
+ * (no raw Cypher) so tests exercise the same code paths as production:
  *
- *   Users:  1 (me), 2, 3, 4, 5
- *   Posts:  101 (by user 2, tagged graphql+typescript)
- *           102 (by user 2, tagged node)
- *           103 (by user 3, tagged graphql)
- *           104 (by user 4, tagged node+typescript)
- *           105 (by user 5, tagged typescript)
- *
- *   CREATED:     via trackPostCreation()
- *   FOLLOWS:     via follow()
- *   LIKED:       via like()
- *   INTERESTED_IN: via boostTagWeight()
+ *   Users:  1, 2, 3, 4, 5                                    via ensureUserNode
+ *   Posts:  101-105 (by users 2-5, with varied tags)         via boostTagWeight + trackPostCreation
+ *   Follows: 1→2, 1→5, 2→3, 2→4                             via follow
+ *   Likes:   user 1 → post 103, user 1 → post 104            via like
+ *   Interest: user 1 → graphql@1.0, user 1 → node@2.0        via boostTagWeight
  */
-async function seedGraph(service: SocialService, driver: Driver): Promise<void> {
-  // Raw Cypher only for node creation — no service method exists for that
-  await runQuery(
-    driver,
-    `
-    CREATE (u1:User {id: 1}), (u2:User {id: 2}), (u3:User {id: 3}),
-           (u4:User {id: 4}), (u5:User {id: 5})
-    CREATE (p101:Post {id: 101}), (p102:Post {id: 102}), (p103:Post {id: 103}),
-           (p104:Post {id: 104}), (p105:Post {id: 105})
-    `,
-  );
+async function seedGraph(service: SocialService): Promise<void> {
+  for (const id of USER_IDS) {
+    await service.ensureUserNode(id);
+  }
 
-  await service.trackPostCreation(2, 101, ['graphql', 'typescript']);
-  await service.trackPostCreation(2, 102, ['node']);
-  await service.trackPostCreation(3, 103, ['graphql']);
-  await service.trackPostCreation(4, 104, ['node', 'typescript']);
-  await service.trackPostCreation(5, 105, ['typescript']);
+  for (const { userId, postId, tags } of POST_SEEDS) {
+    await service.boostTagWeight(userId, tags, 0.5);
+    await service.trackPostCreation(userId, postId, tags);
+  }
 
-  await service.follow({ followerId: 1, followingId: 2 });
-  await service.follow({ followerId: 1, followingId: 5 });
-  await service.follow({ followerId: 2, followingId: 3 });
-  await service.follow({ followerId: 2, followingId: 4 });
+  for (const f of FOLLOW_SEEDS) {
+    await service.follow(f);
+  }
 
-  await service.like({ userId: 1, postId: 103 });
-  await service.like({ userId: 1, postId: 104 });
+  for (const { userId, postId } of LIKE_SEEDS) {
+    await service.like({ userId, postId });
+  }
 
   await service.boostTagWeight(1, ['graphql'], 1.0);
   await service.boostTagWeight(1, ['node'], 2.0);
@@ -194,7 +218,7 @@ describe('SocialService', () => {
     service = new SocialService(neo4jService, likeRepo);
 
     await service.onModuleInit();
-    await seedGraph(service, driver);
+    await seedGraph(service);
   }, 120_000);
 
   afterAll(async () => {
@@ -407,8 +431,8 @@ describe('SocialService', () => {
     it('creates CREATED and TAGGED edges visible via recommendation', async () => {
       // User 1 follows user 2 in seed, so a new post by user 2 appears
       // in user 1's recommendations with score 1.0.
-      await runQuery(driver, 'CREATE (p:Post {id: 201})');
-
+      // Mirror the real onPostCreated handler: boostTagWeight + trackPostCreation
+      await service.boostTagWeight(2, ['graphql'], 0.5);
       await service.trackPostCreation(2, 201, ['graphql']);
 
       const result = await service.postRecommendation(1, 10, 0);
@@ -437,8 +461,8 @@ describe('SocialService', () => {
 
   describe('boostTagWeight', () => {
     it('creates INTERESTED_IN edges reflected in postRecommendation', async () => {
-      // User 6, post 301 by user 6
-      await runQuery(driver, 'CREATE (u:User {id: 6}), (p:Post {id: 301})');
+      await service.ensureUserNode(6);
+      await service.boostTagWeight(6, ['graphql'], 0.5);
       await service.trackPostCreation(6, 301, ['graphql']);
 
       // User 1 has INTERESTED_IN graphql weight 1.0 from seed
