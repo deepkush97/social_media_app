@@ -14,6 +14,10 @@ export interface SeedPost {
   userId?: number;
 }
 
+export interface SeedComment {
+  content: string;
+}
+
 export function parseArgs(argv: string[]): Record<string, number> {
   const args: Record<string, number> = {};
   for (let i = 0; i < argv.length; i++) {

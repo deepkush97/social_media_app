@@ -1,6 +1,6 @@
 import { randomInt } from 'node:crypto';
 
-import { pick, type SeedPost, type SeedUser } from './utils';
+import { pick, type SeedComment, type SeedPost, type SeedUser } from './utils';
 
 const FIRST_NAMES = [
   'Alex',
@@ -214,6 +214,33 @@ export function generateUser(index: number, rand: () => number): SeedUser {
     email: `${first.toLowerCase()}.${last.toLowerCase()}.seed${index}@example.com`,
     password: '123456',
   };
+}
+
+const COMMENT_TEMPLATES = [
+  'Great post! Really enjoyed reading this.',
+  'Thanks for sharing, this was helpful.',
+  'I had a similar experience — totally agree!',
+  'Interesting perspective, never thought of it that way.',
+  'Nice write-up! Bookmarking this for later.',
+  "Couldn't agree more. Well said.",
+  'This is exactly what I needed to read today.',
+  'Solid advice, thanks for putting this together.',
+  "I've been thinking about this too. Great minds think alike!",
+  'Love the practical tips in this. Going to try them out.',
+  'Really well explained. Sharing this with my team.',
+  'This resonates so much with my own journey.',
+  'Thanks for the inspiration!',
+  'You always have the best insights on this topic.',
+  'Tried this out and it works wonders. Highly recommend.',
+  'How long did it take you to get into this?',
+  "Any beginner resources you'd recommend?",
+  "What's your setup like for this?",
+  'I wish I had read this sooner!',
+  'Keep up the great work!',
+];
+
+export function generateComment(rand: () => number): SeedComment {
+  return { content: pick(COMMENT_TEMPLATES, rand) };
 }
 
 export function generatePost(tagPool: string[], rand: () => number): SeedPost {

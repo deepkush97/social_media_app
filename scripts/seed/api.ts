@@ -74,3 +74,17 @@ export async function likePost(token: string, postId: number): Promise<number> {
 
   return res.status;
 }
+
+export async function createComment(
+  token: string,
+  postId: number,
+  content: string,
+): Promise<number> {
+  const res = await apiFetch(`/posts/${postId}/comments`, {
+    method: 'POST',
+    token,
+    body: { content },
+  });
+
+  return res.status;
+}

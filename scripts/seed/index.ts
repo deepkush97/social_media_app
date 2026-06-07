@@ -1,13 +1,16 @@
 /* eslint-disable no-console */
 
-import { createPost, followUser, likePost, signup } from './api';
-import { generatePost, generateUser, TOPICS } from './data';
+import { writeFileSync } from 'node:fs';
+
+import { createComment, createPost, followUser, likePost, signup } from './api';
+import { generateComment, generatePost, generateUser, TOPICS } from './data';
 import {
   createRng,
   LatencyTracker,
   mapConcurrent,
   parseArgs,
   pick,
+  type SeedComment,
   type SeedPost,
   type SeedUser,
   shuffleArray,
@@ -16,17 +19,32 @@ import {
 
 const CONCURRENCY = 50;
 
+function extractProfile(argv: string[]): string | null {
+  const idx = argv.indexOf('--profile');
+  if (idx !== -1 && argv[idx + 1] && !argv[idx + 1].startsWith('--')) {
+    return argv[idx + 1].toLowerCase();
+  }
+  return null;
+}
+
+interface StepTiming {
+  label: string;
+  elapsed: number;
+}
+
 async function verifyGraphState(
   userCount: number,
   postCount: number,
   followCount: number,
   likeCount: number,
+  commentCount: number,
 ): Promise<void> {
   console.log('\nGraph summary (expected):');
   console.log(`  Users:    ${userCount}`);
   console.log(`  Posts:    ${postCount}`);
   console.log(`  Follows:  ~${followCount}`);
   console.log(`  Likes:    ~${likeCount}`);
+  console.log(`  Comments: ~${commentCount}`);
 
   try {
     const neo4jDriver = await import('neo4j-driver');
@@ -77,25 +95,41 @@ async function verifyGraphState(
 }
 
 async function main(): Promise<void> {
-  const args = parseArgs(process.argv.slice(2));
+  const rawArgv = process.argv.slice(2);
+  const profile = extractProfile(rawArgv);
+
+  const defaultUsers = profile === 'light' ? 10 : profile === 'heavy' ? 500 : 100;
+  const defaultFollowProb = profile === 'light' ? 0.5 : profile === 'heavy' ? 0.5 : 0.3;
+  const defaultLikeProb = profile === 'light' ? 0.3 : profile === 'heavy' ? 0.5 : 0.2;
+  const defaultMaxPosts = profile === 'light' ? 3 : profile === 'heavy' ? 20 : 10;
+  const defaultCommentProb = profile === 'heavy' ? 0.8 : 0.5;
+
+  const args = parseArgs(rawArgv);
   const SEED = args.seed || 42;
-  const USER_COUNT = args.users || 100;
-  const FOLLOW_PROB = args['follow-prob'] || 0.3;
-  const LIKE_PROB = args['like-prob'] || 0.2;
+  const USER_COUNT = args.users || defaultUsers;
+  const FOLLOW_PROB = args['follow-prob'] ?? defaultFollowProb;
+  const LIKE_PROB = args['like-prob'] ?? defaultLikeProb;
+  const COMMENT_PROB = args['comment-prob'] ?? defaultCommentProb;
   const TAG_COUNT = args['tag-count'] || 10;
-  const MAX_POSTS = args['max-posts'] || 10;
+  const MAX_POSTS = args['max-posts'] || defaultMaxPosts;
   const SKIP_VERIFY = args['skip-verify'] === 1;
+  const OUTPUT = rawArgv.includes('--output')
+    ? rawArgv[rawArgv.indexOf('--output') + 1]
+    : 'seed-output.json';
 
   const rand = createRng(SEED);
 
   console.log('── Seed Configuration ──');
+  if (profile) console.log(`  profile:       ${profile}`);
   console.log(`  seed:          ${SEED}`);
   console.log(`  users:         ${USER_COUNT}`);
   console.log(`  follow-prob:   ${FOLLOW_PROB}`);
   console.log(`  like-prob:     ${LIKE_PROB}`);
+  console.log(`  comment-prob:  ${COMMENT_PROB}`);
   console.log(`  tag-count:     ${TAG_COUNT}`);
   console.log(`  max-posts:     ${MAX_POSTS}`);
   console.log(`  concurrency:   ${CONCURRENCY}`);
+  console.log(`  output:        ${OUTPUT}`);
   console.log('');
 
   const tagPool: string[] = [];
@@ -103,10 +137,11 @@ async function main(): Promise<void> {
     tagPool.push(pick(TOPICS, rand).split(' ').join(''));
   }
 
-  const t0 = performance.now();
+  const timings: StepTiming[] = [];
 
   // Step 1: Create users
-  console.log('Step 1/4: Creating users...');
+  let stepStart = performance.now();
+  console.log('Step 1/5: Creating users...');
   const userInputs = Array.from({ length: USER_COUNT }, (_, i) => generateUser(i, rand));
   const userResults = await mapConcurrent(userInputs, signup, CONCURRENCY, (c, t) =>
     console.log(`  [users]   ${c} / ${t}`),
@@ -116,13 +151,12 @@ async function main(): Promise<void> {
     userId: userResults[i].userId,
     token: userResults[i].token,
   }));
-  console.log(
-    `  Created ${users.length} users ✓  [${((performance.now() - t0) / 1000).toFixed(1)}s]`,
-  );
+  timings.push({ label: 'users', elapsed: performance.now() - stepStart });
+  console.log(`  Created ${users.length} users ✓  [${(timings[0].elapsed / 1000).toFixed(1)}s]`);
 
   // Step 2: Create posts
-  const t1 = performance.now();
-  console.log('Step 2/4: Creating posts...');
+  stepStart = performance.now();
+  console.log('Step 2/5: Creating posts...');
   const allPosts: SeedPost[] = [];
   const postInputs: Array<{ user: SeedUser; post: SeedPost }> = [];
 
@@ -149,13 +183,12 @@ async function main(): Promise<void> {
       userId: postInputs[i].user.userId,
     });
   }
-  console.log(
-    `  Created ${allPosts.length} posts ✓  [${((performance.now() - t1) / 1000).toFixed(1)}s]`,
-  );
+  timings.push({ label: 'posts', elapsed: performance.now() - stepStart });
+  console.log(`  Created ${allPosts.length} posts ✓  [${(timings[1].elapsed / 1000).toFixed(1)}s]`);
 
   // Step 3: Create follows
-  const t2 = performance.now();
-  console.log('Step 3/4: Creating follows...');
+  stepStart = performance.now();
+  console.log('Step 3/5: Creating follows...');
   const followTargets: Array<[number, number]> = [];
 
   for (const follower of users) {
@@ -186,13 +219,12 @@ async function main(): Promise<void> {
     CONCURRENCY,
     (c, t) => console.log(`${followLatency.snapshot(c, t)}  ${followStatus.format()}`),
   );
-  console.log(
-    `  Created ${followStatus.format()} ✓  [${((performance.now() - t2) / 1000).toFixed(1)}s]`,
-  );
+  timings.push({ label: 'follows', elapsed: performance.now() - stepStart });
+  console.log(`  Created ${followStatus.format()} ✓  [${(timings[2].elapsed / 1000).toFixed(1)}s]`);
 
   // Step 4: Create likes
-  const t3 = performance.now();
-  console.log('Step 4/4: Creating likes...');
+  stepStart = performance.now();
+  console.log('Step 4/5: Creating likes...');
   const likeTargets: Array<[number, number]> = [];
 
   for (const user of users) {
@@ -218,21 +250,93 @@ async function main(): Promise<void> {
     CONCURRENCY,
     (c, t) => console.log(`${likeLatency.snapshot(c, t)}  ${likeStatus.format()}`),
   );
+  timings.push({ label: 'likes', elapsed: performance.now() - stepStart });
+  console.log(`  Created ${likeStatus.format()} ✓  [${(timings[3].elapsed / 1000).toFixed(1)}s]`);
+
+  // Step 5: Create comments
+  stepStart = performance.now();
+  console.log('Step 5/5: Creating comments...');
+  const commentTargets: Array<{ userId: number; postId: number; comment: SeedComment }> = [];
+
+  for (const post of allPosts) {
+    const candidates = users.filter((u) => u.userId !== post.userId);
+    const shuffled = shuffleArray(candidates, rand);
+    const commentCount = Math.floor(COMMENT_PROB * 3) + 1;
+    const picked = shuffled.slice(0, commentCount);
+    for (const user of picked) {
+      commentTargets.push({
+        userId: user.userId!,
+        postId: post.postId!,
+        comment: generateComment(rand),
+      });
+    }
+  }
+
+  const commentLatency = new LatencyTracker('  [comment]');
+  const commentStatus = new StatusTracker();
+  await mapConcurrent(
+    commentTargets,
+    async ({ userId, postId, comment }) => {
+      const start = performance.now();
+      const token = userMap.get(userId)!;
+      const status = await createComment(token, postId, comment.content);
+      commentStatus.record(status);
+      commentLatency.record(performance.now() - start);
+    },
+    CONCURRENCY,
+    (c, t) => console.log(`${commentLatency.snapshot(c, t)}  ${commentStatus.format()}`),
+  );
+  timings.push({ label: 'comments', elapsed: performance.now() - stepStart });
   console.log(
-    `  Created ${likeStatus.format()} ✓  [${((performance.now() - t3) / 1000).toFixed(1)}s]`,
+    `  Created ${commentStatus.format()} ✓  [${(timings[4].elapsed / 1000).toFixed(1)}s]`,
   );
 
   // Summary
   console.log('\n── Seed Complete ──');
+  for (const t of timings) {
+    console.log(`  ${t.label.padEnd(10)} ${(t.elapsed / 1000).toFixed(1)}s`);
+  }
+  console.log('');
   console.log(`  Users:    ${users.length}`);
   console.log(`  Posts:    ${allPosts.length}`);
   console.log(`  Follows:  ${followStatus.format()}`);
   console.log(`  Likes:    ${likeStatus.format()}`);
+  console.log(`  Comments: ${commentStatus.format()}`);
+
+  // Write output file
+  const outputData = {
+    seed: SEED,
+    profile: profile || undefined,
+    generatedAt: new Date().toISOString(),
+    users: users.map((u) => ({
+      name: u.name,
+      email: u.email,
+      password: u.password,
+      userId: u.userId,
+      token: u.token,
+    })),
+    posts: allPosts.map((p) => ({ id: p.postId, title: p.title, userId: p.userId, tags: p.tags })),
+    stats: {
+      users: users.length,
+      posts: allPosts.length,
+      follows: followStatus.count2xx(),
+      likes: likeStatus.count2xx(),
+      comments: commentStatus.count2xx(),
+    },
+    timings: Object.fromEntries(timings.map((t) => [t.label, `${(t.elapsed / 1000).toFixed(1)}s`])),
+  };
+
+  writeFileSync(OUTPUT, JSON.stringify(outputData, null, 2));
+  console.log(`\n  Output: ${OUTPUT}`);
 
   if (!SKIP_VERIFY) {
-    const f2xx = followStatus.count2xx();
-    const l2xx = likeStatus.count2xx();
-    await verifyGraphState(users.length, allPosts.length, f2xx, l2xx);
+    await verifyGraphState(
+      users.length,
+      allPosts.length,
+      followStatus.count2xx(),
+      likeStatus.count2xx(),
+      commentStatus.count2xx(),
+    );
   }
 
   console.log('\nDone.');

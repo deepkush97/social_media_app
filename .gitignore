@@ -37,3 +37,4 @@ lerna-debug.log*
 .env*
 libs/shared/src/graphql/schema/supergraph.graphql
 router/supergraph-config.yaml
+seed-output.json
