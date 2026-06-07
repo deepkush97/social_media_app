@@ -22,7 +22,7 @@ describe('SearchService', () => {
     it('creates posts, users, and tags indices if they do not exist', async () => {
       await service.onModuleInit();
 
-      expect(mockEs.indices.create).toHaveBeenCalledTimes(3);
+      expect(mockEs.indices.create).toHaveBeenCalledTimes(4);
       expect(mockEs.indices.create).toHaveBeenCalledWith(
         expect.objectContaining({ index: 'posts' }),
       );

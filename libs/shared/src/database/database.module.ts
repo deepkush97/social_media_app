@@ -27,6 +27,9 @@ import { DatabaseConfigService } from './configurations/database-config.service'
           autoLoadEntities: true,
           logger: logging ? logger : null,
           synchronize,
+          extra: {
+            connectionLimit: 50,
+          },
         };
       },
     }),

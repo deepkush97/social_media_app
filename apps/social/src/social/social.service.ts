@@ -33,6 +33,15 @@ export class SocialService implements OnModuleInit {
       await tx.run(`
         CREATE CONSTRAINT IF NOT EXISTS FOR (t:Tag) REQUIRE t.name IS UNIQUE
       `);
+      await tx.run(`
+        CREATE INDEX IF NOT EXISTS FOR ()-[r:FOLLOWS]->() ON (r.weight)
+      `);
+      await tx.run(`
+        CREATE INDEX IF NOT EXISTS FOR ()-[r:FOLLOWS]->() ON (r.lastInteractionAt)
+      `);
+      await tx.run(`
+        CREATE INDEX IF NOT EXISTS FOR ()-[r:INTERESTED_IN]->() ON (r.weight)
+      `);
     }, SocialService.name);
   }
 
