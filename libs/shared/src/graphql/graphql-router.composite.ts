@@ -11,6 +11,9 @@ import {
   CreateCommentInput,
   CreatePostInput,
   CreateUserInput,
+  FeedInput,
+  FeedOutputDto,
+  FeedOutputDtoGenqlSelection,
   FollowUnfollowInput,
   LikeInput,
   LikeOutputDto,
@@ -350,7 +353,7 @@ export class GraphqlRouterComposite {
         ...projection,
       },
     });
-    return result.createComment as CommentOutputDto;
+    return result.createComment;
   }
 
   public async findCommentById(
@@ -363,7 +366,7 @@ export class GraphqlRouterComposite {
         ...projection,
       },
     });
-    return result.findCommentById as CommentOutputDto;
+    return result.findCommentById;
   }
 
   public async findCommentsByPostId(
@@ -376,7 +379,7 @@ export class GraphqlRouterComposite {
         ...projection,
       },
     });
-    return result.findCommentsByPostId as CommentListOutputDto;
+    return result.findCommentsByPostId;
   }
 
   public async archiveComment(
@@ -389,7 +392,21 @@ export class GraphqlRouterComposite {
         ...projection,
       },
     });
-    return result.archiveComment as BooleanOutputDto;
+    return result.archiveComment;
+  }
+
+  public async feed(
+    input: FeedInput,
+    _projection: FeedOutputDtoGenqlSelection,
+  ): Promise<FeedOutputDto> {
+    const result = await this.routerService.client.query({
+      feed: {
+        __args: { input },
+        ..._projection,
+      },
+    });
+
+    return result.feed;
   }
 
   public async postRecommendation(

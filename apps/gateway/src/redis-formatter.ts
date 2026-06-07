@@ -41,6 +41,14 @@ export class RedisFormatter {
     return `user_recommendation:${userId}:${page}:${take}`;
   }
 
+  static feed(userId: number, page: number, take: number): string {
+    return `feed:${userId}:${page}:${take}`;
+  }
+
+  static feedPattern(userId: number): string {
+    return `feed:${userId}:*`;
+  }
+
   static postRecommendationPattern(userId: number): string {
     return `post_recommendation:${userId}:*`;
   }

@@ -158,6 +158,32 @@ export class AppService {
     }
   }
 
+  async feed(
+    userId: number,
+    page = 1,
+    take = 10,
+  ): Promise<IAppResponse<IPaginatedData<IPostRecommendationItem>>> {
+    try {
+      const limit = take;
+      const offset = (page - 1) * take;
+      const { items, total } = await this.socialService.getFeed(userId, limit, offset);
+
+      return new AppResponse({
+        code: AppCodes.OPERATION_SUCCESS,
+        data: createPaginatedResponse(items, total, page, take),
+      });
+    } catch (error) {
+      this.logger.error('Error while feed operation', {
+        context: this.constructor.name,
+        error,
+      });
+
+      return new AppResponse({
+        code: AppCodes.INTERNAL_ERROR,
+      });
+    }
+  }
+
   async userRecommendation(
     userId: number,
     page = 1,

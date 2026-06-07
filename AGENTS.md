@@ -10,17 +10,18 @@
 - Confirm each action individually; batch confirmations only when the user explicitly offers them
 - After any graphql file changes, you should run `generate-schema` command to make sure our schema is synced.
 - Acknowledge mistakes or suggestion with deep thinking, and update AGENTS.md when some improvement is provided.
+- In `libs/shared/src/graphql/graphql-router.composite.ts`, never typecast using `any`, `as`, or `Record`
 
 ## Commands
 
-| Command                    | Purpose                                                                       |
-| -------------------------- | ----------------------------------------------------------------------------- |
-| `pnpm run typecheck`       | `tsc --noEmit` — run before committing                                        |
-| `pnpm run lint`            | `eslint --fix` — auto-fixes imports                                           |
-| `pnpm run test`            | vitest run — unit tests only                                                  |
-| `pnpm run test:integration` | vitest run (60s timeout) — requires Neo4j container on port 7688            |
-| `pnpm run generate-schema` | regenerate `.graphql` schemas + genql client (needs infra up + `.env.router`) |
-| `pnpm run start:fresh`     | `podman compose down -v && up -d` + wait for health + `pm2 start`             |
+| Command                     | Purpose                                                                       |
+| --------------------------- | ----------------------------------------------------------------------------- |
+| `pnpm run typecheck`        | `tsc --noEmit` — run before committing                                        |
+| `pnpm run lint`             | `eslint --fix` — auto-fixes imports                                           |
+| `pnpm run test`             | vitest run — unit tests only                                                  |
+| `pnpm run test:integration` | vitest run (60s timeout) — requires Neo4j container on port 7688              |
+| `pnpm run generate-schema`  | regenerate `.graphql` schemas + genql client (needs infra up + `.env.router`) |
+| `pnpm run start:fresh`      | `podman compose down -v && up -d` + wait for health + `pm2 start`             |
 
 Order: `typecheck → lint` before commit. Pre-commit hook runs `lint-staged` (prettier + eslint on staged `.ts` files).
 

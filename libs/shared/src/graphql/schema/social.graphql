@@ -47,6 +47,21 @@ type PaginationMeta {
   take: Int!
 }
 
+type FeedItemDto {
+  postId: Int!
+  score: Float!
+}
+
+type FeedOutputDto {
+  data: FeedItemDtoData
+  code: AppCodes!
+}
+
+type FeedItemDtoData {
+  items: [FeedItemDto!]!
+  meta: PaginationMeta!
+}
+
 type PostRecommendationItemDto {
   postId: Int!
   score: Float!
@@ -111,8 +126,15 @@ type Query {
   userCounts(id: Int!): UserCountsDto!
   postLikeCount(postId: Int!): NumberOutputDto!
   hasUserLikedPost(userId: Int!, postId: Int!): BooleanOutputDto!
+  feed(input: FeedInput!): FeedOutputDto!
   postRecommendation(input: PostRecommendationInput!): PostRecommendationOutputDto!
   userRecommendation(input: UserRecommendationInput!): UserRecommendationOutputDto!
+}
+
+input FeedInput {
+  take: Int! = 10
+  page: Int! = 1
+  userId: Int!
 }
 
 input PostRecommendationInput {

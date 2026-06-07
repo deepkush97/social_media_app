@@ -14,6 +14,7 @@ import { GatewayRequestValidationPipe } from '@app/shared/pipes/gateway-request-
 
 import { AuthModule } from './auth/auth.module';
 import { GatewayConfigModule } from './config/gateway-config.module';
+import { FeedModule } from './feed/feed.module';
 import { GlobalInterceptor } from './interceptors/global.interceptor';
 import { LikesModule } from './likes/likes.module';
 import { metricsProviders } from './metrics/metrics.providers';
@@ -42,6 +43,7 @@ import { AppController } from './app.controller';
         };
       },
     }),
+    FeedModule,
     PostsModule,
     RecommendationsModule,
     UsersModule,
