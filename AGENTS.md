@@ -17,7 +17,8 @@
 | -------------------------- | ----------------------------------------------------------------------------- |
 | `pnpm run typecheck`       | `tsc --noEmit` — run before committing                                        |
 | `pnpm run lint`            | `eslint --fix` — auto-fixes imports                                           |
-| `pnpm run test`            | vitest run                                                                    |
+| `pnpm run test`            | vitest run — unit tests only                                                  |
+| `pnpm run test:integration` | vitest run (60s timeout) — requires Neo4j container on port 7688            |
 | `pnpm run generate-schema` | regenerate `.graphql` schemas + genql client (needs infra up + `.env.router`) |
 | `pnpm run start:fresh`     | `podman compose down -v && up -d` + wait for health + `pm2 start`             |
 
@@ -75,6 +76,9 @@ Events flow through NATS JetStream — subgraphs consume via `@EventHandler` dec
 ## Testing
 
 - Vitest with globals enabled. `pnpm run test` for all.
+- Unit tests are `*.spec.ts` files (or `*.unit.spec.ts`). Integration tests are `*.integration.spec.ts`.
+- `pnpm run test` runs only unit tests (excludes `*.integration.spec.ts`).
+- `pnpm run test:integration` runs integration tests with a 60s timeout.
 - Social integration tests spin a real Neo4j container (`podman run`, port 7688). May need `podman` available.
 - Mock helpers: `@app/shared/test-utils/repository.mock`, `logger.mock`, `elasticsearch.mock`, `search-service.mock`.
-- Tower tests (`apps/social/src/social/social.service.spec.ts`) use seed graph via service methods (not raw Cypher), mirroring real event handler order.
+- Tower tests (`apps/social/src/social/social.service.integration.spec.ts`) use seed graph via service methods (not raw Cypher), mirroring real event handler order.

@@ -7,8 +7,8 @@ export default defineConfig({
   test: {
     globals: true,
     root: './',
-    include: ['apps/**/*.spec.ts', 'libs/**/*.spec.ts', 'test/**/*.spec.ts'],
-    exclude: ['**/*.integration.spec.ts', '**/node_modules/**'],
+    include: ['apps/**/*.integration.spec.ts', 'libs/**/*.integration.spec.ts'],
+    testTimeout: 60_000,
     alias: {
       src: resolve(__dirname, './src'),
       '@src': './src',

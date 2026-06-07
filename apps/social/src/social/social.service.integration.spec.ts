@@ -47,7 +47,12 @@ async function waitForTcp(host: string, port: number, timeoutMs: number): Promis
   throw new Error(`Timed out waiting for ${host}:${port}`);
 }
 
+let startedContainer = false;
+
 function ensureContainerRunning(): void {
+  if (process.env.CI) {
+    return;
+  }
   sh(`podman rm -f ${CONTAINER_NAME} 2>/dev/null; true`);
   sh(
     `podman run -d ` +
@@ -56,6 +61,7 @@ function ensureContainerRunning(): void {
       `-e NEO4J_AUTH=${USER}/${PASSWORD} ` +
       `${IMAGE}`,
   );
+  startedContainer = true;
 }
 
 async function retryConnect(attempts: number, delayMs: number): Promise<Driver> {
@@ -79,6 +85,9 @@ async function retryConnect(attempts: number, delayMs: number): Promise<Driver> 
 }
 
 function stopContainer(): void {
+  if (!startedContainer) {
+    return;
+  }
   try {
     sh(`podman rm -f ${CONTAINER_NAME}`);
   } catch {
