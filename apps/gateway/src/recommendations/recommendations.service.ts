@@ -40,7 +40,7 @@ export class RecommendationsService {
       },
       {
         data: {
-          items: { postId: true, score: true },
+          items: { id: true, score: true },
           meta: { total: true, page: true, lastPage: true, take: true },
         },
         code: true,

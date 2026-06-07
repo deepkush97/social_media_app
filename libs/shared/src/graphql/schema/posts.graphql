@@ -1,5 +1,39 @@
-type BooleanOutputDto {
-  data: Boolean
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type PaginationMeta {
+  total: Int!
+  page: Int!
+  lastPage: Int!
+  take: Int!
+}
+
+type PostOutput @key(fields: "id") {
+  id: Int!
+  title: String!
+  content: String!
+  image: String
+  tags: [String!]!
+  userId: Int!
+  status: ContentStatusEnum!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum ContentStatusEnum {
+  ACTIVE
+  ARCHIVED
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type PostOutputDto {
+  data: PostOutput
   code: AppCodes!
 }
 
@@ -18,11 +52,19 @@ enum AppCodes {
   NOT_FOUND
 }
 
-type PaginationMeta {
-  total: Int!
-  page: Int!
-  lastPage: Int!
-  take: Int!
+type PostListOutputDto {
+  data: PostOutputData
+  code: AppCodes!
+}
+
+type PostOutputData {
+  items: [PostOutput!]!
+  meta: PaginationMeta!
+}
+
+type BooleanOutputDto {
+  data: Boolean
+  code: AppCodes!
 }
 
 type CommentOutput {
@@ -36,16 +78,6 @@ type CommentOutput {
   updatedAt: DateTime!
 }
 
-enum ContentStatusEnum {
-  ACTIVE
-  ARCHIVED
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type CommentOutputDto {
   data: CommentOutput
   code: AppCodes!
@@ -58,33 +90,6 @@ type CommentListOutputDto {
 
 type CommentOutputData {
   items: [CommentOutput!]!
-  meta: PaginationMeta!
-}
-
-type PostOutput {
-  id: Int!
-  title: String!
-  content: String!
-  image: String
-  tags: [String!]!
-  userId: Int!
-  status: ContentStatusEnum!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-type PostOutputDto {
-  data: PostOutput
-  code: AppCodes!
-}
-
-type PostListOutputDto {
-  data: PostOutputData
-  code: AppCodes!
-}
-
-type PostOutputData {
-  items: [PostOutput!]!
   meta: PaginationMeta!
 }
 

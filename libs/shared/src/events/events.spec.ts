@@ -27,7 +27,7 @@ describe('PostCreatedEvent', () => {
       title: 'Test',
       content: 'Content',
       userId: 42,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
       tags: ['content'],
     });
 
@@ -40,7 +40,7 @@ describe('PostCreatedEvent', () => {
       title: 'My Post',
       content: 'Post content',
       userId: 42,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
       tags: ['content'],
     };
     const event = new PostCreatedEvent(data);

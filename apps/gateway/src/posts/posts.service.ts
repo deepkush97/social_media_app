@@ -60,7 +60,10 @@ export class PostsService {
         id: postData.id,
         title: postData.title,
         userId,
-        createdAt: postData.createdAt,
+        createdAt:
+          typeof postData.createdAt === 'string'
+            ? postData.createdAt
+            : postData.createdAt.toISOString(),
         tags: postData.tags,
       }),
       this.constructor.name,
@@ -237,7 +240,10 @@ export class PostsService {
         postId: commentData.postId,
         userId,
         content: commentData.content,
-        createdAt: commentData.createdAt,
+        createdAt:
+          typeof commentData.createdAt === 'string'
+            ? commentData.createdAt
+            : commentData.createdAt.toISOString(),
         postOwnerId: post.userId,
         tags: post.tags,
       }),

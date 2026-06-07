@@ -60,6 +60,6 @@ export class SocialSubscriberService {
   @EventHandler(NatsEvents.POST_CREATED)
   async onPostCreated({ userId, id, tags, createdAt }: PostCreatedEventPayload): Promise<void> {
     await this.socialService.boostTagWeight(userId, tags, WEIGHT_INTEREST_POST_CREATE);
-    await this.socialService.trackPostCreation(userId, id, tags, createdAt.toISOString());
+    await this.socialService.trackPostCreation(userId, id, tags, createdAt);
   }
 }

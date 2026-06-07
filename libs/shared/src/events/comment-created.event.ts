@@ -3,12 +3,10 @@ import { IComment } from '../interfaces/comment/comment.interface';
 
 import { BaseEvent } from './base-event.abstract';
 
-export type CommentCreatedEventPayload = Pick<
-  IComment,
-  'id' | 'postId' | 'userId' | 'content' | 'createdAt'
-> & {
+export type CommentCreatedEventPayload = Pick<IComment, 'id' | 'postId' | 'userId' | 'content'> & {
   postOwnerId: number;
   tags: string[];
+  createdAt: string;
 };
 
 export class CommentCreatedEvent implements BaseEvent<CommentCreatedEventPayload> {

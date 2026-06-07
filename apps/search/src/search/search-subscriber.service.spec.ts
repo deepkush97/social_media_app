@@ -28,7 +28,7 @@ describe('SearchSubscriberService', () => {
     title: 'Test',
     content: 'Hello #world',
     userId: 42,
-    createdAt: new Date(),
+    createdAt: new Date().toISOString(),
     tags: ['world'],
   };
 

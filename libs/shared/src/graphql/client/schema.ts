@@ -68,14 +68,8 @@ export interface DecayResultOutputDto {
     __typename: 'DecayResultOutputDto'
 }
 
-export interface FeedItemDto {
-    postId: Scalars['Int']
-    score: Scalars['Float']
-    __typename: 'FeedItemDto'
-}
-
 export interface FeedItemDtoData {
-    items: FeedItemDto[]
+    items: PostOutput[]
     meta: PaginationMeta
     __typename: 'FeedItemDtoData'
 }
@@ -161,6 +155,7 @@ export interface PostOutput {
     status: ContentStatusEnum
     createdAt: Scalars['DateTime']
     updatedAt: Scalars['DateTime']
+    score: Scalars['Float']
     __typename: 'PostOutput'
 }
 
@@ -177,7 +172,7 @@ export interface PostOutputDto {
 }
 
 export interface PostRecommendationItemDto {
-    postId: Scalars['Int']
+    id: Scalars['Int']
     score: Scalars['Float']
     __typename: 'PostRecommendationItemDto'
 }
@@ -404,15 +399,8 @@ export interface DecayResultOutputDtoGenqlSelection{
 
 export interface FeedInput {take?: Scalars['Int'],page?: Scalars['Int'],userId: Scalars['Int']}
 
-export interface FeedItemDtoGenqlSelection{
-    postId?: boolean | number
-    score?: boolean | number
-    __typename?: boolean | number
-    __scalar?: boolean | number
-}
-
 export interface FeedItemDtoDataGenqlSelection{
-    items?: FeedItemDtoGenqlSelection
+    items?: PostOutputGenqlSelection
     meta?: PaginationMetaGenqlSelection
     __typename?: boolean | number
     __scalar?: boolean | number
@@ -507,6 +495,7 @@ export interface PostOutputGenqlSelection{
     status?: boolean | number
     createdAt?: boolean | number
     updatedAt?: boolean | number
+    score?: boolean | number
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -528,7 +517,7 @@ export interface PostOutputDtoGenqlSelection{
 export interface PostRecommendationInput {take?: Scalars['Int'],page?: Scalars['Int'],userId: Scalars['Int']}
 
 export interface PostRecommendationItemDtoGenqlSelection{
-    postId?: boolean | number
+    id?: boolean | number
     score?: boolean | number
     __typename?: boolean | number
     __scalar?: boolean | number
@@ -770,14 +759,6 @@ export interface WeightSnapshotDtoGenqlSelection{
     export const isDecayResultOutputDto = (obj?: { __typename?: any } | null): obj is DecayResultOutputDto => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isDecayResultOutputDto"')
       return DecayResultOutputDto_possibleTypes.includes(obj.__typename)
-    }
-    
-
-
-    const FeedItemDto_possibleTypes: string[] = ['FeedItemDto']
-    export const isFeedItemDto = (obj?: { __typename?: any } | null): obj is FeedItemDto => {
-      if (!obj?.__typename) throw new Error('__typename is missing in "isFeedItemDto"')
-      return FeedItemDto_possibleTypes.includes(obj.__typename)
     }
     
 

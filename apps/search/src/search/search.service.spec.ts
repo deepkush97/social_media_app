@@ -51,7 +51,7 @@ describe('SearchService', () => {
         content: 'Post content',
         tags: ['react', 'graphql'],
         userId: 42,
-        createdAt: new Date('2025-01-01T00:00:00Z'),
+        createdAt: '2025-01-01T00:00:00.000Z',
       };
 
       await service.indexPost(post);
@@ -63,8 +63,8 @@ describe('SearchService', () => {
       });
     });
 
-    it('preserves the createdAt date in the document', async () => {
-      const createdAt = new Date('2025-06-01T12:00:00Z');
+    it('preserves the createdAt string in the document', async () => {
+      const createdAt = '2025-06-01T12:00:00.000Z';
       const post = {
         id: 2,
         title: 'With Date',

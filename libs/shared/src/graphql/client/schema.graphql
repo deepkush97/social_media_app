@@ -117,13 +117,8 @@ input FeedInput {
   userId: Int!
 }
 
-type FeedItemDto {
-  postId: Int!
-  score: Float!
-}
-
 type FeedItemDtoData {
-  items: [FeedItemDto!]!
+  items: [PostOutput!]!
   meta: PaginationMeta!
 }
 
@@ -240,6 +235,7 @@ type PostOutput {
   status: ContentStatusEnum!
   createdAt: DateTime!
   updatedAt: DateTime!
+  score: Float!
 }
 
 type PostOutputData {
@@ -259,7 +255,7 @@ input PostRecommendationInput {
 }
 
 type PostRecommendationItemDto {
-  postId: Int!
+  id: Int!
   score: Float!
 }
 

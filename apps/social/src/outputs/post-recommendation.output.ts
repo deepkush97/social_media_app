@@ -6,7 +6,7 @@ import { IPostRecommendationItem } from '@app/shared/interfaces/social/post-reco
 @ObjectType()
 export class PostRecommendationItemDto implements IPostRecommendationItem {
   @Field(() => Int)
-  postId: number;
+  id: number;
 
   @Field(() => Float)
   score: number;

@@ -11,7 +11,7 @@ import { AppPaginatedDataResponse } from '../../responses/pagination.response';
 export class PostRecommendationItem implements IPostRecommendationItem {
   @Expose()
   @ApiProperty({ description: 'Post id' })
-  postId: number;
+  id: number;
 
   @Expose()
   @ApiProperty({ description: 'Relevance score' })

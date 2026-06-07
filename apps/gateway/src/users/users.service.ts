@@ -63,7 +63,7 @@ export class UsersService {
         new UserFollowedEvent({
           followerId,
           followingId,
-          createdAt: new Date(),
+          createdAt: new Date().toISOString(),
         }),
         this.constructor.name,
       ),
@@ -126,7 +126,7 @@ export class UsersService {
         new UserUnfollowedEvent({
           followerId,
           followingId,
-          createdAt: new Date(),
+          createdAt: new Date().toISOString(),
         }),
         this.constructor.name,
       ),

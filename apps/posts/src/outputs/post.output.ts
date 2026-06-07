@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Directive, Field, Int, ObjectType } from '@nestjs/graphql';
 
 import { AppGraphqlResponse } from '@app/shared/app-graphql-response.dto';
 import { AppPaginatedDataGraphqlResponse } from '@app/shared/app-paginated-data-graphql-response.dto';
@@ -6,6 +6,7 @@ import { ContentStatusEnum } from '@app/shared/enums/content-status.enum';
 import { IPost } from '@app/shared/interfaces/post/post.interface';
 
 @ObjectType()
+@Directive('@key(fields: "id")')
 export class PostOutput implements IPost {
   @Field(() => Int)
   id: number;

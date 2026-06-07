@@ -1,3 +1,8 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
 type BooleanOutputDto {
   data: Boolean
   code: AppCodes!
@@ -47,8 +52,8 @@ type PaginationMeta {
   take: Int!
 }
 
-type FeedItemDto {
-  postId: Int!
+type PostOutput @key(fields: "id") {
+  id: Int!
   score: Float!
 }
 
@@ -58,12 +63,12 @@ type FeedOutputDto {
 }
 
 type FeedItemDtoData {
-  items: [FeedItemDto!]!
+  items: [PostOutput!]!
   meta: PaginationMeta!
 }
 
 type PostRecommendationItemDto {
-  postId: Int!
+  id: Int!
   score: Float!
 }
 

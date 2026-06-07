@@ -130,7 +130,7 @@ export class SocialService implements OnModuleInit {
     userId: number,
     postId: number,
     tags: string[],
-    writtenAt?: string,
+    writtenAt: string,
   ): Promise<void> {
     await this.neo4jService.executeWrite(async (tx) => {
       await tx.run(
@@ -161,30 +161,30 @@ export class SocialService implements OnModuleInit {
     const query = `
       CALL {
         MATCH (me:User {id: $userId})-[:FOLLOWS]->(author:User)-[:CREATED]->(post:Post)
-        RETURN post.id AS postId, 1.0 AS score, post.writtenAt AS writtenAt
+        RETURN post.id AS id, 1.0 AS score, post.writtenAt AS writtenAt
         UNION
         MATCH (me:User {id: $userId})-[interest:INTERESTED_IN]->(tag:Tag)<-[:TAGGED]-(post:Post)<-[:CREATED]-(author:User)
         WHERE NOT (me)-[:FOLLOWS]->(author)
-        RETURN post.id AS postId, 0.5 * interest.weight AS score, null AS writtenAt
+        RETURN post.id AS id, 0.5 * interest.weight AS score, null AS writtenAt
       }
-      WITH postId, max(score) AS score, max(writtenAt) AS writtenAt
+      WITH id, max(score) AS score, max(writtenAt) AS writtenAt
       ORDER BY score DESC, writtenAt DESC
     `;
 
     const { items: allItems, total } = await this.neo4jService.executeRead(async (tx) => {
       const itemsResult = await tx.run(
-        `${query} RETURN postId, score SKIP toInteger($skip) LIMIT toInteger($limit)`,
+        `${query} RETURN id, score SKIP toInteger($skip) LIMIT toInteger($limit)`,
         { userId, skip: 0, limit: fetchSize },
       );
 
-      const countResult = await tx.run(`${query} RETURN count(postId) AS total`, {
+      const countResult = await tx.run(`${query} RETURN count(id) AS total`, {
         userId,
         skip: 0,
         limit: fetchSize,
       });
 
       const items = itemsResult.records.map((record) => ({
-        postId: toInt(record.get('postId')),
+        id: toInt(record.get('id')),
         score: toInt(record.get('score')),
       }));
 
@@ -198,9 +198,9 @@ export class SocialService implements OnModuleInit {
 
     for (const item of allItems) {
       if (item.score >= 1.0) {
-        followed.push({ postId: item.postId, score: 1.0 });
+        followed.push({ id: item.id, score: 1.0 });
       } else {
-        recommended.push({ postId: item.postId, score: item.score });
+        recommended.push({ id: item.id, score: item.score });
       }
     }
 
@@ -242,30 +242,30 @@ export class SocialService implements OnModuleInit {
     const baseQuery = `
       CALL {
         MATCH (me:User {id: $userId})-[:FOLLOWS]->(author:User)-[:CREATED]->(post:Post)
-        RETURN post.id AS postId, 1.0 AS score
+        RETURN post.id AS id, 1.0 AS score
         UNION
         MATCH (me:User {id: $userId})-[interest:INTERESTED_IN]->(tag:Tag)<-[:TAGGED]-(post:Post)<-[:CREATED]-(author:User)
         WHERE NOT (me)-[:FOLLOWS]->(author)
-        RETURN post.id AS postId, 0.5 * interest.weight AS score
+        RETURN post.id AS id, 0.5 * interest.weight AS score
       }
-      WITH postId, max(score) AS score
+      WITH id, max(score) AS score
       ORDER BY score DESC
     `;
 
     return this.neo4jService.executeRead(async (tx) => {
       const itemsResult = await tx.run(
-        `${baseQuery} RETURN postId, score SKIP toInteger($offset) LIMIT toInteger($limit)`,
+        `${baseQuery} RETURN id, score SKIP toInteger($offset) LIMIT toInteger($limit)`,
         { userId, limit, offset },
       );
 
-      const countResult = await tx.run(`${baseQuery} RETURN count(postId) AS total`, {
+      const countResult = await tx.run(`${baseQuery} RETURN count(id) AS total`, {
         userId,
         limit,
         offset,
       });
 
       const items = itemsResult.records.map((record) => ({
-        postId: toInt(record.get('postId')),
+        id: toInt(record.get('id')),
         score: toInt(record.get('score')),
       }));
 

@@ -199,7 +199,7 @@ async function seedGraph(service: SocialService): Promise<void> {
 
   for (const { userId, postId, tags } of POST_SEEDS) {
     await service.boostTagWeight(userId, tags, 0.5);
-    await service.trackPostCreation(userId, postId, tags);
+    await service.trackPostCreation(userId, postId, tags, new Date('2025-01-01').toISOString());
   }
 
   for (const f of FOLLOW_SEEDS) {
@@ -246,7 +246,7 @@ describe('SocialService', () => {
 
       expect(result.items.length).toBeGreaterThanOrEqual(3);
       for (const item of result.items) {
-        if ([101, 102, 105].includes(item.postId)) {
+        if ([101, 102, 105].includes(item.id)) {
           expect(item.score).toBe(1);
         }
       }
@@ -256,12 +256,12 @@ describe('SocialService', () => {
       const result = await service.postRecommendation(1, 10, 0);
 
       // Post 104 (by user 4, tagged node) matches INTERESTED_IN node w=2.0 → 0.5*2=1.0
-      const p104 = result.items.find((i) => i.postId === 104);
+      const p104 = result.items.find((i) => i.id === 104);
       expect(p104).toBeDefined();
       expect(p104!.score).toBe(1);
 
       // Post 103 (by user 3, tagged graphql) matches INTERESTED_IN graphql w=1.0 → 0.5
-      const p103 = result.items.find((i) => i.postId === 103);
+      const p103 = result.items.find((i) => i.id === 103);
       expect(p103).toBeDefined();
       expect(p103!.score).toBe(0.5);
     });
@@ -285,6 +285,79 @@ describe('SocialService', () => {
       const result = await service.postRecommendation(9, 10, 0);
       expect(result.items).toHaveLength(0);
       expect(result.total).toBe(0);
+    });
+  });
+
+  describe('getFeed', () => {
+    it('returns posts from followed authors plus blended recommendations', async () => {
+      const result = await service.getFeed(1, 10, 0);
+
+      // Followed posts: 101 (user 2), 102 (user 2), 105 (user 5) — score 1.0
+      // Recommended: 103 (user 3, graphql → 0.5×1.0), 104 (user 4, node → 0.5×2.0=1.0)
+      // Order: sorted by score DESC then writtenAt DESC
+      expect(result.items.length).toBeGreaterThanOrEqual(3);
+
+      const p101 = result.items.find((i) => i.id === 101);
+      expect(p101).toBeDefined();
+      expect(p101!.score).toBe(1.0);
+
+      const p105 = result.items.find((i) => i.id === 105);
+      expect(p105).toBeDefined();
+      expect(p105!.score).toBe(1.0);
+
+      // Post 103 (graphql interest, weight 1.0) → score = 0.5 × 1.0 = 0.5
+      const p103 = result.items.find((i) => i.id === 103);
+      expect(p103).toBeDefined();
+      expect(p103!.score).toBe(0.5);
+    });
+
+    it('respects limit', async () => {
+      const result = await service.getFeed(1, 2, 0);
+      expect(result.items).toHaveLength(2);
+    });
+
+    it('respects offset beyond total', async () => {
+      const result = await service.getFeed(1, 10, 100);
+      expect(result.items).toHaveLength(0);
+    });
+
+    it('returns total count', async () => {
+      const result = await service.getFeed(1, 10, 0);
+      // 5 seed posts (101-105) should all match
+      expect(result.total).toBe(5);
+    });
+
+    it('returns empty for user with no follows or interests', async () => {
+      const result = await service.getFeed(9, 10, 0);
+      expect(result.items).toHaveLength(0);
+      expect(result.total).toBe(0);
+    });
+
+    it('interleaves followed and recommended posts at 5:1 blend ratio', async () => {
+      // Create extra followed posts so we can observe the 5:1 pattern
+      for (let i = 0; i < 12; i++) {
+        await service.ensureUserNode(100 + i);
+        await service.follow({ followerId: 1, followingId: 100 + i });
+        await service.trackPostCreation(100 + i, 1000 + i, ['graphql'], new Date().toISOString());
+      }
+
+      try {
+        const result = await service.getFeed(1, 20, 0);
+        const positions = result.items.map((i) => i.id);
+
+        // Every 6th item should be a recommended post (index 5, 11, 17...)
+        // Post 103 (score 0.5) is the only true recommended item (< 1.0).
+        // Post 104 (score 1.0 via INTERESTED_IN weight 2.0) is in the followed bucket.
+        // Verify 103 is positioned after at least 5 followed items.
+        const idx = positions.indexOf(103);
+
+        expect(idx).toBeGreaterThanOrEqual(5);
+        expect(idx % 6).toBe(5);
+      } finally {
+        for (let i = 0; i < 12; i++) {
+          await service.unfollow({ followerId: 1, followingId: 100 + i });
+        }
+      }
     });
   });
 
@@ -443,10 +516,10 @@ describe('SocialService', () => {
       // in user 1's recommendations with score 1.0.
       // Mirror the real onPostCreated handler: boostTagWeight + trackPostCreation
       await service.boostTagWeight(2, ['graphql'], 0.5);
-      await service.trackPostCreation(2, 201, ['graphql']);
+      await service.trackPostCreation(2, 201, ['graphql'], new Date('2025-02-01').toISOString());
 
       const result = await service.postRecommendation(1, 10, 0);
-      const p201 = result.items.find((i) => i.postId === 201);
+      const p201 = result.items.find((i) => i.id === 201);
       expect(p201).toBeDefined();
       expect(p201!.score).toBe(1);
     });
@@ -473,14 +546,14 @@ describe('SocialService', () => {
     it('creates INTERESTED_IN edges reflected in postRecommendation', async () => {
       await service.ensureUserNode(6);
       await service.boostTagWeight(6, ['graphql'], 0.5);
-      await service.trackPostCreation(6, 301, ['graphql']);
+      await service.trackPostCreation(6, 301, ['graphql'], new Date('2025-03-01').toISOString());
 
       // User 1 has INTERESTED_IN graphql weight 1.0 from seed
       // Reading user 1's recommendations should include post 301 if user 1 has enough interest weight
       // But actually user 1 already has graphql interest from seed. Let's just verify it shows up.
 
       const result = await service.postRecommendation(1, 10, 0);
-      const p301 = result.items.find((i) => i.postId === 301);
+      const p301 = result.items.find((i) => i.id === 301);
       expect(p301).toBeDefined();
       expect(p301!.score).toBe(0.5);
     });
