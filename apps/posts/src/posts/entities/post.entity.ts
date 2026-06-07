@@ -25,7 +25,7 @@ export class Post implements IPost {
   @Column({ length: 100 })
   title: string;
 
-  @Column({ length: 140 })
+  @Column({ length: 300 })
   content: string;
 
   @Column('json')

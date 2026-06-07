@@ -13,7 +13,7 @@ export class CreatePostInput implements INewPostWithUserId {
 
   @Field()
   @IsNotEmpty()
-  @MaxLength(140)
+  @MaxLength(300)
   content: string;
 
   @Field({ nullable: true })

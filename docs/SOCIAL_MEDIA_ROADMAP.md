@@ -248,13 +248,17 @@ Wire the queries through GraphQL (social subgraph) → Apollo Router → gateway
 
 A script to fill the system with test data so you can see recommendations working with non-trivial graphs.
 
-- [ ] **Create `scripts/seed.ts`** — creates:
-  - 100 users (via `POST /auth/register` or direct DB insert)
-  - 5-10 posts per user with random `#hashtags` sprinkled into content
+- [x] **Create `scripts/seed/`** — creates:
+  - 100 users (via `POST /auth/register`)
+  - 5-10 posts per user with random `#hashtags`
   - Follows (~30% probability between any two users)
   - Likes (~20% probability user likes a post)
-- [ ] **Deterministic** — `--seed 42` always produces the same data.
-- [ ] **Verify graph state** — after seeding, query Neo4j to confirm edge counts.
+  - Comments (~50% probability, 1-3 per post)
+- [x] **Deterministic** — `--seed 42` always produces the same data via mulberry32 PRNG.
+- [x] **Verify graph state** — after seeding, query Neo4j to confirm edge counts.
+- [x] **Profile presets** — `--profile light|medium|heavy` for quick vs comprehensive runs.
+- [x] **Credential export** — `seed-output.json` with user emails, passwords, tokens, post IDs.
+- [x] **Per-step timing** — wall-clock and p50/p95/p99 latency for each phase.
 
 **Verify:** Run the seeder → Neo4j has 100s of User/Post/Tag nodes with FOLLOWS, CREATED, LIKED, INTERESTED_IN, TAGGED edges. Recommendation endpoints return non-empty results.
 
@@ -299,18 +303,22 @@ Tune the scoring parameters and add discovery signals.
 
 A script or dedicated seeder module that populates the system with realistic test data for development and load testing.
 
-- [ ] **Create `scripts/seed.ts`** (or `apps/seeder`) that:
+- [x] **Create `scripts/seed/`** (modular) that:
   - Creates N users (e.g. 100) with random names via `POST /auth/register`
   - Creates M posts per user (e.g. 5-10) with `#hashtags` randomly sprinkled into content
   - Creates follow relationships (random, ~30% probability between any two users)
   - Creates likes (random, ~20% probability user likes a post)
+  - Creates comments (~50% probability, 1-3 per post)
   - Results in a realistic Neo4j graph: `User → Post`, `User → Tag`, `User → User` relationships with weights
-- [ ] **Use deterministic seeds** — `seed: 42` always produces the same data (via `seedrandom` or similar).
-- [ ] **Customize density** — cli flags: `--users 1000 --follow-prob 0.3 --like-prob 0.2 --tag-count 10`
-- [ ] **Verify with assertions** — after seeding, run queries to confirm:
+- [x] **Use deterministic seeds** — `--seed 42` always produces the same data via mulberry32 PRNG.
+- [x] **Customize density** — cli flags `--profile light|medium|heavy` (presets), also `--users`, `--follow-prob`, `--like-prob`.
+- [x] **Verify with assertions** — after seeding, run queries to confirm:
   - Each user has expected follower/following counts
   - `INTERESTED_IN` edges exist for liked post tags
   - Recommendation queries return non-empty results
+- [x] **Credential export** — `seed-output.json` with emails, passwords, tokens, post IDs.
+- [x] **Per-step timing** — wall-clock + p50/p95/p99 latency per phase.
+- [x] **Status tracking** — 2xx/4xx/5xx breakdown for each step.
 
 ### Testing Strategy
 
