@@ -7,7 +7,7 @@ import { INewPost } from '@app/shared/interfaces/post/post.interface';
 export class CreatePostRequest implements INewPost {
   @IsNotEmpty()
   @ApiProperty({ description: 'Content' })
-  @MaxLength(150)
+  @MaxLength(300)
   content: string;
 
   @IsNotEmpty()
