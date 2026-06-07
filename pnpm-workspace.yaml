@@ -1,1 +1,8 @@
-onlyBuiltDependencies: []
+onlyBuiltDependencies:
+  - '@apollo/protobufjs'
+  - '@apollo/rover'
+  - '@nestjs/core'
+  - '@scarf/scarf'
+  - '@swc/core'
+  - bcrypt
+  - protobufjs
