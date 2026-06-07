@@ -114,17 +114,6 @@
     "unplugin-swc": "^1.5.9",
     "vitest": "^4.1.0"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@apollo/protobufjs",
-      "@apollo/rover",
-      "@nestjs/core",
-      "@scarf/scarf",
-      "@swc/core",
-      "bcrypt",
-      "protobufjs"
-    ]
-  },
   "lint-staged": {
     "**/*.ts": [
       "prettier --write",
