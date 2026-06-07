@@ -119,16 +119,5 @@
       "prettier --write",
       "eslint --fix --quiet"
     ]
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@apollo/protobufjs",
-      "@apollo/rover",
-      "@nestjs/core",
-      "@scarf/scarf",
-      "@swc/core",
-      "bcrypt",
-      "protobufjs"
-    ]
   }
 }
