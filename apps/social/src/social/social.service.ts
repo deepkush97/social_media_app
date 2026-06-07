@@ -193,6 +193,10 @@ export class SocialService implements OnModuleInit {
       return { items, total };
     }, SocialService.name);
 
+    if (allItems.length === 0) {
+      return this.coldStartFeed(limit, offset);
+    }
+
     const followed: IPostRecommendationItem[] = [];
     const recommended: IPostRecommendationItem[] = [];
 
@@ -232,6 +236,40 @@ export class SocialService implements OnModuleInit {
     }
 
     return result;
+  }
+
+  private async coldStartFeed(
+    limit: number,
+    offset: number,
+  ): Promise<{ items: IPostRecommendationItem[]; total: number }> {
+    const scoringQuery = `
+      MATCH (t:Tag)
+      WITH t, COUNT { (t)<-[:INTERESTED_IN]-() } + COUNT { (t)<-[:TAGGED]-() } AS tagScore
+      MATCH (p:Post)-[:TAGGED]->(t)
+      WITH p, sum(tagScore) AS combinedScore
+      ORDER BY combinedScore DESC
+    `;
+
+    return this.neo4jService.executeRead(async (tx) => {
+      const itemsResult = await tx.run(
+        `${scoringQuery} RETURN p.id AS id, combinedScore AS score SKIP toInteger($offset) LIMIT toInteger($limit)`,
+        { limit, offset },
+      );
+
+      const countResult = await tx.run(`${scoringQuery} RETURN count(p.id) AS total`, {
+        limit,
+        offset,
+      });
+
+      const items = itemsResult.records.map((record) => ({
+        id: toInt(record.get('id')),
+        score: toInt(record.get('score')),
+      }));
+
+      const total = toInt(countResult.records[0]?.get('total')) ?? 0;
+
+      return { items, total };
+    }, SocialService.name);
   }
 
   async postRecommendation(

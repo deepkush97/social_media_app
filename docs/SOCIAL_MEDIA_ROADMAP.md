@@ -268,12 +268,12 @@ A script to fill the system with test data so you can see recommendations workin
 
 Build the main timeline endpoint that users see. Combine organic followed content with recommended content.
 
-- [ ] **Build `GET /feed`** — returns posts for the user's timeline:
-  1. Fetch recommended posts via `recommendedPosts` (scored)
-  2. Fall back to simple `createdAt DESC` for unfilled slots or cold-start users
-- [ ] **Pagination** — cursor-based or offset-based, consistent with the rest of the API.
-- [ ] **Blend strategy** — interleave: first 5 from followed users, then 1 recommended, repeat.
-- [ ] **Cache** — Redis with short TTL (30s) so feed feels fast but stays fresh.
+- [x] **Build `GET /feed`** — returns posts for the user's timeline via `<subgraphs>/feed`:
+  1. Fetch recommended posts via `recommendedPosts` (scored) blended with followed content
+  2. Cold-start fallback — `coldStartFeed()` ranks posts by tag popularity for users with no follows/interests
+- [x] **Pagination** — offset-based (`page`/`take`), consistent with the rest of the API.
+- [x] **Blend strategy** — interleave: first 5 from followed users, then 1 recommended, repeat.
+- [x] **Cache** — Redis with 30s TTL, cache-aside pattern, invalidated on new post by followed user.
 
 **Verify:** Open `GET /feed?userId=1` → see a mix of posts from followed users and tag-matched posts, ordered by score.
 
