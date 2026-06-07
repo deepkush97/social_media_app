@@ -36,10 +36,11 @@ export class SocialSubscriberService {
   }
 
   @EventHandler(NatsEvents.POST_UNLIKED)
-  async onPostUnliked({ userId, postOwnerId }: PostLikedEventPayload): Promise<void> {
+  async onPostUnliked({ userId, postOwnerId, tags }: PostLikedEventPayload): Promise<void> {
     if (userId === postOwnerId) return;
 
     await this.socialService.removeLikeEdge(userId, postOwnerId);
+    await this.socialService.decayTagWeight(userId, tags, WEIGHT_INTEREST_LIKE);
   }
 
   @EventHandler(NatsEvents.USER_CREATED)

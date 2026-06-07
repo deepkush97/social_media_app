@@ -283,7 +283,7 @@ Build the main timeline endpoint that users see. Combine organic followed conten
 
 Tune the scoring parameters and add discovery signals.
 
-- [ ] **Add `POST_UNLIKED` handler** — decrement `INTERESTED_IN.weight` (or apply a smaller decay, like -0.3) when user unlikes a post.
+- [x] **Add `POST_UNLIKED` handler** — decrement `INTERESTED_IN.weight` by `WEIGHT_INTEREST_LIKE` (1.0), floored at 0, when user unlikes a post.
 - [ ] **Trending posts** — posts with highest like velocity in the last 24h. Use Redis sorted set with score = `likes_in_window / hours_since_posted`.
 - [ ] **Trending tags** — tags with most posts created in the last N hours.
 - [ ] **Similar users** — Jaccard similarity on `INTERESTED_IN` tags:
