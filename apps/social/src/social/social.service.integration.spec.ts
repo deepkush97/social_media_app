@@ -327,10 +327,28 @@ describe('SocialService', () => {
       expect(result.total).toBe(5);
     });
 
-    it('returns empty for user with no follows or interests', async () => {
+    it('falls back to tag-popularity ranking for cold-start users', async () => {
       const result = await service.getFeed(9, 10, 0);
-      expect(result.items).toHaveLength(0);
-      expect(result.total).toBe(0);
+
+      // No follows or interests → coldStartFeed ranks by global tag popularity
+      // graphql: 3 INTERESTED_IN + 2 TAGGED = 5
+      // typescript: 3 INTERESTED_IN + 3 TAGGED = 6
+      // node: 3 INTERESTED_IN + 2 TAGGED = 5
+      // P101 (graphql+typescript) = 5+6 = 11
+      // P104 (node+typescript) = 5+6 = 11
+      // P105 (typescript) = 6
+      // P102 (node) = 5
+      // P103 (graphql) = 5
+      expect(result.items.length).toBeGreaterThanOrEqual(3);
+      expect(result.total).toBe(5);
+
+      const p101 = result.items.find((i) => i.id === 101);
+      expect(p101).toBeDefined();
+      expect(p101!.score).toBe(11);
+
+      const p105 = result.items.find((i) => i.id === 105);
+      expect(p105).toBeDefined();
+      expect(p105!.score).toBe(6);
     });
 
     it('interleaves followed and recommended posts at 5:1 blend ratio', async () => {
