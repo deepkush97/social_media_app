@@ -6,10 +6,11 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 import { Neo4jService } from '@app/shared/neo4j/neo4j.service';
 import { createMockLogger } from '@app/shared/test-utils/logger.mock';
+import { toInt } from '@app/shared/utils/to-int';
 
 import { LikeEntity } from './like.entity';
 import { SocialService } from './social.service';
-import { WEIGHT_INTEREST_FOLLOW } from './social-weight.constants';
+import { WEIGHT_INTEREST_FOLLOW, WEIGHT_INTEREST_LIKE } from './social-weight.constants';
 
 const IMAGE = 'neo4j:community';
 const CONTAINER_NAME = 'social-test-neo4j';
@@ -574,6 +575,43 @@ describe('SocialService', () => {
       const p301 = result.items.find((i) => i.id === 301);
       expect(p301).toBeDefined();
       expect(p301!.score).toBe(0.5);
+    });
+  });
+
+  describe('decayTagWeight', () => {
+    it('decrements INTERESTED_IN weight by the given amount, floored at 0', async () => {
+      // Seed: user 1 → graphql@1.0, user 1 → node@2.0
+      const before = await runQuery(
+        driver,
+        `MATCH (u:User {id: 1})-[r:INTERESTED_IN]->(t:Tag {name: 'graphql'}) RETURN r.weight AS w`,
+      );
+      expect(toInt(before.records[0]?.get('w'))).toBe(1);
+
+      // When unliking a post tagged graphql (simulating the event handler)
+      await service.decayTagWeight(1, ['graphql'], WEIGHT_INTEREST_LIKE);
+
+      const after = await runQuery(
+        driver,
+        `MATCH (u:User {id: 1})-[r:INTERESTED_IN]->(t:Tag {name: 'graphql'}) RETURN r.weight AS w`,
+      );
+      expect(toInt(after.records[0]?.get('w'))).toBe(0);
+    });
+
+    it('does not go below zero', async () => {
+      // node@2.0 — decrement by 3.0 should floor at 0
+      await service.decayTagWeight(1, ['node'], 3);
+
+      const result = await runQuery(
+        driver,
+        `MATCH (u:User {id: 1})-[r:INTERESTED_IN]->(t:Tag {name: 'node'}) RETURN r.weight AS w`,
+      );
+      expect(toInt(result.records[0]?.get('w'))).toBe(0);
+    });
+
+    it('is a no-op on non-existent edges', async () => {
+      await expect(
+        service.decayTagWeight(999, ['nonexistent'], WEIGHT_INTEREST_LIKE),
+      ).resolves.not.toThrow();
     });
   });
 });

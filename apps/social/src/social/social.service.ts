@@ -487,6 +487,25 @@ export class SocialService implements OnModuleInit {
     return count > 0;
   }
 
+  async decayTagWeight(userId: number, tags: string[], decrement: number): Promise<void> {
+    if (!tags.length || decrement <= 0) return;
+
+    await this.neo4jService.executeWrite(async (tx) => {
+      await tx.run(
+        `
+        UNWIND $tags AS tag
+        MATCH (u:User {id: $userId})-[r:INTERESTED_IN]->(t:Tag {name: tag})
+        SET r.weight =
+          CASE
+            WHEN COALESCE(r.weight, 0) < $decrement THEN 0.0
+            ELSE COALESCE(r.weight, 0) - $decrement
+          END
+        `,
+        { userId, tags, decrement },
+      );
+    }, SocialService.name);
+  }
+
   async removeLikeEdge(userId: number, postId: number): Promise<void> {
     await this.neo4jService.executeWrite(async (tx) => {
       await tx.run(
