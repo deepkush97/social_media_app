@@ -1,3 +1,7 @@
+schema {
+  query: Query
+}
+
 type PaginationMeta {
   total: Int!
   page: Int!

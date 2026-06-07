@@ -1,4 +1,4 @@
 export interface IPostRecommendationItem {
-  postId: number;
+  id: number;
   score: number;
 }

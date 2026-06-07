@@ -3,10 +3,12 @@ import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { BooleanOutputDto } from '@app/shared/boolean.output';
 import { NumberOutputDto } from '@app/shared/number.output';
 
+import { FeedInput } from './inputs/feed.input';
 import { FollowUnfollowInput } from './inputs/follow-unfollow.input';
 import { PostRecommendationInput } from './inputs/post-recommendation.input';
 import { UserRecommendationInput } from './inputs/user-recommendation.input';
 import { DecayResultOutputDto } from './outputs/delay-result.output';
+import { FeedOutputDto } from './outputs/feed.output';
 import { PostRecommendationOutputDto } from './outputs/post-recommendation.output';
 import { UserCountsDto } from './outputs/user-counts.output';
 import { UserRecommendationOutputDto } from './outputs/user-recommendation.output';
@@ -57,6 +59,11 @@ export class AppResolver {
     @Args('postId', { type: () => Int }) postId: number,
   ): Promise<BooleanOutputDto> {
     return this.appService.hasUserLikedPost(userId, postId);
+  }
+
+  @Query(() => FeedOutputDto)
+  async feed(@Args('input') input: FeedInput): Promise<FeedOutputDto> {
+    return this.appService.feed(input.userId, input.page, input.take);
   }
 
   @Query(() => PostRecommendationOutputDto)

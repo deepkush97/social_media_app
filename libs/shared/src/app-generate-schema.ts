@@ -8,10 +8,9 @@ import {
   GraphQLSchemaFactory,
   RESOLVER_NAME_METADATA,
 } from '@nestjs/graphql';
+import { printSchemaWithDirectives } from '@graphql-tools/utils';
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-
-import { printSchema } from 'graphql';
 
 function resolveImportedModule(imp: unknown): Type<unknown> | null {
   if (typeof imp === 'function') {
@@ -74,7 +73,7 @@ export async function appGenerateSchema(module: Type<unknown>): Promise<void> {
   await app.init();
   const gqlSchemaFactory = app.get(GraphQLSchemaFactory);
   const schema = await gqlSchemaFactory.create(resolvers, []);
-  const sdl = printSchema(schema);
+  const sdl = printSchemaWithDirectives(schema);
   const schemaPath = join(process.cwd(), `libs/shared/src/graphql/schema/${serviceName}.graphql`);
   writeFileSync(schemaPath, sdl);
   await app.close();

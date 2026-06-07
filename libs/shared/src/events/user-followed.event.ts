@@ -5,7 +5,7 @@ import { BaseEvent } from './base-event.abstract';
 export interface UserFollowedEventPayload {
   followerId: number;
   followingId: number;
-  createdAt: Date;
+  createdAt: string;
 }
 
 export class UserFollowedEvent implements BaseEvent<UserFollowedEventPayload> {

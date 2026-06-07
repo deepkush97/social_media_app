@@ -42,6 +42,9 @@ export class SocialService implements OnModuleInit {
       await tx.run(`
         CREATE INDEX IF NOT EXISTS FOR ()-[r:INTERESTED_IN]->() ON (r.weight)
       `);
+      await tx.run(`
+        CREATE INDEX IF NOT EXISTS FOR (p:Post) ON (p.writtenAt)
+      `);
     }, SocialService.name);
   }
 
@@ -123,21 +126,112 @@ export class SocialService implements OnModuleInit {
     }, SocialService.name);
   }
 
-  async trackPostCreation(userId: number, postId: number, tags: string[]): Promise<void> {
+  async trackPostCreation(
+    userId: number,
+    postId: number,
+    tags: string[],
+    writtenAt: string,
+  ): Promise<void> {
     await this.neo4jService.executeWrite(async (tx) => {
       await tx.run(
         `
         MERGE (u:User {id: $userId})
         MERGE (p:Post {id: $postId})
+        ON CREATE SET p.writtenAt = datetime($writtenAt)
         MERGE (u)-[:CREATED]->(p)
         WITH u, p
         UNWIND $tags AS tag
         MERGE (t:Tag {name: tag})
         MERGE (p)-[:TAGGED {weight: 1.0}]->(t)
         `,
-        { userId, postId, tags },
+        { userId, postId, tags, writtenAt },
       );
     }, SocialService.name);
+  }
+
+  async getFeed(
+    userId: number,
+    limit: number,
+    offset = 0,
+  ): Promise<{ items: IPostRecommendationItem[]; total: number }> {
+    const fetchMultiplier = 3;
+    const blendRatio = 5;
+    const fetchSize = limit * fetchMultiplier;
+
+    const query = `
+      CALL {
+        MATCH (me:User {id: $userId})-[:FOLLOWS]->(author:User)-[:CREATED]->(post:Post)
+        RETURN post.id AS id, 1.0 AS score, post.writtenAt AS writtenAt
+        UNION
+        MATCH (me:User {id: $userId})-[interest:INTERESTED_IN]->(tag:Tag)<-[:TAGGED]-(post:Post)<-[:CREATED]-(author:User)
+        WHERE NOT (me)-[:FOLLOWS]->(author)
+        RETURN post.id AS id, 0.5 * interest.weight AS score, null AS writtenAt
+      }
+      WITH id, max(score) AS score, max(writtenAt) AS writtenAt
+      ORDER BY score DESC, writtenAt DESC
+    `;
+
+    const { items: allItems, total } = await this.neo4jService.executeRead(async (tx) => {
+      const itemsResult = await tx.run(
+        `${query} RETURN id, score SKIP toInteger($skip) LIMIT toInteger($limit)`,
+        { userId, skip: 0, limit: fetchSize },
+      );
+
+      const countResult = await tx.run(`${query} RETURN count(id) AS total`, {
+        userId,
+        skip: 0,
+        limit: fetchSize,
+      });
+
+      const items = itemsResult.records.map((record) => ({
+        id: toInt(record.get('id')),
+        score: toInt(record.get('score')),
+      }));
+
+      const total = toInt(countResult.records[0]?.get('total')) ?? 0;
+
+      return { items, total };
+    }, SocialService.name);
+
+    const followed: IPostRecommendationItem[] = [];
+    const recommended: IPostRecommendationItem[] = [];
+
+    for (const item of allItems) {
+      if (item.score >= 1.0) {
+        followed.push({ id: item.id, score: 1.0 });
+      } else {
+        recommended.push({ id: item.id, score: item.score });
+      }
+    }
+
+    const blended = this.blend(followed, recommended, blendRatio);
+    const items = blended.slice(offset, offset + limit);
+
+    return { items, total };
+  }
+
+  private blend(
+    followed: IPostRecommendationItem[],
+    recommended: IPostRecommendationItem[],
+    blendRatio: number,
+  ): IPostRecommendationItem[] {
+    const result: IPostRecommendationItem[] = [];
+    let fi = 0;
+    let ri = 0;
+
+    while (fi < followed.length || ri < recommended.length) {
+      for (let i = 0; i < blendRatio && fi < followed.length; i++) {
+        result.push(followed[fi]);
+        fi++;
+      }
+
+      if (ri < recommended.length) {
+        result.push(recommended[ri]);
+        ri++;
+      }
+    }
+
+    return result;
   }
 
   async postRecommendation(
@@ -148,30 +242,30 @@ export class SocialService implements OnModuleInit {
     const baseQuery = `
       CALL {
         MATCH (me:User {id: $userId})-[:FOLLOWS]->(author:User)-[:CREATED]->(post:Post)
-        RETURN post.id AS postId, 1.0 AS score
+        RETURN post.id AS id, 1.0 AS score
         UNION
         MATCH (me:User {id: $userId})-[interest:INTERESTED_IN]->(tag:Tag)<-[:TAGGED]-(post:Post)<-[:CREATED]-(author:User)
         WHERE NOT (me)-[:FOLLOWS]->(author)
-        RETURN post.id AS postId, 0.5 * interest.weight AS score
+        RETURN post.id AS id, 0.5 * interest.weight AS score
       }
-      WITH postId, max(score) AS score
+      WITH id, max(score) AS score
       ORDER BY score DESC
     `;
 
     return this.neo4jService.executeRead(async (tx) => {
       const itemsResult = await tx.run(
-        `${baseQuery} RETURN postId, score SKIP toInteger($offset) LIMIT toInteger($limit)`,
+        `${baseQuery} RETURN id, score SKIP toInteger($offset) LIMIT toInteger($limit)`,
         { userId, limit, offset },
       );
 
-      const countResult = await tx.run(`${baseQuery} RETURN count(postId) AS total`, {
+      const countResult = await tx.run(`${baseQuery} RETURN count(id) AS total`, {
         userId,
         limit,
         offset,
       });
 
       const items = itemsResult.records.map((record) => ({
-        postId: toInt(record.get('postId')),
+        id: toInt(record.get('id')),
         score: toInt(record.get('score')),
       }));
 

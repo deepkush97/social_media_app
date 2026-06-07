@@ -68,6 +68,18 @@ export interface DecayResultOutputDto {
     __typename: 'DecayResultOutputDto'
 }
 
+export interface FeedItemDtoData {
+    items: PostOutput[]
+    meta: PaginationMeta
+    __typename: 'FeedItemDtoData'
+}
+
+export interface FeedOutputDto {
+    data: (FeedItemDtoData | null)
+    code: AppCodes
+    __typename: 'FeedOutputDto'
+}
+
 export interface FollowerFollowingCountDto {
     followers: Scalars['Int']
     followings: Scalars['Int']
@@ -143,6 +155,7 @@ export interface PostOutput {
     status: ContentStatusEnum
     createdAt: Scalars['DateTime']
     updatedAt: Scalars['DateTime']
+    score: Scalars['Float']
     __typename: 'PostOutput'
 }
 
@@ -159,7 +172,7 @@ export interface PostOutputDto {
 }
 
 export interface PostRecommendationItemDto {
-    postId: Scalars['Int']
+    id: Scalars['Int']
     score: Scalars['Float']
     __typename: 'PostRecommendationItemDto'
 }
@@ -189,6 +202,7 @@ export interface Query {
     userCounts: UserCountsDto
     postLikeCount: NumberOutputDto
     hasUserLikedPost: BooleanOutputDto
+    feed: FeedOutputDto
     postRecommendation: PostRecommendationOutputDto
     userRecommendation: UserRecommendationOutputDto
     __typename: 'Query'
@@ -383,6 +397,22 @@ export interface DecayResultOutputDtoGenqlSelection{
     __scalar?: boolean | number
 }
 
+export interface FeedInput {take?: Scalars['Int'],page?: Scalars['Int'],userId: Scalars['Int']}
+
+export interface FeedItemDtoDataGenqlSelection{
+    items?: PostOutputGenqlSelection
+    meta?: PaginationMetaGenqlSelection
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface FeedOutputDtoGenqlSelection{
+    data?: FeedItemDtoDataGenqlSelection
+    code?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
 export interface FollowerFollowingCountDtoGenqlSelection{
     followers?: boolean | number
     followings?: boolean | number
@@ -465,6 +495,7 @@ export interface PostOutputGenqlSelection{
     status?: boolean | number
     createdAt?: boolean | number
     updatedAt?: boolean | number
+    score?: boolean | number
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -486,7 +517,7 @@ export interface PostOutputDtoGenqlSelection{
 export interface PostRecommendationInput {take?: Scalars['Int'],page?: Scalars['Int'],userId: Scalars['Int']}
 
 export interface PostRecommendationItemDtoGenqlSelection{
-    postId?: boolean | number
+    id?: boolean | number
     score?: boolean | number
     __typename?: boolean | number
     __scalar?: boolean | number
@@ -521,6 +552,7 @@ export interface QueryGenqlSelection{
     userCounts?: (UserCountsDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     postLikeCount?: (NumberOutputDtoGenqlSelection & { __args: {postId: Scalars['Int']} })
     hasUserLikedPost?: (BooleanOutputDtoGenqlSelection & { __args: {userId: Scalars['Int'], postId: Scalars['Int']} })
+    feed?: (FeedOutputDtoGenqlSelection & { __args: {input: FeedInput} })
     postRecommendation?: (PostRecommendationOutputDtoGenqlSelection & { __args: {input: PostRecommendationInput} })
     userRecommendation?: (UserRecommendationOutputDtoGenqlSelection & { __args: {input: UserRecommendationInput} })
     __typename?: boolean | number
@@ -727,6 +759,22 @@ export interface WeightSnapshotDtoGenqlSelection{
     export const isDecayResultOutputDto = (obj?: { __typename?: any } | null): obj is DecayResultOutputDto => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isDecayResultOutputDto"')
       return DecayResultOutputDto_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const FeedItemDtoData_possibleTypes: string[] = ['FeedItemDtoData']
+    export const isFeedItemDtoData = (obj?: { __typename?: any } | null): obj is FeedItemDtoData => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isFeedItemDtoData"')
+      return FeedItemDtoData_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const FeedOutputDto_possibleTypes: string[] = ['FeedOutputDto']
+    export const isFeedOutputDto = (obj?: { __typename?: any } | null): obj is FeedOutputDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isFeedOutputDto"')
+      return FeedOutputDto_possibleTypes.includes(obj.__typename)
     }
     
 
