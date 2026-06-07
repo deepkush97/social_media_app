@@ -1,1 +1,8 @@
-onlyBuiltDependencies: []
+allowBuilds:
+  '@apollo/protobufjs': true
+  '@apollo/rover': true
+  '@nestjs/core': true
+  '@scarf/scarf': true
+  '@swc/core': true
+  'bcrypt': true
+  'protobufjs': true
