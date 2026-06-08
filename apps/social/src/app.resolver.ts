@@ -8,8 +8,7 @@ import { FollowUnfollowInput } from './inputs/follow-unfollow.input';
 import { PostRecommendationInput } from './inputs/post-recommendation.input';
 import { UserRecommendationInput } from './inputs/user-recommendation.input';
 import { DecayResultOutputDto } from './outputs/delay-result.output';
-import { FeedOutputDto } from './outputs/feed.output';
-import { PostRecommendationOutputDto } from './outputs/post-recommendation.output';
+import { ScoredPostOutputDto } from './outputs/scored-post.output';
 import { UserCountsDto } from './outputs/user-counts.output';
 import { UserRecommendationOutputDto } from './outputs/user-recommendation.output';
 import { LikeInput } from './social/like.input';
@@ -61,15 +60,15 @@ export class AppResolver {
     return this.appService.hasUserLikedPost(userId, postId);
   }
 
-  @Query(() => FeedOutputDto)
-  async feed(@Args('input') input: FeedInput): Promise<FeedOutputDto> {
+  @Query(() => ScoredPostOutputDto)
+  async feed(@Args('input') input: FeedInput): Promise<ScoredPostOutputDto> {
     return this.appService.feed(input.userId, input.page, input.take);
   }
 
-  @Query(() => PostRecommendationOutputDto)
+  @Query(() => ScoredPostOutputDto)
   async postRecommendation(
     @Args('input') input: PostRecommendationInput,
-  ): Promise<PostRecommendationOutputDto> {
+  ): Promise<ScoredPostOutputDto> {
     return this.appService.postRecommendation(input.userId, input.page, input.take);
   }
 

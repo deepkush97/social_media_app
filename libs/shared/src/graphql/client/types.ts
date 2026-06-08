@@ -8,11 +8,11 @@ export default {
         11,
         15,
         17,
+        21,
         23,
-        25,
-        26,
-        30,
-        31
+        24,
+        28,
+        29
     ],
     "types": {
         "AppCodes": {},
@@ -76,7 +76,7 @@ export default {
                 5
             ],
             "meta": [
-                35
+                33
             ],
             "__typename": [
                 7
@@ -165,10 +165,10 @@ export default {
                 17
             ],
             "before": [
-                65
+                62
             ],
             "after": [
-                65
+                62
             ],
             "__typename": [
                 7
@@ -200,28 +200,6 @@ export default {
                 7
             ]
         },
-        "FeedItemDtoData": {
-            "items": [
-                37
-            ],
-            "meta": [
-                35
-            ],
-            "__typename": [
-                7
-            ]
-        },
-        "FeedOutputDto": {
-            "data": [
-                20
-            ],
-            "code": [
-                0
-            ],
-            "__typename": [
-                7
-            ]
-        },
         "FollowerFollowingCountDto": {
             "followers": [
                 6
@@ -242,7 +220,7 @@ export default {
                 6
             ],
             "source": [
-                23
+                21
             ],
             "__typename": [
                 7
@@ -283,7 +261,7 @@ export default {
         },
         "LikeOutputDto": {
             "data": [
-                27
+                25
             ],
             "code": [
                 0
@@ -307,7 +285,7 @@ export default {
         },
         "Mutation": {
             "createUser": [
-                60,
+                57,
                 {
                     "input": [
                         14,
@@ -316,7 +294,7 @@ export default {
                 }
             ],
             "createSession": [
-                57,
+                54,
                 {
                     "id": [
                         6,
@@ -325,10 +303,10 @@ export default {
                 }
             ],
             "loginUser": [
-                60,
+                57,
                 {
                     "input": [
-                        32,
+                        30,
                         "LoginUserInput!"
                     ]
                 }
@@ -352,7 +330,7 @@ export default {
                 }
             ],
             "createPost": [
-                39,
+                37,
                 {
                     "input": [
                         13,
@@ -388,28 +366,28 @@ export default {
                 }
             ],
             "follow": [
-                58,
+                55,
                 {
                     "input": [
-                        24,
+                        22,
                         "FollowUnfollowInput!"
                     ]
                 }
             ],
             "unfollow": [
-                58,
+                55,
                 {
                     "input": [
-                        24,
+                        22,
                         "FollowUnfollowInput!"
                     ]
                 }
             ],
             "likePost": [
-                29,
+                27,
                 {
                     "input": [
-                        28,
+                        26,
                         "LikeInput!"
                     ]
                 }
@@ -418,7 +396,7 @@ export default {
                 2,
                 {
                     "input": [
-                        28,
+                        26,
                         "LikeInput!"
                     ]
                 }
@@ -465,7 +443,7 @@ export default {
         },
         "PostListOutputDto": {
             "data": [
-                38
+                36
             ],
             "code": [
                 0
@@ -511,10 +489,10 @@ export default {
         },
         "PostOutputData": {
             "items": [
-                37
+                35
             ],
             "meta": [
-                35
+                33
             ],
             "__typename": [
                 7
@@ -522,7 +500,7 @@ export default {
         },
         "PostOutputDto": {
             "data": [
-                37
+                35
             ],
             "code": [
                 0
@@ -540,39 +518,6 @@ export default {
             ],
             "userId": [
                 6
-            ],
-            "__typename": [
-                7
-            ]
-        },
-        "PostRecommendationItemDto": {
-            "id": [
-                6
-            ],
-            "score": [
-                17
-            ],
-            "__typename": [
-                7
-            ]
-        },
-        "PostRecommendationItemDtoData": {
-            "items": [
-                41
-            ],
-            "meta": [
-                35
-            ],
-            "__typename": [
-                7
-            ]
-        },
-        "PostRecommendationOutputDto": {
-            "data": [
-                42
-            ],
-            "code": [
-                0
             ],
             "__typename": [
                 7
@@ -597,7 +542,7 @@ export default {
         },
         "Query": {
             "findUserById": [
-                60,
+                57,
                 {
                     "id": [
                         6,
@@ -606,7 +551,7 @@ export default {
                 }
             ],
             "findOpenSessionByGuid": [
-                57,
+                54,
                 {
                     "id": [
                         7,
@@ -615,7 +560,7 @@ export default {
                 }
             ],
             "findPostById": [
-                39,
+                37,
                 {
                     "id": [
                         6,
@@ -624,10 +569,10 @@ export default {
                 }
             ],
             "findPostsByUserId": [
-                36,
+                34,
                 {
                     "input": [
-                        44,
+                        39,
                         "PostsPaginationInput!"
                     ]
                 }
@@ -651,34 +596,34 @@ export default {
                 }
             ],
             "searchPosts": [
-                49,
+                46,
                 {
                     "input": [
-                        46,
+                        43,
                         "SearchInput!"
                     ]
                 }
             ],
             "searchUsers": [
-                55,
+                52,
                 {
                     "input": [
-                        46,
+                        43,
                         "SearchInput!"
                     ]
                 }
             ],
             "searchTags": [
-                52,
+                49,
                 {
                     "input": [
-                        46,
+                        43,
                         "SearchInput!"
                     ]
                 }
             ],
             "userCounts": [
-                58,
+                55,
                 {
                     "id": [
                         6,
@@ -687,7 +632,7 @@ export default {
                 }
             ],
             "postLikeCount": [
-                34,
+                32,
                 {
                     "postId": [
                         6,
@@ -709,7 +654,7 @@ export default {
                 }
             ],
             "feed": [
-                21,
+                42,
                 {
                     "input": [
                         19,
@@ -718,22 +663,44 @@ export default {
                 }
             ],
             "postRecommendation": [
-                43,
+                42,
                 {
                     "input": [
-                        40,
+                        38,
                         "PostRecommendationInput!"
                     ]
                 }
             ],
             "userRecommendation": [
-                64,
+                61,
                 {
                     "input": [
-                        61,
+                        58,
                         "UserRecommendationInput!"
                     ]
                 }
+            ],
+            "__typename": [
+                7
+            ]
+        },
+        "ScoredPostItemDtoData": {
+            "items": [
+                35
+            ],
+            "meta": [
+                33
+            ],
+            "__typename": [
+                7
+            ]
+        },
+        "ScoredPostOutputDto": {
+            "data": [
+                41
+            ],
+            "code": [
+                0
             ],
             "__typename": [
                 7
@@ -778,10 +745,10 @@ export default {
         },
         "SearchPostHitDtoData": {
             "items": [
-                47
+                44
             ],
             "meta": [
-                35
+                33
             ],
             "__typename": [
                 7
@@ -789,7 +756,7 @@ export default {
         },
         "SearchPostOutputDto": {
             "data": [
-                48
+                45
             ],
             "code": [
                 0
@@ -814,10 +781,10 @@ export default {
         },
         "SearchTagHitDtoData": {
             "items": [
-                50
+                47
             ],
             "meta": [
-                35
+                33
             ],
             "__typename": [
                 7
@@ -825,7 +792,7 @@ export default {
         },
         "SearchTagOutputDto": {
             "data": [
-                51
+                48
             ],
             "code": [
                 0
@@ -853,10 +820,10 @@ export default {
         },
         "SearchUserHitDtoData": {
             "items": [
-                53
+                50
             ],
             "meta": [
-                35
+                33
             ],
             "__typename": [
                 7
@@ -864,7 +831,7 @@ export default {
         },
         "SearchUserOutputDto": {
             "data": [
-                54
+                51
             ],
             "code": [
                 0
@@ -898,7 +865,7 @@ export default {
         },
         "SessionOutputDto": {
             "data": [
-                56
+                53
             ],
             "code": [
                 0
@@ -909,7 +876,7 @@ export default {
         },
         "UserCountsDto": {
             "data": [
-                22
+                20
             ],
             "code": [
                 0
@@ -940,7 +907,7 @@ export default {
         },
         "UserOutputDto": {
             "data": [
-                59
+                56
             ],
             "code": [
                 0
@@ -982,10 +949,10 @@ export default {
         },
         "UserRecommendationItemDtoData": {
             "items": [
-                62
+                59
             ],
             "meta": [
-                35
+                33
             ],
             "__typename": [
                 7
@@ -993,7 +960,7 @@ export default {
         },
         "UserRecommendationOutputDto": {
             "data": [
-                63
+                60
             ],
             "code": [
                 0

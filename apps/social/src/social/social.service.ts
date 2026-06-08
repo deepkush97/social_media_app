@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { ILike } from '@app/shared/interfaces/like/like.interface';
 import { IFollowUnfollow } from '@app/shared/interfaces/social/follow-unfollow.interface';
 import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-following-count.interface';
-import { IPostRecommendationItem } from '@app/shared/interfaces/social/post-recommendation.interface';
+import { IScoredPostIdItem } from '@app/shared/interfaces/social/scored-post-id.interface';
 import { IUserRecommendationItem } from '@app/shared/interfaces/social/user-recommendation.interface';
 import { Neo4jService } from '@app/shared/neo4j/neo4j.service';
 import { toInt } from '@app/shared/utils/to-int';
@@ -153,7 +153,7 @@ export class SocialService implements OnModuleInit {
     userId: number,
     limit: number,
     offset = 0,
-  ): Promise<{ items: IPostRecommendationItem[]; total: number }> {
+  ): Promise<{ items: IScoredPostIdItem[]; total: number }> {
     const fetchMultiplier = 3;
     const blendRatio = 5;
     const fetchSize = limit * fetchMultiplier;
@@ -197,8 +197,8 @@ export class SocialService implements OnModuleInit {
       return this.coldStartFeed(limit, offset);
     }
 
-    const followed: IPostRecommendationItem[] = [];
-    const recommended: IPostRecommendationItem[] = [];
+    const followed: IScoredPostIdItem[] = [];
+    const recommended: IScoredPostIdItem[] = [];
 
     for (const item of allItems) {
       if (item.score >= 1.0) {
@@ -215,11 +215,11 @@ export class SocialService implements OnModuleInit {
   }
 
   private blend(
-    followed: IPostRecommendationItem[],
-    recommended: IPostRecommendationItem[],
+    followed: IScoredPostIdItem[],
+    recommended: IScoredPostIdItem[],
     blendRatio: number,
-  ): IPostRecommendationItem[] {
-    const result: IPostRecommendationItem[] = [];
+  ): IScoredPostIdItem[] {
+    const result: IScoredPostIdItem[] = [];
     let fi = 0;
     let ri = 0;
 
@@ -241,7 +241,7 @@ export class SocialService implements OnModuleInit {
   private async coldStartFeed(
     limit: number,
     offset: number,
-  ): Promise<{ items: IPostRecommendationItem[]; total: number }> {
+  ): Promise<{ items: IScoredPostIdItem[]; total: number }> {
     const scoringQuery = `
       MATCH (t:Tag)
       WITH t, COUNT { (t)<-[:INTERESTED_IN]-() } + COUNT { (t)<-[:TAGGED]-() } AS tagScore
@@ -276,7 +276,7 @@ export class SocialService implements OnModuleInit {
     userId: number,
     limit: number,
     offset = 0,
-  ): Promise<{ items: IPostRecommendationItem[]; total: number }> {
+  ): Promise<{ items: IScoredPostIdItem[]; total: number }> {
     const baseQuery = `
       CALL {
         MATCH (me:User {id: $userId})-[:FOLLOWS]->(author:User)-[:CREATED]->(post:Post)

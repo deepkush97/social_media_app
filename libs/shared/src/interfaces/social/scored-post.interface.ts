@@ -1,5 +1,5 @@
 import { IPost } from '../post/post.interface';
 
-export interface IFeedItem extends IPost {
+export interface IScoredPost extends IPost {
   score: number;
 }

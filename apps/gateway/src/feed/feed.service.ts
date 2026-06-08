@@ -7,7 +7,7 @@ import { ContentStatusEnum } from '@app/shared/enums/content-status.enum';
 import { GraphqlRouterComposite } from '@app/shared/graphql/graphql-router.composite';
 import { IAppResponse } from '@app/shared/interfaces/app-response.interface';
 import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface';
-import { IFeedItem } from '@app/shared/interfaces/social/feed.interface';
+import { IScoredPost } from '@app/shared/interfaces/social/scored-post.interface';
 
 import { FEED_CACHE_TTL_IN_SECONDS } from '../app.constant';
 import { RedisFormatter } from '../redis-formatter';
@@ -23,9 +23,9 @@ export class FeedService {
     userId: number,
     page = 1,
     take = 10,
-  ): Promise<IAppResponse<IPaginatedData<IFeedItem>>> {
+  ): Promise<IAppResponse<IPaginatedData<IScoredPost>>> {
     const cacheKey = RedisFormatter.feed(userId, page, take);
-    const fromCache = await this.cacheService.get<IPaginatedData<IFeedItem>>(cacheKey);
+    const fromCache = await this.cacheService.get<IPaginatedData<IScoredPost>>(cacheKey);
 
     if (fromCache) {
       return new AppResponse({ code: AppCodes.OPERATION_SUCCESS, data: fromCache });
@@ -66,7 +66,7 @@ export class FeedService {
     }
 
     const { items, meta } = result.data;
-    const data: IPaginatedData<IFeedItem> = {
+    const data: IPaginatedData<IScoredPost> = {
       meta,
       items: items.map((i) => ({ ...i, status: ContentStatusEnum[i.status] })),
     };
