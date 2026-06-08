@@ -68,18 +68,6 @@ export interface DecayResultOutputDto {
     __typename: 'DecayResultOutputDto'
 }
 
-export interface FeedItemDtoData {
-    items: PostOutput[]
-    meta: PaginationMeta
-    __typename: 'FeedItemDtoData'
-}
-
-export interface FeedOutputDto {
-    data: (FeedItemDtoData | null)
-    code: AppCodes
-    __typename: 'FeedOutputDto'
-}
-
 export interface FollowerFollowingCountDto {
     followers: Scalars['Int']
     followings: Scalars['Int']
@@ -171,24 +159,6 @@ export interface PostOutputDto {
     __typename: 'PostOutputDto'
 }
 
-export interface PostRecommendationItemDto {
-    id: Scalars['Int']
-    score: Scalars['Float']
-    __typename: 'PostRecommendationItemDto'
-}
-
-export interface PostRecommendationItemDtoData {
-    items: PostRecommendationItemDto[]
-    meta: PaginationMeta
-    __typename: 'PostRecommendationItemDtoData'
-}
-
-export interface PostRecommendationOutputDto {
-    data: (PostRecommendationItemDtoData | null)
-    code: AppCodes
-    __typename: 'PostRecommendationOutputDto'
-}
-
 export interface Query {
     findUserById: UserOutputDto
     findOpenSessionByGuid: SessionOutputDto
@@ -202,10 +172,22 @@ export interface Query {
     userCounts: UserCountsDto
     postLikeCount: NumberOutputDto
     hasUserLikedPost: BooleanOutputDto
-    feed: FeedOutputDto
-    postRecommendation: PostRecommendationOutputDto
+    feed: ScoredPostOutputDto
+    postRecommendation: ScoredPostOutputDto
     userRecommendation: UserRecommendationOutputDto
     __typename: 'Query'
+}
+
+export interface ScoredPostItemDtoData {
+    items: PostOutput[]
+    meta: PaginationMeta
+    __typename: 'ScoredPostItemDtoData'
+}
+
+export interface ScoredPostOutputDto {
+    data: (ScoredPostItemDtoData | null)
+    code: AppCodes
+    __typename: 'ScoredPostOutputDto'
 }
 
 export interface SearchPostHitDto {
@@ -399,20 +381,6 @@ export interface DecayResultOutputDtoGenqlSelection{
 
 export interface FeedInput {take?: Scalars['Int'],page?: Scalars['Int'],userId: Scalars['Int']}
 
-export interface FeedItemDtoDataGenqlSelection{
-    items?: PostOutputGenqlSelection
-    meta?: PaginationMetaGenqlSelection
-    __typename?: boolean | number
-    __scalar?: boolean | number
-}
-
-export interface FeedOutputDtoGenqlSelection{
-    data?: FeedItemDtoDataGenqlSelection
-    code?: boolean | number
-    __typename?: boolean | number
-    __scalar?: boolean | number
-}
-
 export interface FollowerFollowingCountDtoGenqlSelection{
     followers?: boolean | number
     followings?: boolean | number
@@ -516,27 +484,6 @@ export interface PostOutputDtoGenqlSelection{
 
 export interface PostRecommendationInput {take?: Scalars['Int'],page?: Scalars['Int'],userId: Scalars['Int']}
 
-export interface PostRecommendationItemDtoGenqlSelection{
-    id?: boolean | number
-    score?: boolean | number
-    __typename?: boolean | number
-    __scalar?: boolean | number
-}
-
-export interface PostRecommendationItemDtoDataGenqlSelection{
-    items?: PostRecommendationItemDtoGenqlSelection
-    meta?: PaginationMetaGenqlSelection
-    __typename?: boolean | number
-    __scalar?: boolean | number
-}
-
-export interface PostRecommendationOutputDtoGenqlSelection{
-    data?: PostRecommendationItemDtoDataGenqlSelection
-    code?: boolean | number
-    __typename?: boolean | number
-    __scalar?: boolean | number
-}
-
 export interface PostsPaginationInput {take?: Scalars['Int'],page?: Scalars['Int'],userId: Scalars['Int'],status?: ContentStatusEnum}
 
 export interface QueryGenqlSelection{
@@ -552,9 +499,23 @@ export interface QueryGenqlSelection{
     userCounts?: (UserCountsDtoGenqlSelection & { __args: {id: Scalars['Int']} })
     postLikeCount?: (NumberOutputDtoGenqlSelection & { __args: {postId: Scalars['Int']} })
     hasUserLikedPost?: (BooleanOutputDtoGenqlSelection & { __args: {userId: Scalars['Int'], postId: Scalars['Int']} })
-    feed?: (FeedOutputDtoGenqlSelection & { __args: {input: FeedInput} })
-    postRecommendation?: (PostRecommendationOutputDtoGenqlSelection & { __args: {input: PostRecommendationInput} })
+    feed?: (ScoredPostOutputDtoGenqlSelection & { __args: {input: FeedInput} })
+    postRecommendation?: (ScoredPostOutputDtoGenqlSelection & { __args: {input: PostRecommendationInput} })
     userRecommendation?: (UserRecommendationOutputDtoGenqlSelection & { __args: {input: UserRecommendationInput} })
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface ScoredPostItemDtoDataGenqlSelection{
+    items?: PostOutputGenqlSelection
+    meta?: PaginationMetaGenqlSelection
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
+export interface ScoredPostOutputDtoGenqlSelection{
+    data?: ScoredPostItemDtoDataGenqlSelection
+    code?: boolean | number
     __typename?: boolean | number
     __scalar?: boolean | number
 }
@@ -763,22 +724,6 @@ export interface WeightSnapshotDtoGenqlSelection{
     
 
 
-    const FeedItemDtoData_possibleTypes: string[] = ['FeedItemDtoData']
-    export const isFeedItemDtoData = (obj?: { __typename?: any } | null): obj is FeedItemDtoData => {
-      if (!obj?.__typename) throw new Error('__typename is missing in "isFeedItemDtoData"')
-      return FeedItemDtoData_possibleTypes.includes(obj.__typename)
-    }
-    
-
-
-    const FeedOutputDto_possibleTypes: string[] = ['FeedOutputDto']
-    export const isFeedOutputDto = (obj?: { __typename?: any } | null): obj is FeedOutputDto => {
-      if (!obj?.__typename) throw new Error('__typename is missing in "isFeedOutputDto"')
-      return FeedOutputDto_possibleTypes.includes(obj.__typename)
-    }
-    
-
-
     const FollowerFollowingCountDto_possibleTypes: string[] = ['FollowerFollowingCountDto']
     export const isFollowerFollowingCountDto = (obj?: { __typename?: any } | null): obj is FollowerFollowingCountDto => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isFollowerFollowingCountDto"')
@@ -859,34 +804,26 @@ export interface WeightSnapshotDtoGenqlSelection{
     
 
 
-    const PostRecommendationItemDto_possibleTypes: string[] = ['PostRecommendationItemDto']
-    export const isPostRecommendationItemDto = (obj?: { __typename?: any } | null): obj is PostRecommendationItemDto => {
-      if (!obj?.__typename) throw new Error('__typename is missing in "isPostRecommendationItemDto"')
-      return PostRecommendationItemDto_possibleTypes.includes(obj.__typename)
-    }
-    
-
-
-    const PostRecommendationItemDtoData_possibleTypes: string[] = ['PostRecommendationItemDtoData']
-    export const isPostRecommendationItemDtoData = (obj?: { __typename?: any } | null): obj is PostRecommendationItemDtoData => {
-      if (!obj?.__typename) throw new Error('__typename is missing in "isPostRecommendationItemDtoData"')
-      return PostRecommendationItemDtoData_possibleTypes.includes(obj.__typename)
-    }
-    
-
-
-    const PostRecommendationOutputDto_possibleTypes: string[] = ['PostRecommendationOutputDto']
-    export const isPostRecommendationOutputDto = (obj?: { __typename?: any } | null): obj is PostRecommendationOutputDto => {
-      if (!obj?.__typename) throw new Error('__typename is missing in "isPostRecommendationOutputDto"')
-      return PostRecommendationOutputDto_possibleTypes.includes(obj.__typename)
-    }
-    
-
-
     const Query_possibleTypes: string[] = ['Query']
     export const isQuery = (obj?: { __typename?: any } | null): obj is Query => {
       if (!obj?.__typename) throw new Error('__typename is missing in "isQuery"')
       return Query_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const ScoredPostItemDtoData_possibleTypes: string[] = ['ScoredPostItemDtoData']
+    export const isScoredPostItemDtoData = (obj?: { __typename?: any } | null): obj is ScoredPostItemDtoData => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isScoredPostItemDtoData"')
+      return ScoredPostItemDtoData_possibleTypes.includes(obj.__typename)
+    }
+    
+
+
+    const ScoredPostOutputDto_possibleTypes: string[] = ['ScoredPostOutputDto']
+    export const isScoredPostOutputDto = (obj?: { __typename?: any } | null): obj is ScoredPostOutputDto => {
+      if (!obj?.__typename) throw new Error('__typename is missing in "isScoredPostOutputDto"')
+      return ScoredPostOutputDto_possibleTypes.includes(obj.__typename)
     }
     
 

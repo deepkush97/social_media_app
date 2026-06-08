@@ -307,8 +307,47 @@ export default function () {
     });
   }
 
-  // 11. Auth — logout
-  group('11. Auth — logout', () => {
+  // 11. Recommendations — posts
+  group('11. Recommendations — posts', () => {
+    request('GET', `${BASE_URL}/recommendations/posts?page=1&take=10`, {
+      token,
+      label: 'recommendations_posts',
+      expect: expect({
+        data: matchesFields({
+          items: (items) =>
+            Array.isArray(items) &&
+            items.every(
+              (item) =>
+                typeof item.id === 'number' &&
+                typeof item.title === 'string' &&
+                typeof item.content === 'string' &&
+                typeof item.score === 'number' &&
+                typeof item.status === 'string' &&
+                Array.isArray(item.tags) &&
+                typeof item.userId === 'number',
+            ),
+          meta: matchesFields({ total: (n) => n >= 0, page: 1, take: 10 }),
+        }),
+      }),
+    });
+  });
+
+  // 12. Recommendations — users
+  group('12. Recommendations — users', () => {
+    request('GET', `${BASE_URL}/recommendations/users?page=1&take=10`, {
+      token,
+      label: 'recommendations_users',
+      expect: expect({
+        data: matchesFields({
+          items: (items) => Array.isArray(items),
+          meta: matchesFields({ total: (n) => n >= 0, page: 1, take: 10 }),
+        }),
+      }),
+    });
+  });
+
+  // 13. Auth — logout
+  group('13. Auth — logout', () => {
     request('POST', `${BASE_URL}/auth/logout`, { token, label: 'logout', expect: expect() });
   });
 }

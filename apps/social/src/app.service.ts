@@ -9,7 +9,7 @@ import { IPaginatedData } from '@app/shared/interfaces/paginated-data.interface'
 import { IDecayResult } from '@app/shared/interfaces/social/decay-result.interface';
 import { IFollowUnfollow } from '@app/shared/interfaces/social/follow-unfollow.interface';
 import { IFollowerFollowingCount } from '@app/shared/interfaces/social/follower-following-count.interface';
-import { IPostRecommendationItem } from '@app/shared/interfaces/social/post-recommendation.interface';
+import { IScoredPostIdItem } from '@app/shared/interfaces/social/scored-post-id.interface';
 import { IUserRecommendationItem } from '@app/shared/interfaces/social/user-recommendation.interface';
 import { createPaginatedResponse } from '@app/shared/utils/create-paginated-response';
 
@@ -136,7 +136,7 @@ export class AppService {
     userId: number,
     page = 1,
     take = 10,
-  ): Promise<IAppResponse<IPaginatedData<IPostRecommendationItem>>> {
+  ): Promise<IAppResponse<IPaginatedData<IScoredPostIdItem>>> {
     try {
       const limit = take;
       const offset = (page - 1) * take;
@@ -162,7 +162,7 @@ export class AppService {
     userId: number,
     page = 1,
     take = 10,
-  ): Promise<IAppResponse<IPaginatedData<IPostRecommendationItem>>> {
+  ): Promise<IAppResponse<IPaginatedData<IScoredPostIdItem>>> {
     try {
       const limit = take;
       const offset = (page - 1) * take;

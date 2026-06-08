@@ -57,28 +57,13 @@ type PostOutput @key(fields: "id") {
   score: Float!
 }
 
-type FeedOutputDto {
-  data: FeedItemDtoData
+type ScoredPostOutputDto {
+  data: ScoredPostItemDtoData
   code: AppCodes!
 }
 
-type FeedItemDtoData {
+type ScoredPostItemDtoData {
   items: [PostOutput!]!
-  meta: PaginationMeta!
-}
-
-type PostRecommendationItemDto {
-  id: Int!
-  score: Float!
-}
-
-type PostRecommendationOutputDto {
-  data: PostRecommendationItemDtoData
-  code: AppCodes!
-}
-
-type PostRecommendationItemDtoData {
-  items: [PostRecommendationItemDto!]!
   meta: PaginationMeta!
 }
 
@@ -131,8 +116,8 @@ type Query {
   userCounts(id: Int!): UserCountsDto!
   postLikeCount(postId: Int!): NumberOutputDto!
   hasUserLikedPost(userId: Int!, postId: Int!): BooleanOutputDto!
-  feed(input: FeedInput!): FeedOutputDto!
-  postRecommendation(input: PostRecommendationInput!): PostRecommendationOutputDto!
+  feed(input: FeedInput!): ScoredPostOutputDto!
+  postRecommendation(input: PostRecommendationInput!): ScoredPostOutputDto!
   userRecommendation(input: UserRecommendationInput!): UserRecommendationOutputDto!
 }
 

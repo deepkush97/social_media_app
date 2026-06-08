@@ -12,8 +12,6 @@ import {
   CreatePostInput,
   CreateUserInput,
   FeedInput,
-  FeedOutputDto,
-  FeedOutputDtoGenqlSelection,
   FollowUnfollowInput,
   LikeInput,
   LikeOutputDto,
@@ -26,9 +24,9 @@ import {
   PostOutputDto,
   PostOutputDtoGenqlSelection,
   PostRecommendationInput,
-  PostRecommendationOutputDto,
-  PostRecommendationOutputDtoGenqlSelection,
   PostsPaginationInput,
+  ScoredPostOutputDto,
+  ScoredPostOutputDtoGenqlSelection,
   SearchInput,
   SearchPostOutputDto,
   SearchPostOutputDtoGenqlSelection,
@@ -397,8 +395,8 @@ export class GraphqlRouterComposite {
 
   public async feed(
     input: FeedInput,
-    _projection: FeedOutputDtoGenqlSelection,
-  ): Promise<FeedOutputDto> {
+    _projection: ScoredPostOutputDtoGenqlSelection,
+  ): Promise<ScoredPostOutputDto> {
     const result = await this.routerService.client.query({
       feed: {
         __args: { input },
@@ -411,8 +409,8 @@ export class GraphqlRouterComposite {
 
   public async postRecommendation(
     input: PostRecommendationInput,
-    projection: PostRecommendationOutputDtoGenqlSelection,
-  ): Promise<PostRecommendationOutputDto> {
+    projection: ScoredPostOutputDtoGenqlSelection,
+  ): Promise<ScoredPostOutputDto> {
     const result = await this.routerService.client.query({
       postRecommendation: {
         __args: { input },

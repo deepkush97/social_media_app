@@ -117,16 +117,6 @@ input FeedInput {
   userId: Int!
 }
 
-type FeedItemDtoData {
-  items: [PostOutput!]!
-  meta: PaginationMeta!
-}
-
-type FeedOutputDto {
-  data: FeedItemDtoData
-  code: AppCodes!
-}
-
 type FollowerFollowingCountDto {
   followers: Int!
   followings: Int!
@@ -254,21 +244,6 @@ input PostRecommendationInput {
   userId: Int!
 }
 
-type PostRecommendationItemDto {
-  id: Int!
-  score: Float!
-}
-
-type PostRecommendationItemDtoData {
-  items: [PostRecommendationItemDto!]!
-  meta: PaginationMeta!
-}
-
-type PostRecommendationOutputDto {
-  data: PostRecommendationItemDtoData
-  code: AppCodes!
-}
-
 input PostsPaginationInput {
   take: Int! = 10
   page: Int! = 1
@@ -289,9 +264,19 @@ type Query {
   userCounts(id: Int!): UserCountsDto!
   postLikeCount(postId: Int!): NumberOutputDto!
   hasUserLikedPost(userId: Int!, postId: Int!): BooleanOutputDto!
-  feed(input: FeedInput!): FeedOutputDto!
-  postRecommendation(input: PostRecommendationInput!): PostRecommendationOutputDto!
+  feed(input: FeedInput!): ScoredPostOutputDto!
+  postRecommendation(input: PostRecommendationInput!): ScoredPostOutputDto!
   userRecommendation(input: UserRecommendationInput!): UserRecommendationOutputDto!
+}
+
+type ScoredPostItemDtoData {
+  items: [PostOutput!]!
+  meta: PaginationMeta!
+}
+
+type ScoredPostOutputDto {
+  data: ScoredPostItemDtoData
+  code: AppCodes!
 }
 
 input SearchInput {

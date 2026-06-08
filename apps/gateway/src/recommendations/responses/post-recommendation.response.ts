@@ -2,13 +2,13 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { Exclude, Expose } from 'class-transformer';
 
-import { IPostRecommendationItem } from '@app/shared/interfaces/social/post-recommendation.interface';
+import { IScoredPostIdItem } from '@app/shared/interfaces/social/scored-post-id.interface';
 
 import { ApiResponse } from '../../responses/app-combined.response';
 import { AppPaginatedDataResponse } from '../../responses/pagination.response';
 
 @Exclude()
-export class PostRecommendationItem implements IPostRecommendationItem {
+export class PostRecommendationItem implements IScoredPostIdItem {
   @Expose()
   @ApiProperty({ description: 'Post id' })
   id: number;

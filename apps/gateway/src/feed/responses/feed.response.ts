@@ -3,13 +3,13 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 
 import { ContentStatusEnum } from '@app/shared/enums/content-status.enum';
-import { IFeedItem } from '@app/shared/interfaces/social/feed.interface';
+import { IScoredPost } from '@app/shared/interfaces/social/scored-post.interface';
 
 import { ApiResponse } from '../../responses/app-combined.response';
 import { AppPaginatedDataResponse } from '../../responses/pagination.response';
 
 @Exclude()
-export class FeedItem implements IFeedItem {
+export class FeedItem implements IScoredPost {
   @Expose()
   @ApiProperty({ description: 'Post id' })
   id: number;
